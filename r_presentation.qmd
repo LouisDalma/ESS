@@ -1,0 +1,4 @@
+---
+title: "Une introduction au langage R et à l'interface RStudio"
+author: "Louis Dalmazzo"
+---

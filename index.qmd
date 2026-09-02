@@ -2,9 +2,11 @@
 title: "Kits site 02.09.26"
 ---
 
-This is a Quarto website.
+Depuis 2001, l'European Social Survey (ESS) interroge des dizaine de milliers de personnes dans plus de trente pays européens sur leurs valeurs, leurs opinions, leurs comportements. Par sa méthodologie, l'ESS est l'une des sources les plus fiables et les plus accessibles pour comprendre les sociétés européennes dans sa durée. Surtout, son fonctionnement en fait un point d'entrée particulièrement accessible pour toutes les personnes souhaitant s'initier aux méthodes quantitatives en sciences humaines et sociales.
 
-To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
+Ce site propose des outils pour explorer ces données soi-même : des guides thématiques, des tutoriels pour apprendre à manipuler les données sous R, et des ressources pensées spécifiquement dans un contexte académique, professionnel, ou personnel. L'objectif n'est pas seulement de présenter des résultats, mais de donner les moyens pour les reproduire et les vérifier soi-même.
+
+Que vous soyez un étudiant, un enseignant à la recherche de supports, ou un journaliste qui cherche des données fiables, vous trouverez ici un point de départ adapté à votre niveau.
 
 ```{r}
 1 + 1

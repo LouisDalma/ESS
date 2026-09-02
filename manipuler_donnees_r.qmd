@@ -1,0 +1,143 @@
+---
+title: "Manipuler des données sous R"
+author: "Louis Dalmazzo"
+---
+
+Dans un premier temps nous avons exploré l'interface R et installé les plugins (blabla). commençons à présent la manipulation de données.
+
+```{r}
+
+#Chargement des packages.
+library(needs)
+needs(ggeffects)
+needs(tidyverse)
+needs(questionr)
+needs(esquisse)
+needs(ggplot2)
+needs(gtsummary)
+needs(gt)
+needs(dplyr)
+needs(extrafont)
+needs(survey)
+needs(ggpubr)
+needs(vcd)
+needs(explor)
+needs(factoextra)
+needs(GDAtools)
+needs(here)
+needs(cluster)
+# needs(clv)
+needs(class)
+needs(clusterCrit)
+needs(FactoMineR)
+#needs(Factoshiny)
+needs(missMDA)
+needs(ggrepel)
+needs(translate.logit)
+needs(forcats)
+needs(nnet)
+needs(labelled)
+needs(brant)
+needs(survey)
+needs(srvyr)
+needs(ordinal)
+needs(colorspace)
+needs(performance)
+needs(heatmaply)
+needs(haven)
+needs(here)
+needs(fixest)
+needs(rlang)
+needs(sandwich)
+needs(upstartr)
+needs(dotwhisker)
+needs(broom)
+needs(ggeffects)
+needs(sysfonts)
+needs(essurvey)
+theme_gtsummary_language("fr", decimal.mark = ",")
+```
+
+On importe ensuite notre base de données :
+
+```{r}
+ESS11 <- read.csv("01_Data/ESS11e04_2.csv", sep=",")
+```
+
+On commence nos premiers recodages, ici la confiance dans la police :
+
+```{r}
+ESS11 <- ESS11 %>%
+  mutate(
+    trstplc = if_else(trstplc %in% c(77, 88, 99), NA_real_, trstplc),
+    Conf_Police = case_when(
+      trstplc <= 1 ~ "Très faible",
+      trstplc <= 4 ~ "Faible",
+      trstplc == 5 ~ "Moyenne",
+      trstplc <= 8 ~ "Élevée",
+      trstplc <= 10 ~ "Très élevée",
+      TRUE ~ NA_character_
+    ),
+    Conf_Police = factor(Conf_Police, 
+                         levels = c("Très faible", "Faible", "Moyenne", "Élevée", "Très élevée"), 
+                         ordered = TRUE)
+  )
+
+table(ESS11$Conf_Police, useNA = "ifany")
+```
+
+Puis le sentiment d'appartenir au groupe ethnique majoritaire dans son pays
+
+```{r}
+
+ESS11 <- ESS11 %>%
+  mutate(feethngr = if_else(feethngr %in% c(7, 8, 9), NA_real_, feethngr),
+         Sent_Majoritaire_Ethn = case_when(
+           feethngr == 1 ~ "Oui",
+           feethngr == 2 ~ "Non",
+           TRUE ~ NA_character_
+         ),
+         Sent_Majoritaire_Ethn = factor(Sent_Majoritaire_Ethn, levels = c("Non", "Oui")))
+
+```
+
+On fait notre design de pondération APRES les recodages :
+
+```{r}
+
+design <- svydesign(ids = ~psu, strata = ~stratum, 
+                    weights = ~anweight, data = ESS11,
+                    nest = TRUE)
+```
+
+Et enfin on peut faire un tri croisé :
+
+```{r}
+design %>%
+  tbl_svysummary(
+    include = "Sent_Majoritaire_Ethn",
+    by = "Conf_Police",
+    percent = "row",
+    statistic = all_categorical() ~ "{p}%",
+    label = list(
+      Sent_Majoritaire_Ethn ~ "Sentiment d'appartenance majoritaire"
+    )
+  ) %>%
+  modify_header(label = "**Confiance dans la police :**") %>%
+  add_overall(
+    last = TRUE,
+    statistic = ~"{p}% (n={n})"
+  ) %>%
+  add_p(
+    test = all_categorical() ~ "svy.chisq.test"
+  ) %>%
+  modify_footnote_header(
+    footnote = "Calculé à partir d'un test de Khi-2",
+    columns = "p.value",
+    replace = TRUE
+  ) %>%
+  as_gt() %>%
+  tab_header("Tableau croisant le sentiment d'appartenance majoritaire ethnique avec le niveau de confiance dans la police") %>%
+  tab_source_note(source_note = "Source : European Social Survey, vague 11.") %>%
+  tab_source_note(source_note = "Champ : Ensemble de la population de plus de 15 ans résidant dans les 30 pays participants.")
+```
