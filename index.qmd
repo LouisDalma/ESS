@@ -1,5 +1,6 @@
 ---
-title: "Kits site 02.09.26"
+title: "Petit kit d'introduction aux méthodes quantitatives en utilisant l'European Social Survey"
+author: "Louis Dalmazzo (Centre de données socio-politiques, Sciences Po, CNRS)"
 ---
 
 Depuis 2001, l'European Social Survey (ESS) interroge des dizaine de milliers de personnes dans plus de trente pays européens sur leurs valeurs, leurs opinions, leurs comportements. Par sa méthodologie, l'ESS est l'une des sources les plus fiables et les plus accessibles pour comprendre les sociétés européennes dans sa durée. Surtout, son fonctionnement en fait un point d'entrée particulièrement accessible pour toutes les personnes souhaitant s'initier aux méthodes quantitatives en sciences humaines et sociales.
@@ -8,6 +9,16 @@ Ce site propose des outils pour explorer ces données soi-même : des guides th�
 
 Que vous soyez un étudiant, un enseignant à la recherche de supports, ou un journaliste qui cherche des données fiables, vous trouverez ici un point de départ adapté à votre niveau.
 
-```{r}
-1 + 1
-```
+Le site est organisé en cinq espaces, du plus général au plus spécialisé.
+
+Comprendre l'ESS revient sur les fondamentaux : l'origine de l'infrastructure, ce qu'elle mesure, à quelle fréquence, avec quelles méthodes. Il montrera de surcroît comment télécharger les données de l'ESS.
+
+Introduction à R commencera par une présentation du langage R et de son interface utilisateur : RStudio. Il expliquera d'une part comment installer les deux programmes, puis détaillera la présentation de l'interface RStudio. Enfin, il expliquera comment installer des extensions bien utiles au traitement de données
+
+Traitement de données simple continuera par l'import des données, le recodage des variables, puis des premiers traiements statistiques sommaires (tris à plat, tris croisés, khi-deux).
+
+Traitement de données avancées
+
+Espace enseignant rassemble des fiches de classe et des exercices corrigés, pensés pour s'intégrer dans les programmes existants.
+
+Espace journalistes offre un accès rapide aux données vérifiées : visualisations prêtes à l'emploi, méthodologie simplifiée, etc.

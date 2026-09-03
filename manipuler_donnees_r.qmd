@@ -3,65 +3,80 @@ title: "Manipuler des données sous R"
 author: "Louis Dalmazzo"
 ---
 
-Dans un premier temps nous avons exploré l'interface R et installé les plugins (blabla). commençons à présent la manipulation de données.
+# Le traitement basique des données sous R
+
+Avant de commencer la manipulation de données, il faut équiper R des bons outils. R en base sait déjà faire beaucoup de choses : créer des tableaux, filtrer des lignes, calculer des statistiques, entre autre. Mais deux collections de fonctions vont nous simplifier la vie tout au long de ce kit : le *tidyverse* et *questionr*.
+
+### Le tidyverse
+
+Le tidyverse n'est pas un package unique. C'est en réalité une collection d'une dizaine de packages, qui partagent la même philosophie et la même syntaxe. Citons par exemple "*dplyr*" pour manipuler les données et "*ggplot*" pour les visualiser.
+
+### questionr
+
+Questionr est développé par des chercheurs et ingénieurs français (Julien Barnier, François Briatte et Joseph Larmarange), pour l'enseignement de l'analyse de données en sciences sociales. Ses fonctions les plus utiles nous permettront de produire des tableaux sur les variables que l'on souhaitera analyser.
+
+## Installer, puis charger
+
+D'abord, une distinction à garder en tête, est que l'installation et le chargement des packages sont deux étapes différentes. `install.packages()` télécharge le package sur l'ordinateur, tandis que `library()` active le package pour la session de travail en cours. Autrement dit, l'installation se fait une seule fois, tandis que le chargement doit se faire à chaque ouverture de votre session R.
 
 ```{r}
 
-#Chargement des packages.
-library(needs)
-needs(ggeffects)
-needs(tidyverse)
-needs(questionr)
-needs(esquisse)
-needs(ggplot2)
-needs(gtsummary)
-needs(gt)
-needs(dplyr)
-needs(extrafont)
-needs(survey)
-needs(ggpubr)
-needs(vcd)
-needs(explor)
-needs(factoextra)
-needs(GDAtools)
-needs(here)
-needs(cluster)
-# needs(clv)
-needs(class)
-needs(clusterCrit)
-needs(FactoMineR)
-#needs(Factoshiny)
-needs(missMDA)
-needs(ggrepel)
-needs(translate.logit)
-needs(forcats)
-needs(nnet)
-needs(labelled)
-needs(brant)
-needs(survey)
-needs(srvyr)
-needs(ordinal)
-needs(colorspace)
-needs(performance)
-needs(heatmaply)
-needs(haven)
-needs(here)
-needs(fixest)
-needs(rlang)
-needs(sandwich)
-needs(upstartr)
-needs(dotwhisker)
-needs(broom)
-needs(ggeffects)
-needs(sysfonts)
-needs(essurvey)
-theme_gtsummary_language("fr", decimal.mark = ",")
+# On commence par installer les packages. Pensez par ailleurs aux guillemets
+# install.packages("tidyverse")
+# install.packages("questionr")
+
 ```
 
-On importe ensuite notre base de données :
+Une fois installés, ne réexécutez plus ces lignes de commande. Les packagages sont sur votre ordinateur. A présent, on peut charger les packages. Vous devrez exécuter ces lignes à chaque ouverture de R.
+
+```{r}
+# Ici, les guillemets ne sont pas nécessaires pour la fonction library()
+
+library(tidyverse)
+library(questionr)
+```
+
+### Un premier essai 
+
+Avant de passer aux données de l'ESS, on peut faire un essai sur un jeu de données déjà inclus sour R base, `mtcars`. mtcars est un data frame. Autrement dit, il s'agit simplement d'un tableur, avec des lignes (ici des voitures), et des colonnes. Faisons un test en écrivant simplement `mtcars` dans notre console (ou notre script).
+
+```{r}
+mtcars
+```
+
+On voit le jeu de données, très similaire à ce que l'on pourrait par exemple trouver sur un tableur Excel. On a en ligne des modèles de voitures, et en colonne un certain nombre d'attributs leur correspondant, comme le nombre de vitesses (gear), le poids du véhicule (wt, en milliers de livres), la puissance brute (hp), ou encore le nombre de cylindres (cyl). Prenons pour exemple cette dernière variable.
+
+La sélection des variables se fait en ajoutant le symbole `$` juste après le dataframe.
+
+```{r}
+mtcars$cyl
+```
+
+Le résultat indique le nombre de cylindre pour chaque voiture. Vous voyez que la ligne est difficilement lisible : il s'agit d'un vecteur. Réarrangeons la en utilisant la fonction `freq`, du package *questionr*.
+
+```{r}
+freq(mtcars$cyl)
+```
+
+Le résultat est beaucoup plus clair. A gauche, apparaissent les modalités de la variable sélectionnée. 4 cylindres, 6 cylindres, et 8 cylindres. n signifie l'effectif pour chaque modalité. 11 voitures ont 4 cylindres, 7 voitures ont 6 cylindres, 14 voitures ont 8 cylindres. Enfin, les deux dernières colonnes indique leur pourcentage, la subtilité étant que la colonne du milieu, %, calcule le pourcentage en y incluant les valeurs manquantes, là où val% les exclut.
+
+Félicitations, vous venez de faire un tri à plat ! Continuons maintenant avec des données un peu plus parlantes.
+
+## Cas pratiques avec les données de l'ESS
+
+On souhaite
 
 ```{r}
 ESS11 <- read.csv("01_Data/ESS11e04_2.csv", sep=",")
+ess <- read_csv("01_Data/ESS11e04_2.csv", sep=",")
+```
+
+On subset sur les données de la France :
+
+```{r}
+ESS11_FR <- ESS11 %>% filter(cntry=="FR") %>% 
+  filter(!is.na(anweight)) %>% 
+  mutate(anweight_r = anweight/(sum(anweight)/nrow(.)))
 ```
 
 On commence nos premiers recodages, ici la confiance dans la police :
@@ -101,7 +116,57 @@ ESS11 <- ESS11 %>%
 
 ```
 
+```{r}
+freq(ESS11$cgtsmok)
+```
+
+```{r}
+ESS11 <- ESS11 %>%
+  mutate(
+    trstplc = if_else(cgtsmok %in% c(77, 88, 99), NA_real_, trstplc),
+    Freq_Cig = case_when(
+      cgtsmok == 1 ~ "Oui 10 ou plus",
+      cgtsmok == 2 ~ "Oui 9 ou moins",
+      cgtsmok == 3 ~ "Oui pas tous jours",
+      cgtsmok == 4 ~ "Non mais avant oui",
+      cgtsmok == 5 ~ "Quelques fois dans la vie",
+      cgtsmok == 6 ~ "Non",
+      TRUE ~ NA_character_
+    ),
+    Freq_Cig = factor(Freq_Cig, 
+                         levels = c("Non", "Quelques fois dans la vie", "Non mais avant oui", "Oui pas tous jours", "Oui 9 ou moins", "Oui 10 ou plus"), 
+                         ordered = TRUE)
+  )
+
+table(ESS11$Freq_Cig, useNA = "ifany")
+```
+
+```{r}
+ESS11 <- ESS11 |>
+  mutate(
+    # Étape 1 : neutraliser les codes de non-réponse AVANT tout seuillage
+    edulvlb = ifelse(edulvlb %in% c(5555, 7777, 8888, 9999), NA, edulvlb),
+    
+    # Étape 2 : recoder par bornes officielles ISCED
+    diplome = case_when(
+      edulvlb <= 229                      ~ "Faible",   # ISCED 0-2
+      edulvlb >= 311 & edulvlb <= 423     ~ "Moyen",    # ISCED 3-4
+      edulvlb >= 510                      ~ "Élevé"     # ISCED 5-6
+    ),
+    diplome = factor(diplome, levels = c("Faible", "Moyen", "Élevé"))
+  )
+
+freq(ESS11$edulvlb)
+freq(ESS11$diplome)
+```
+
+La pondération
+
 On fait notre design de pondération APRES les recodages :
+
+```{r}
+needs(survey)
+```
 
 ```{r}
 
@@ -111,6 +176,11 @@ design <- svydesign(ids = ~psu, strata = ~stratum,
 ```
 
 Et enfin on peut faire un tri croisé :
+
+```{r}
+needs(gtsummary)
+needs(gt)
+```
 
 ```{r}
 design %>%
@@ -124,6 +194,36 @@ design %>%
     )
   ) %>%
   modify_header(label = "**Confiance dans la police :**") %>%
+  add_overall(
+    last = TRUE,
+    statistic = ~"{p}% (n={n})"
+  ) %>%
+  add_p(
+    test = all_categorical() ~ "svy.chisq.test"
+  ) %>%
+  modify_footnote_header(
+    footnote = "Calculé à partir d'un test de Khi-2",
+    columns = "p.value",
+    replace = TRUE
+  ) %>%
+  as_gt() %>%
+  tab_header("Tableau croisant le sentiment d'appartenance majoritaire ethnique avec le niveau de confiance dans la police") %>%
+  tab_source_note(source_note = "Source : European Social Survey, vague 11.") %>%
+  tab_source_note(source_note = "Champ : Ensemble de la population de plus de 15 ans résidant dans les 30 pays participants.")
+```
+
+```{r}
+design %>%
+  tbl_svysummary(
+    include = "Freq_Cig",
+    by = "diplome",
+    percent = "column",
+    statistic = all_categorical() ~ "{p}%",
+    label = list(
+      Freq_Cig ~ "Fréquence de cigarette"
+    )
+  ) %>%
+  modify_header(label = "**Diplôme :**") %>%
   add_overall(
     last = TRUE,
     statistic = ~"{p}% (n={n})"
