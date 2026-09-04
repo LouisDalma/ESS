@@ -12,9 +12,9 @@ website:
         href: ess_presentation.qmd
       - text: "Présentation de R et RStudio"
         href: r_presentation.qmd
-      - text: "Traitement simple de données"
+      - text: "Traitement basique des données"
         href: manipuler_donnees_r.qmd
-      - text: "Traitement avancé de données"
+      - text: "Traitement avancé des données"
         href: traitement_avance_r.qmd
       - text: "Espace journaliste"
         href : espace_journaliste.qmd

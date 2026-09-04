@@ -1,15 +1,15 @@
 ---
-title: "Manipuler des données sous R"
+title: "Le traitement basique des données sous R"
 author: "Louis Dalmazzo"
 ---
 
-# Le traitement basique des données sous R
+# 
 
 Avant de commencer la manipulation de données, il faut équiper R des bons outils. R en base sait déjà faire beaucoup de choses : créer des tableaux, filtrer des lignes, calculer des statistiques, entre autre. Mais deux collections de fonctions vont nous simplifier la vie tout au long de ce kit : le *tidyverse* et *questionr*.
 
 ### Le tidyverse
 
-Le tidyverse n'est pas un package unique. C'est en réalité une collection d'une dizaine de packages, qui partagent la même philosophie et la même syntaxe. Citons par exemple "*dplyr*" pour manipuler les données et "*ggplot*" pour les visualiser.
+Le tidyverse n'est pas un package unique. C'est en réalité une collection d'une dizaine de packages, qui partagent la même philosophie et la même syntaxe. Citons par exemple "*dplyr*" pour manipuler les données ou encore "*ggplot*" pour les visualiser.
 
 ### questionr
 
@@ -17,7 +17,7 @@ Questionr est développé par des chercheurs et ingénieurs français (Julien Ba
 
 ## Installer, puis charger
 
-D'abord, une distinction à garder en tête, est que l'installation et le chargement des packages sont deux étapes différentes. `install.packages()` télécharge le package sur l'ordinateur, tandis que `library()` active le package pour la session de travail en cours. Autrement dit, l'installation se fait une seule fois, tandis que le chargement doit se faire à chaque ouverture de votre session R.
+D'abord, une distinction à garder en tête : l'installation et le chargement des packages sont deux étapes différentes. `install.packages()` télécharge le package sur l'ordinateur, tandis que `library()` active le package pour la session de travail en cours. Autrement dit, l'installation se fait une seule fois, tandis que le chargement doit se faire à chaque ouverture de votre session R.
 
 ```{r}
 
@@ -30,13 +30,14 @@ D'abord, une distinction à garder en tête, est que l'installation et le charge
 Une fois installés, ne réexécutez plus ces lignes de commande. Les packagages sont sur votre ordinateur. A présent, on peut charger les packages. Vous devrez exécuter ces lignes à chaque ouverture de R.
 
 ```{r}
+#| warning: false
 # Ici, les guillemets ne sont pas nécessaires pour la fonction library()
 
 library(tidyverse)
 library(questionr)
 ```
 
-### Un premier essai 
+### Un premier essai
 
 Avant de passer aux données de l'ESS, on peut faire un essai sur un jeu de données déjà inclus sour R base, `mtcars`. mtcars est un data frame. Autrement dit, il s'agit simplement d'un tableur, avec des lignes (ici des voitures), et des colonnes. Faisons un test en écrivant simplement `mtcars` dans notre console (ou notre script).
 
@@ -52,7 +53,7 @@ La sélection des variables se fait en ajoutant le symbole `$` juste après le d
 mtcars$cyl
 ```
 
-Le résultat indique le nombre de cylindre pour chaque voiture. Vous voyez que la ligne est difficilement lisible : il s'agit d'un vecteur. Réarrangeons la en utilisant la fonction `freq`, du package *questionr*.
+Le résultat indique le nombre de cylindre pour chaque voiture. Vous voyez que la ligne est difficilement lisible : il s'agit d'un vecteur. Réarrangeons la en utilisant la fonction `freq`, du package *questionr*. On écrit le nom de la fonction, puis à l'intérieur des parenthèses on y met les instructions. C'est un principe qu'on retrouvera partout sous R.
 
 ```{r}
 freq(mtcars$cyl)
@@ -64,14 +65,116 @@ Félicitations, vous venez de faire un tri à plat ! Continuons maintenant avec 
 
 ## Cas pratiques avec les données de l'ESS
 
-On souhaite
+Jusqu'ici, `mtcars` était directement disponible dans R. Avec l'ESS, il faut d'abord importer les données, à partir du fichier `.csv` téléchargé. On va utiliser la fonction read.csv().
 
 ```{r}
 ESS11 <- read.csv("01_Data/ESS11e04_2.csv", sep=",")
-ess <- read_csv("01_Data/ESS11e04_2.csv", sep=",")
 ```
 
-On subset sur les données de la France :
+Décortiquons cette ligne avant de continuer :
+
+`ESS11` est le nom qu'on choisit pour l'objet qui va contenir nos données une fois importées. Rien d'obligatoire dans ce nom : on aurait pu écrire donnees, ou ess en minuscule, peu importe.
+
+`<-` est la flèche d'assignation. Concrètement, la flèche prend l'élément qui est à droite et le place dans l'objet à gauche.
+
+`read.csv()` est la fonction qui permet de lire un fichier .csv et le transformer en tableau de données (data frame) exploitable sous R.
+
+`"01_Data/ESS11e04_2.csv"` est le premier argument, le chemin vers le fichier à lire, entre guillemets parce qu'il s'agit de texte, et pas un nombre, ni un objet déjà existant. Le chemin est relatif au dossier du projet, raison pour laquelle on n'a pas besoin de d'écrire le chemin complet de l'ordinateur.
+
+`,` la virgule sépare les deux arguments
+
+`sep=","` est le second argument. Il indique à R quel caractère sépare les colonnes dans le fichier .csv, en l'occurence une virgule. Même si la virgule est déjà la valeur par défaut de read.csv (contrairement à read.csv2), l'écrire explicitement rend le code plus lisible.
+
+## Un premier coup d'oeil
+
+On peut regarder dans le cadran supérieur droit de RStudio. Dans l'onglet *Environnement*, apparait notre objet `ESS11`. Nous pouvons voir à droite la dimension que prend notre data frame : "50116 obs. of 691 variables" veut dire qu'il contient 50116 lignes pour 691 colonnes.
+
+![Onglet Environnement de RStudio](images/Capture%20d'écran%202026-09-04%20113042.png){fig-alt="Onglet Environnement RStudio"}
+
+On clique à présent sur cette ligne pour ouvrir un onglet dans la partie supérieure gauche de notre écran : le Data viewer. C'est une vue tabulaire, un peu comme un tableur, qu'on peut faire défiler ligne par ligne et colonne par colonne, et même trier en cliquant sur les en-têtes. C'est le réflexe le plus rapide pour un premier contact visuel avec des données inconnues.
+
+![Le Data Viewer de RStudio](images/Capture%20d'écran%202026-09-04%20114647.png){fig-alt="Data Viewer RStudio" fig-align="center"}
+
+## Une autre manière d'inspecter ses données
+
+Le clic dans l'interface est utile pour un aperçu rapide, mais il a une limite : il ne dit rien sur la nature de chaque variable, et il ne laisse aucune trace dans le script. On souhaite faire la même chose dans son script, de façon reproductible.
+
+```{r}
+dim(ESS11)
+```
+
+`dim()` renvoie deux nombres : le nombre de lignes, puis le nombre de colonnes.
+
+```{r}
+# names(ESS11)
+```
+
+`names()` liste les noms de toutes les variables. Peu lisible sur de grands jeux de données comme l'ESS, ce que l'on pourra résoudre plus tard avec `select()`.
+
+```{r}
+# head(ESS11)
+```
+
+`head()` affiche les dix premières lignes sur toutes les colonnes. Encore une fois peu lisible sur un grand jeu de données, mais la fonction est à connaître.
+
+```{r}
+# str(ESS11)
+```
+
+`str()` est sans doute la plus informative des quatre. Elle liste chaque variable avec son type.
+
+### Les types de variables
+
+Au sein d'un jeu de données, chaque variable (colonne) a une nature spécifique, en fonction de ce qu'elle contient.
+
+#### **Les variables de type character**
+
+Elles représentent du texte. Par exemple, lorsque l'on renseigne sa profession ("Artisan", "infirmière", "technicienne"), on renseigne une chaîne de texte. Dans l'ESS, on peut également prendre pour exemple le pays d'origine des répondants :
+
+```{r}
+str(ESS11$cntry)
+```
+
+#### **Les variables de type integer**
+
+Ce sont des nombres entiers, sans décimales. Beaucoup de variables de notre jeu de données sont codées de cette manière, chaque nombre représentant une modalité de réponse. Par exemple avec la variable sur le degré de confiance dans la police sur une échelle de 1 à 10 :
+
+```{r}
+str(ESS11$trstplc)
+```
+
+*NB : En général, les non réponses sont filtrées. Ici, 77 correspond à "refus de répondre", 88 correspond à "ne sait pas" et 99 aux non réponses.*
+
+On peut utiliser des variables de type integer pour des échelles, ici typiquement une échelle de 1 à 10. On peut également les utiliser pour des modalités de réponses différentes. Par exemple pour le genre, la variable correspondante (gndr) est de type integer : 1 pour les hommes, 2 pour les femmes. Quand il y a des non réponses, ce qui n'est pas le cas pour ce millésime, on les recode en 9.
+
+```{r}
+str(ESS11$gndr)
+```
+
+#### **Les variables de type numérique**
+
+Ce sont des nombres avec des décimales. On peut par exemple penser aus variables de pondération, que l'on verra en détail plus tard.
+
+```{r}
+str(ESS11$anweight)
+```
+
+#### **Le cas particulier des variables de type factor**
+
+Ce sont des variables qui ne peuvent prendre qu'un nombre fixe et fermé de valeurs possibles, appelées des levels. Elles n'existent jamais en tant que tel, il faut les construire explicitement. On montre ici un exemple en reprenant l'exemple du genre.
+
+```{r}
+ESS11 <- ESS11 |>
+  mutate(gndr_f = factor(gndr, levels = c(1, 2), labels = c("Homme", "Femme")))
+```
+
+*NB : nous verrons plus tard en détail la construction et le recodage des variables ; cette section n'a que pour but de présenter les différentes variables possibles.*
+
+```{r}
+str(ESS11$gndr_f)
+```
+
+Les levels indiquent quelles valeurs d'origine correspondent à des catégories valides (ici 1 et 2), tandis que labels leur donne un nom lisible. Une éventuelle valeur 9 deviendrait automatiquement NA, puisqu'elle n'apparaît pas dans les levels.
 
 ```{r}
 ESS11_FR <- ESS11 %>% filter(cntry=="FR") %>% 
