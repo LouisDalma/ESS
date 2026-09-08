@@ -1,7 +1,9 @@
 ---
-title: "Petit kit d'introduction aux méthodes quantitatives en utilisant l'European Social Survey"
-author: "Louis Dalmazzo (Centre de données socio-politiques, Sciences Po, CNRS)"
+title: "S'initier aux méthodes quantitatives en utilisant l'European Social Survey"
+author: "Louis Dalmazzo"
 ---
+
+## Découvrir l'ESS
 
 Depuis 2001, l'European Social Survey (ESS) interroge des dizaine de milliers de personnes dans plus de trente pays européens sur leurs valeurs, leurs opinions, leurs comportements. Par sa méthodologie, l'ESS est l'une des sources les plus fiables et les plus accessibles pour comprendre les sociétés européennes dans sa durée. Surtout, son fonctionnement en fait un point d'entrée particulièrement accessible pour toutes les personnes souhaitant s'initier aux méthodes quantitatives en sciences humaines et sociales.
 
@@ -22,3 +24,33 @@ Traitement de données avancées
 Espace enseignant rassemble des fiches de classe et des exercices corrigés, pensés pour s'intégrer dans les programmes existants.
 
 Espace journalistes offre un accès rapide aux données vérifiées : visualisations prêtes à l'emploi, méthodologie simplifiée, etc.
+
+```{r}
+#####
+```
+
+## 
+
+Depuis 2001, l'*European Social Survey* (ESS) interroge tous les deux ans des dizaines de milliers de personnes à travers l'Europe sur leurs valeurs, leurs opinions et leurs comportements : la confiance dans les institutions, le rapport au travail, les attitudes face à l'immigration ou au changement climatique. Par sa méthodologie, l'ESS est l'une des sources les plus fiables et les plus accessibles pour comprendre les sociétés européennes dans la durée.
+
+Surtout, son fonctionnement en fait un point d'entrée particulièrement adapté à toute personne souhaitant s'initier aux méthodes quantitatives en sciences humaines et sociales : les données sont gratuites, documentées, et suffisamment riches pour poser de vraies questions sans être écrasantes.
+
+Ce site propose des outils pour explorer ces données soi-même. Des guides thématiques, des tutoriels pour apprendre à manipuler les données sous R, et des ressources pensées pour un contexte académique, professionnel ou personnel. L'objectif n'est pas seulement de présenter des résultats, mais de donner les moyens de les reproduire et de les vérifier soi-même.
+
+## Ce que vous trouverez ici
+
+Le site est organisé en quatre grands ensembles, du plus général au plus spécialisé.
+
+[**Comprendre l'ESS**](ess_presentation.qmd) revient sur les fondamentaux : ce qui distingue l'ESS d'un sondage d'institut, comment son échantillonnage garantit sa fiabilité, et pourquoi elle permet de comparer les sociétés européennes dans le temps. À lire avant toute chose, même sans intention de coder.
+
+**Apprendre R** propose une initiation progressive, en quatre temps. On commence par [découvrir R et RStudio](r_presentation.qmd) et installer son environnement de travail, puis par les [premiers pas](premiers_pas_r.qmd) dans le langage lui-même. Vient ensuite la [manipulation des données](manipuler_donnees_r.qmd) de l'ESS : import, recodage, pondération, premiers tableaux, [aller plus loin](traitement_avance_r.qmd) aborde les croisements de variables et la visualisation. Enfin, traitements avancés nous permet d'aborder les analyses factorielles, classifications, et régressions.
+
+Les **espaces dédiés** rassemblent des ressources spécifiques. L'[espace enseignants](espace_enseignant.qmd) propose des séquences prêtes à l'emploi et des jeux de données allégés. L'[espace journalistes](espace_journaliste.qmd) se concentre sur la lecture critique et la vérification d'un chiffre, sans nécessairement passer par le code.
+
+## Par où commencer ?
+
+Vous n'avez jamais ouvert R et vous ne savez pas ce qu'est l'ESS : suivez le site dans l'ordre du menu, page après page.
+
+Vous connaissez déjà R mais pas l'ESS : lisez [Comprendre l'ESS](ess_presentation.qmd), puis rendez-vous directement à la section sur la [manipulation des données](manipuler_donnees_r.qmd), où sont traités les points propres à cette enquête (codes de non-réponse, pondération).
+
+Vous cherchez un chiffre fiable sans vouloir programmer : l'[espace journalistes](espace_journaliste.qmd) est fait pour ça.

@@ -13,7 +13,7 @@ Le tidyverse n'est pas un package unique. C'est en réalité une collection d'un
 
 ### questionr
 
-Questionr est développé par des chercheurs et ingénieurs français (Julien Barnier, François Briatte et Joseph Larmarange), pour l'enseignement de l'analyse de données en sciences sociales. Ses fonctions les plus utiles nous permettront de produire des tableaux sur les variables que l'on souhaitera analyser.
+questionr est développé par des chercheurs et ingénieurs français (Julien Barnier, François Briatte et Joseph Larmarange), pour l'enseignement de l'analyse de données en sciences sociales. Ses fonctions les plus utiles nous permettront de produire des tableaux sur les variables que l'on souhaitera analyser.
 
 ## Installer, puis charger
 
@@ -65,7 +65,7 @@ Félicitations, vous venez de faire un tri à plat ! Continuons maintenant avec 
 
 ## Cas pratiques avec les données de l'ESS
 
-Jusqu'ici, `mtcars` était directement disponible dans R. Avec l'ESS, il faut d'abord importer les données, à partir du fichier `.csv` téléchargé. On va utiliser la fonction read.csv().
+Jusqu'ici, `mtcars` était directement disponible dans R. Avec l'ESS, il faut d'abord importer les données, à partir du fichier `.csv` téléchargé. On utilise ici la dernière vague disponible. On va utiliser la fonction read.csv().
 
 ```{r}
 ESS11 <- read.csv("01_Data/ESS11e04_2.csv", sep=",")
@@ -123,6 +123,7 @@ dim(ESS11)
 
 `str()` est sans doute la plus informative des quatre. Elle liste chaque variable avec son type.
 
+::: callout-note
 ### Les types de variables
 
 Au sein d'un jeu de données, chaque variable (colonne) a une nature spécifique, en fonction de ce qu'elle contient.
@@ -175,6 +176,144 @@ str(ESS11$gndr_f)
 ```
 
 Les levels indiquent quelles valeurs d'origine correspondent à des catégories valides (ici 1 et 2), tandis que labels leur donne un nom lisible. Une éventuelle valeur 9 deviendrait automatiquement NA, puisqu'elle n'apparaît pas dans les levels.
+
+Comme expliqué plut tôt, les variables factor demandent la plupart du temps un recodage manuel. On ne les trouvera jamais dans un import csv, qui appelle exclusivement des variables catégorielles. Pour autant, il est possible de trouver certains jeux de données avec des variables factor, notamment des jeux de données au format Stata.
+:::
+
+## Manipuler ses données :
+
+Nos données comportent 691 variables, ce qui est énorme, on ne travaille jamais sur un jeu de données exhaustif. Même si techniquement rien n'oblige à réduire son dataframe, la sélection est néanmoins une bonne habitude. D'abord elle rend nos données plus lisibles : un script qui déclare dès le départ ses variables de travail se relit plus facilement, y compris par soi-même. Ensuite, elle prévient les erreurs. Avec 691 colonnes potentielles, une faute de frappe sur un nom de variable produit directement une erreur, tandis qu'elle peut rester inaperçue dans un jeu de données large.
+
+### Sélectionner des colonnes avec `select()`
+
+La bonne pratique consiste à consulter le codebook en amont, y repérer les variables utiles à l'analyse prévue, puis les sélectionner avec la fonction `select()`, du package dplyr fournie avec le tidyverse.
+
+Écrite de manière classique, elle prend deux types d'arguments : d'abord le data frame, ensuite les variables à conserver. On choisit pour cet exemple les variables relatives *au pays d'origine, au genre, à l'âge, à la fréquence à laquelle le répondant fume, au sentiment de bonheur, au positionnement politique sur l'échelle gauche/droite, au diplôme, aux revenus et enfin à la pondération*.
+
+```{r}
+ESS11_reduit <- select(ESS11, cntry, gndr, agea, cgtsmok, happy, lrscale ,edlvdfr, hinctnta, pspwght)
+```
+
+Cette ligne fonctionne parfaitement. Néanmoins, elle est peu pratique dès lors qu'on veut enchaîner des opérations. Il faudrait soit imbriquer les fonctions, soit créer un objet intermédiaire à chaque étape, ce qui est fastidieux.
+
+C'est ce problème que résout, entre autre, le tidyverse. On utilise un pipe, noté `|>`. On peut le voir comme un "*ensuite...*" : il prend ce qui se trouve à sa gauche, et le passe comme premier argument de la fonction placée à droite.
+
+```{r}
+ESS11_reduit <- ESS11 |>
+  select(cntry, gndr, agea, cgtsmok, happy, lrscale, edlvdfr, hinctnta, pspwght)
+```
+
+On ne met plus "ESS11" à l'intérieur de la parenthèse, le pipe s'en occupe à notre place.
+
+::: callout-note
+### Le pipe `|>` et le pipe `%>%`
+
+Vous rencontrerez fréquemment une autre notation, `%>%`, issue du package *magrittr* et historiquement liée au tidyverse. Le pipe `|>` présenté ici est intégré à R lui-même depuis la version 4.1 et ne nécessite aucun package. Les deux se comportent de manière équivalente dans la très grande majorité des cas.
+:::
+
+On regarde à présent le nombre de lignes et de colonnes :
+
+```{r}
+dim(ESS11_reduit)
+```
+
+9 colonnes au lieu de 691 : le tableau devient consultable d'un coup d'oeil dans le Data viewer.
+
+### Sélectionner des lignes avec `filter()`
+
+Là où `select()` choisit des colonnes, `filter()` choisit des lignes selon une condition. Pour ne conserver que les répondants français, on utilise la commande suivante :
+
+```{r}
+ESS11_FR <- ESS11_reduit %>% filter(cntry=="FR")
+dim(ESS11_FR)
+```
+
+Sur les 50116 répondants de la vague 11 de l'ESS, seuls 1771 vivent en France.
+
+::: callout-note
+#### **Les opérateurs :**
+
+On utilise ici un double signe égal `==` qui permet de tester une égalité. Il renvoie `TRUE` ou `FALSE` pour chaque ligne, tandis que `filter()` conserve les lignes pour lesquelles le test vaut `TRUE`. Ainsi, cette ligne de code crée un nouveau dataframe à partir du précédent, où on ne garde que les lignes correspondant aux répondants vivant en France.
+
+On utilise un égal simple `=` pour attribuer une valeur.
+
+Les autres opérateurs fonctionnent de la même manière :
+
+```{r}
+#| eval: false
+#| message: false
+
+filter(ESS11_reduit, agea >= 65)                      
+filter(ESS11_reduit, cntry != "FR")                    
+filter(ESS11_reduit, cntry %in% c("FR", "DE", "ES"))  
+```
+
+`>=` signifie qu'on ne sélectionne que la valeur indiquée et tout ce qui est au dessus. On utilisera \<= pour sélectionner la valeur indiquée et tout ce qui est en dessous
+
+`!=` signifie qu'on sélectionne toutes les valeurs sauf celle indiquée
+
+`%in%` signifie qu'on ne sélectionne que les valeurs mentionnées dans le vecteur `c()`. `c()` est une fonction de concaténation qui prend plusieurs valeurs séparées pour les assembler un un vecteur.
+
+Plusieurs conditions séparées équivalent à un "et" :
+
+```{r}
+#| eval: false
+
+filter(ESS11_reduit, cntry %in% c("FR", "DE", "ES"), agea >= 18, agea <= 25) 
+```
+
+Par exemple, on ne garde ici les personnes qui ont entre 18 et 25 ans, résidant en France, en Allemagne, et en Espagne.
+:::
+
+## Recoder ses variables :
+
+Une fois les variables d'intérêt sélectionnées et le pays filtré, les données ne sont presque jamais utilisables telles quelles. Recoder consiste à transformer les valeurs brutes d'une variable pour qu'elles deviennent exploitables dans un calcul ou une comparaison.
+
+Ce travail prend plusieurs formes. D'abord, il est important de s'occuper des non-réponses. On pourra ensuite se charger de recoder nos variables, d'agréger ou de désagréger, de tel sorte à pouvoir faciliter leur intérprêtation.
+
+On utilisera ici abondamment la fonction `mutate()`, du package tidyverse.
+
+### Neutraliser les non-réponses
+
+Le traitement des non réponses est essentielle dans toute analyse sur données d'enquête, et dont l'oubli produit les erreurs les plus importantes.
+
+Prenons notre variable de positionnement politique déclaré sur une échelle gauche/droite allant de 0 à 10. Calculons sa moyenne en France, avec la fonction `mean()` :
+
+```{r}
+mean(ESS11_FR$lrscale)
+
+```
+
+Comment est-ce possible ? Une échelle bornée à 10 ne peut pas dépasser 10. Pour comprendre cette erreur, faisons un tri à plat, comme appris précédemment avec la fonction `freq()` :
+
+```{r}
+freq(ESS11_FR$lrscale)
+```
+
+Les modalités de 0 à 10 sont de vraies réponses, mais 77 signifie "refus de répondre" et 88 "ne sait pas". Ces absences de réponses, concernant environ 11% des répondants français, sont codées en nombre. Il est donc important de systématiquement bien regarder le dictionnaire des codes et de faire un tri à plat sur nos variables d'intérêt avant d'interpréter quoi que ce soit.
+
+On doit donc remplacer ces nombres par NA, c'est à dire des valeurs manquantes reconnues par R. Pour cela, on utilise la fonction mutate
+
+```{r}
+ESS11_FR <- ESS11_FR |>
+  mutate(lrscale = ifelse(lrscale %in% c(77, 88, 99), NA, lrscale))
+```
+
+Décortiquons cette ligne :
+
+`ESS11_FR <- ESS11_FR|>` : on part de l'objet ESS11_FR et on le fait passer par le pipe. Le résultat final est réaffecté dans ce même nom. Il est essentiel de réassigner ses modifications à l'objet grâce la flèche. Sans cela, le recodage ne serait conservé nulle part.
+
+`mutate()` : c'est la fonction principale. Elle permet de créer ou de modifier une colonne. On lui donne un nom de colonne, un signe égal, et l'instruction qui calcule sa nouvelle valeur
+
+`lrscale =` : *à gauche du signe égal*. C'est le même nom que celui qu'on utilise à droite. Cela veut dire qu'on écrase l'ancienne valeur `lrscale` pour en faire une nouvelle. On aurait également pu créer une nouvelle variable, en écrivant par exemple `lr_scale_r = ifelse(lrscale ...)`. Nous aurions eu dans ce cas deux variables : `lrscale` la variable d'origine, et `lrscale_r` qui serait notre nouvelle variable recodée.
+
+`ifelse(condition, valeur_si_vrai, valeur_si_faux)` : la fonction de test, qui prend toujours trois arguments dans cet ordre. Elle examine pour chaque ligne du tableau, une par une, et retourne l'un ou l'autre des deux résultats selon le cas.
+
+`lrscale %in% c(77, 88, 99)` : est la condition, donc le premier argument. Nous avons vu l'utilisation de c() plus haut, qui crée un vecteur contenant ici trois valeurs : 77, 88 et 99. Le résultat renvoie un vrai ou faux pour chaque ligne : *est-ce que ma ligne contient ces trois valeurs, ou non ?*
+
+`NA` : est le deuxième argument, donc la valeur retournée si la condition est vraie. Si une des lignes contient 77, 88 ou 99 pour la variable `lrscale`, dans ce cas elle devient `NA`, c'est-à-dire une valeur manquante, plutôt qu'un nombre.
+
+`lrscale` : est le troisième argument, donc la valeur retournée si la condition est fausse. Si la valeur d'origine n'est ni 77, 88 ou 99, on la garde telle quelle, inchangée.
 
 ```{r}
 ESS11_FR <- ESS11 %>% filter(cntry=="FR") %>% 

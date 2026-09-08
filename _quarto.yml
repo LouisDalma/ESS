@@ -9,7 +9,7 @@ website:
         text: Home
       - about.qmd
       - text: "L'ESS"
-        href: ess_presentation.qmd
+        href: ess_pres.qmd
       - text: "Présentation de R et RStudio"
         href: r_presentation.qmd
       - text: "Traitement basique des données"

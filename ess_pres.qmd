@@ -1,0 +1,279 @@
+---
+title: "Comprendre l'Enquête Sociale Européenne"
+author: "Louis Dalmazzo"
+---
+
+## Qu'est-ce que l'ESS ?
+
+L'*European Social Survey* (ESS) est une enquête par questionnaire menée tous les deux ans en Europe, et fondée en 2001[^1]. Elle a pour but de produire des données de qualité mesurant le changement (ou la stabilité dans le temps), à l'intérieur des pays européens et entre eux, sur les conditions de vie, la structure sociale, l'opinion publique et les attitudes[^2].
+
+[^1]: ESS ERIC, *ESS Round 13 Survey Specification*, v1, 11 novembre 2025, section 3 : « The European Social Survey (ESS) is an academically driven cross-national survey, founded in 2001. » <https://europeansocialsurvey.org/sites/default/files/2025-11/ESS013_survey_specification_v1.pdf>
+
+[^2]: *Ibid.*, section 1, reprenant les statuts de l'ESS ERIC. Les cinq objectifs statutaires sont également repris sur la page « About ESS » : <https://www.europeansocialsurvey.org/about-ess>
+
+L'enquête est conçue par et pour la recherche : ce n'est pas un sondage d'actualité destiné à produire un chiffre rapide, mais une infrastructure de données pensée pour être exploitée durablement. Cette finalité explique l'essentiel de ses caractéristiques : sa lenteur, son coût, sa rigueur méthodologique, et la gratuité de ses données.
+
+En 2005, l'ESS a reçu le prix Descartes de la Commission européenne. Le communiqué officiel souligne qu'il s'agissait de la **première équipe de sciences sociales** à recevoir cette distinction, alors la plus haute récompense scientifique de l'Union européenne, aux côtés de lauréats en science des matériaux, climatologie, astronomie et santé[^3].
+
+[^3]: Commission européenne, CORDIS, « Social sciences among the winners of 2005 Descartes Prize », 2005 : le prix a été remis le 2 décembre 2005 à la Royal Society de Londres, à l'équipe dirigée par le professeur Roger Jowell (City University London). <https://cordis.europa.eu/article/id/24874-social-sciences-among-the-winners-of-2005-descartes-prize>
+
+Le suivi bibliographique annuel réalisé par l'université de Ljubljana à partir de Google Scholar recense **7 546 publications académiques** s'appuyant sur les données de l'ESS sur la période 2003-2024, en progression constante : 5 429 pour 2003-2020, 5 966 pour 2003-2021, 6 585 pour 2003-2022, 7 060 pour 2003-2023[^4].
+
+[^4]: Chiffres issus des rapports bibliographiques annuels de l'ESS : 5 429 (<https://www.europeansocialsurvey.org/news/article/5429-academic-publications-based-ess-data>), 5 966 (<https://www.europeansocialsurvey.org/news/article/latest-academic-monitoring-report-published>), 6 585 (<https://www.europeansocialsurvey.org/news/article/latest-research-academic-impact-published>), 7 060 (<https://www.europeansocialsurvey.org/news/article/ess-data-analysed-more-7000-papers>), 7 546 (<https://www.europeansocialsurvey.org/findings/ess-impact>). Ces décomptes ne portent que sur les publications en langue anglaise.
+
+### Une infrastructure européenne
+
+Depuis 2013, l'ESS est juridiquement établie comme **ERIC** (*European Research Infrastructure Consortium*), avec le Royaume-Uni pour pays hôte. Son siège est à City St George's, University of London, où siège le directeur, actuellement le professeur Rory Fitzgerald[^5].
+
+[^5]: ESS ERIC, *ESS Round 13 Survey Specification*, section 3. Le statut ERIC a été accordé le 30 novembre 2013 : ESS, « About ESS », <https://www.europeansocialsurvey.org/about-ess>
+
+L'organisation combine plusieurs niveaux[^6] :
+
+[^6]: ESS ERIC, *ESS Round 13 Survey Specification*, sections 1, 4, 5 et 9 ; ESS, « FAQ » : « The ESS is directed by a Core Scientific Team (CST) \[…\] Assisting the CST are National Coordinators (NCs) appointed for each country. NCs act as the principal contact with the CST and are responsible for ensuring that the appointed survey agencies conduct fieldwork to the rigorous standard specified. » <https://www.europeansocialsurvey.org/about/faq> ; composition détaillée du CST : <https://www.europeansocialsurvey.org/about/structure-and-governance>
+
+- Une **assemblée générale**, composée des représentants des États membres, gouverne l'ESS ERIC et nomme le directeur. Le financement du terrain national est une condition d'adhésion.
+- L'**équipe scientifique centrale** (*Core Scientific Team*, CST) réunit le siège et plusieurs institutions européennes, parmi lesquelles GESIS en Allemagne, Sikt en Norvège, l'Universitat Pompeu Fabra en Espagne, l'université d'Essex au Royaume-Uni, Centerdata aux Pays-Bas. Elle conçoit le questionnaire source et fixe les spécifications.
+- Un **coordinateur national** (*National Coordinator*, NC) est nommé et financé par chaque pays membre. Il est le point de contact avec l'équipe centrale et reste responsable de l'ensemble des tâches nationales.
+- Une **agence d'enquête** conduit généralement la collecte, sous la supervision du coordinateur national, qui peut aussi la réaliser en interne. C'est une distinction importante : le coordinateur supervise, l'agence exécute.
+- Des **panels d'experts** interviennent sur des points spécifiques, notamment le panel échantillonnage et pondération (SWEP), qui doit valider le plan de sondage de chaque pays avant tout tirage.
+- Le **centre d'archivage** (ESS Data Archive), hébergé par Sikt en Norvège, reçoit les fichiers nationaux, les fusionne, les documente et les diffuse. Sikt est par ailleurs membre de l'équipe scientifique centrale.
+
+### Onze vagues, une trentaine de pays
+
+| Vague | Année | Pays | Répondants |
+|-------|-------|------|------------|
+| 1     | 2002  | 22   | 42 359     |
+| 2     | 2004  | 25   | 47 537     |
+| 3     | 2006  | 23   | 43 000     |
+| 4     | 2008  | 29   | 56 752     |
+| 5     | 2010  | 27   | 52 458     |
+| 6     | 2012  | 29   | 54 673     |
+| 7     | 2014  | 21   | 40 185     |
+| 8     | 2016  | 23   | 44 387     |
+| 9     | 2018  | 29   | 49 519     |
+| 10    | 2020  | 22   | 37 611     |
+| 11    | 2023  | 30   | 50 116     |
+
+[^7]
+
+[^7]: Calculs effectués sur les fichiers intégrés utilisés dans ce kit (éditions ESS1e06_7, ESS2e03_6, ESS3e03_7, ESS4e04_6, ESS5e03_6, ESS6e02_7, ESS7e02_3, ESS9e03_3, ESS10e03_3, ESS11e04_2). La vague 8 n'est pas incluse dans ce kit. Attention : ces effectifs sont ceux des **fichiers intégrés**, qui n'incluent pas toujours tous les pays participants — voir la section sur la passation à propos de la vague 10.
+
+## Le questionnaire
+
+Le questionnaire se divise en deux parties de statut très différent[^8].
+
+[^8]: ESS, « Source Questionnaire » : « The ESS source questionnaire consists of a collection of questions that can be classified into two main parts – a core section and a rotating section. » <https://www.europeansocialsurvey.org/methodology/source-questionnaire>
+
+### Le module central
+
+Le **module central** (*core module*) est reposé à chaque vague. C'est lui qui fonde la valeur de série temporelle de l'ESS : on ne peut affirmer qu'une attitude a évolué entre 2002 et 2023 que si la question n'a pas bougé. L'ESS décrit ce module comme contenant les items d'intérêt durable pour les sciences sociales, ainsi que l'ensemble de variables socio-structurelles le plus complet de toutes les enquêtes comparatives internationales[^9].
+
+[^9]: ESS, « Source Questionnaire » : « its questionnaire comprises a core module, containing items measuring a range of topics of enduring interest to the social sciences as well as the most comprehensive set of socio-structural ('background') variables of any cross-national survey. The exact number of items can change from round to round, but each question has a unique variable name to assist users working with data over time. »
+
+Le nombre exact d'items peut varier d'une vague à l'autre, mais chaque question conserve un nom de variable unique, précisément pour permettre le travail sur séries longues[^10].
+
+[^10]: ESS, « Source Questionnaire » : « its questionnaire comprises a core module, containing items measuring a range of topics of enduring interest to the social sciences as well as the most comprehensive set of socio-structural ('background') variables of any cross-national survey. The exact number of items can change from round to round, but each question has a unique variable name to assist users working with data over time. »
+
+Le module central intègre également l'**échelle des valeurs humaines de Schwartz**, instrument de 21 items développé par le psychologue israélien Shalom Schwartz, ainsi que des questions destinées à évaluer la fiabilité et la validité des mesures selon l'approche multi-traits multi-méthodes (MTMM). Jusqu'à la vague 7, ces éléments faisaient partie d'un questionnaire supplémentaire distinct ; ils sont depuis intégrés au questionnaire principal[^11].
+
+[^11]: ESS, « Source Questionnaire », section « Supplementary questionnaire » : « serve as a vehicle for a well-established 21-item measure of human values developed by the Israeli psychologist, Professor Shalom Schwartz \[and\] help evaluate the reliability and validity of items in the main questionnaire using the Multi-Trait Multi-Method (MTMM) approach ». Et : « Until ESS Round 7, the 21-item human values scale and experimental tests used to be part of the supplementary questionnaire, which is now incorporated in the main questionnaire. »
+
+Chaque pays peut ajouter jusqu'à cinq questions spécifiques nationales, soumises à l'approbation du comité d'éthique de l'ESS et placées en fin de questionnaire[^12].
+
+[^12]: ESS ERIC, *ESS Round 13 Survey Specification*, section 7.1.3.
+
+### Les modules tournants
+
+À chaque vague, **deux modules tournants** approfondissent un thème. Ils sont sélectionnés sur appel à propositions ouvert : des équipes de chercheurs de plusieurs pays soumettent un projet, et un comité scientifique arbitre[^13]. C'est une différence notable avec un sondage commandité, où les questions sont choisies par le client.
+
+[^13]: ESS, « Source Questionnaire » : « In each ESS Round, multi-national teams of researchers are selected to contribute to the design of two rotating modules for the questionnaire. Rotating modules are selected following an open Call for Proposals. Applicants may apply for 'new' modules or 'repeat' ones, which allow comparisons with previous ESS Rounds. »
+
+Chaque module comporte **30 questions**. Pour un module répété, au moins 20 de ces questions doivent reprendre celles d'une vague antérieure, ce qui garantit la comparabilité temporelle[^14].
+
+[^14]: ESS ERIC, *ESS Round 13 Survey Specification*, section 7.1 : « Each rotating module will include 30 questions (or equivalent if some questions are asked to sub-samples). For repeat modules, at least 20 of these questions need to be repeated from (one of) the previous ESS round(s) when the modules were fielded. » Cette règle est énoncée pour la vague 13 ; l'ordre de grandeur vaut pour les vagues récentes.
+
+| Vague | Modules tournants |
+|------------------------------------|------------------------------------|
+| 1 (2002) | Citoyenneté, engagement et démocratie · Immigration |
+| 2 (2004) | Famille, travail et bien-être · Santé et recours aux soins · Moralité économique |
+| 3 (2006) | Bien-être personnel et social · Le calendrier de la vie |
+| 4 (2008) | Âgisme · Attitudes envers l'État-providence |
+| 5 (2010) | Travail, famille et bien-être · Confiance dans la police et la justice pénale |
+| 6 (2012) | Bien-être personnel et social · Compréhensions et évaluations de la démocratie |
+| 7 (2014) | Immigration · Inégalités sociales de santé |
+| 8 (2016) | Changement climatique et énergie · Attitudes envers l'État-providence |
+| 9 (2018) | Justice et équité · Le calendrier de la vie |
+| 10 (2020) | Contacts sociaux numériques au travail et en famille · Compréhensions et évaluations de la démocratie |
+| 11 (2023) | Le genre dans l'Europe contemporaine · Inégalités sociales de santé |
+| 12 (2025) | Bien-être personnel et social · Attitudes envers les immigrés et réfugiés |
+| 13 (2027) | (Dé)connexion sociale · Attitudes envers la protection sociale |
+
+[^15]
+
+[^15]: ESS, « Source Questionnaire », section « Rotating modules in ESS Rounds 1 to 13 » : <https://www.europeansocialsurvey.org/methodology/source-questionnaire>. Intitulés traduits de l'anglais. Pour la vague 13, l'appariement et les dates figurent dans la *Survey Specification* (section 7.1) : le module sur la protection sociale reprend ceux des vagues 4 et 8, le module sur la (dé)connexion sociale est nouveau ; la collecte est prévue du 1er septembre 2027 au 15 mai 2028.
+
+Ce tableau est directement utile pour choisir une vague : pour le climat, la vague 8 ; pour la démocratie, les vagues 6 et 10 ; pour la santé, les vagues 7 et 11.
+
+Pour la vague 11, le module sur le genre a été proposé par une équipe dirigée par Susan Banducci (université d'Exeter) et porte sur les identités masculines et féminines, le sexisme, les discriminations et les réponses politiques aux inégalités de genre. Le module sur les inégalités de santé reprend celui de la vague 7, sous la direction de Terje Andreas Eikemo (NTNU), actualisé pour intégrer les effets de la pandémie de Covid-19 et l'accroissement des inégalités de revenu et de patrimoine[^16].
+
+[^16]: ESS, « Round 11 rotating modules selected » et « Round 11 questionnaire and provisional release dates » : <https://www.europeansocialsurvey.org/news/article/round-11-rotating-modules-selected>
+
+Concrètement, ces deux modules expliquent l'essentiel des **328 variables présentes dans le fichier de la vague 11 et absentes de celui de la vague 10** : consommation d'alcool et de tabac, alimentation, activité physique, dépistage, accès aux soins, et le bloc complet sur les attitudes de genre[^17].
+
+[^17]: Calcul effectué par comparaison des en-têtes de colonnes des fichiers ESS10e03_3.csv et ESS11e04_2.csv.
+
+## L'échantillonnage
+
+### Le tirage au sort, sans exception
+
+L'ESS impose un échantillonnage aléatoire à toutes les étapes. La spécification officielle est explicite et catégorique : les procédures doivent garantir que chaque membre de la population étudiée a une probabilité connue et strictement positive d'être sélectionné, les probabilités de sélection doivent être connues et enregistrées. **L'échantillonnage par quotas n'est autorisé à aucune étape, non plus que la substitution des logements ou des individus non répondants**, y compris les inéligibles[^18].
+
+[^18]: ESS ERIC, *ESS Round 13 Survey Specification*, section 9.1 : « Scientific sampling procedures will ensure that every member of the population under study has a known probability greater than zero to be part of the survey. The sample is to be selected by strict random probability methods at every stage. The selection probabilities of every sample member must be known and recorded. Quota sampling is not permitted at any stage, nor is substitution of non-responding dwellings or individuals (including 'ineligibles'). »
+
+L'interdiction de substitution est un choix coûteux : l'échantillon final est plus petit que prévu. C'est précisément ce qui protège sa validité, puisque remplacer les non-répondants par des personnes plus faciles à joindre biaiserait l'échantillon vers les profils les plus disponibles.
+
+### La population cible
+
+L'ESS vise **toutes les personnes de 15 ans et plus, sans limite d'âge supérieure, résidant dans des logements privés**, quelles que soient leur nationalité, leur citoyenneté ou leur langue[^19]. Ce dernier point a une conséquence pratique : des traductions sont exigées pour chaque langue parlée comme première langue par au moins 5 % de la population[^20].
+
+[^19]: *Ibid.*, section 9.1 : « The ESS will be representative of all persons aged 15 and over (no upper age limit) resident within private dwellings in each country, regardless of their nationality, citizenship or language. »
+
+[^20]: *Ibid.*, section 7.2 : « translations are required for each language used as a first language by 5% or more of the population ».
+
+### La taille d'échantillon effective
+
+Chaque pays doit atteindre une **taille d'échantillon effective d'au moins 1 500**, ramenée à **800 pour les pays dont la population de 15 ans et plus est inférieure à 2 millions**[^21].
+
+[^21]: *Ibid.*, section 9.3 : « The 'effective achieved sample size' (n_eff) must be at least 1,500 (or 800 in countries with ESS populations (aged 15+) of less than 2 million), after discounting for design effects. »
+
+La notion d'échantillon **effectif** est essentielle : il ne s'agit pas du nombre brut de questionnaires remplis, mais d'un nombre corrigé des effets du plan de sondage. La spécification précise que dans certains cas (plan à plusieurs degrés, probabilités inégales) le nombre de questionnaires réellement nécessaires peut être considérablement supérieur à la taille effective visée[^22]. C'est aussi la raison pour laquelle l'ESS recommande la stratification, qui augmente la taille effective, tout en notant que le regroupement en grappes la diminue[^23].
+
+[^22]: *Ibid.*, section 9.3 : « In some cases (e.g. unequal-probability, multi-stage sampling design) the required number of completed questionnaires may be considerably larger than the required effective sample size. »
+
+[^23]: *Ibid.*, sections 9.1 et 9.4 : « The SWEP strongly recommends using stratified sampling. This is likely to increase the effective sample size. » ; « Clustering the sample produces a design effect and results in needing a larger number of completed questionnaires in order to deliver the minimum effective sample size. »
+
+### Les bases de sondage
+
+L'ESS établit une hiérarchie de préférence entre bases de sondage : les fichiers d'individus nommés, comme un registre de population, sont fortement préférés ; à défaut, une base de logements ou d'adresses ; en dernier recours, un échantillonnage aréolaire avec recensement des logements sur le terrain[^24]. C'est ce qui explique que les modalités concrètes du tirage diffèrent d'un pays à l'autre : tous ne disposent pas d'un registre de population.
+
+[^24]: *Ibid.*, section 9.2.
+
+## La passation
+
+### Le face-à-face, norme historique
+
+De la vague 1 à la vague 11, **toute la collecte s'est faite en face-à-face**, l'entretien par visioconférence étant compté par l'ESS dans cette catégorie[^25]. Depuis la vague 8, le questionnaire complet, y compris la partie sur les valeurs de Schwartz, est administré en face-à-face[^26].
+
+[^25]: ESS ERIC, *ESS Round 13 Survey Specification*, section 2 : « In earlier rounds (Round 1 through to Round 11) all data collection from respondents took place face-to-face (including video interviews). »
+
+[^26]: ESS, « Source Questionnaire » : « From ESS Round 8 onwards, all countries are asked to administer the entire questionnaire face-to-face. »
+
+Le face-à-face est coûteux, mais il permet des taux de réponse plus élevés, touche les personnes peu à l'aise avec l'écrit, et permet de contrôler la situation de passation.
+
+### La bascule vers l'auto-administration
+
+Le face-à-face devient toutefois difficile à soutenir. L'ESS a engagé une transition : la vague 12 combine environ moitié face-à-face et moitié auto-administration (web et papier), et la **vague 13 sera la première entièrement auto-administrée**, tous pays confondus[^27].
+
+[^27]: ESS ERIC, *ESS Round 13 Survey Specification*, section 2 : « The biggest change from ESS Round 12 is a move from a mixed-mode approach, comprising half face-to-face interviewing and half self-completion (web and paper), to a fully self-completion (web and paper) approach. \[…\] Round 13 is the ESS's first fully self-completion round. »
+
+Une exception a précédé cette bascule : lors de la vague 10, l'auto-administration a été autorisée pendant la pandémie. Neuf pays y ont eu recours : Autriche, Chypre, Allemagne, Israël, Lettonie, Pologne, Serbie, Espagne, Suède[^28].
+
+[^28]: *Ibid.*, section 2, note 2 : « The only exception was ESS Round 10 where self-completion (web and paper) was allowed during the pandemic. Austria, Cyprus, Germany, Israel, Latvia, Poland, Serbia, Spain and Sweden collected Round 10 data using self-completion. »
+
+::: callout-warning
+## Attention : ces neuf pays sont absents du fichier intégré de la vague 10
+
+Aucun de ces neuf pays n'y figure : il ne contient que 22 pays, tous en face-à-face ou visioconférence. Les données auto-administrées de la vague 10 ont été publiées séparément.
+
+Une analyse de la vague 10 fondée sur le seul fichier intégré exclut donc sans le dire l'Allemagne, l'Espagne, la Suède et six autres pays. C'est une omission majeure pour toute comparaison européenne, qu'il convient de prendre en compte.
+:::
+
+### Ce que contient la variable `mode`
+
+La variable `mode` n'apparaît dans les fichiers qu'à partir de la vague 10. Elle distingue quatre modalités : face-à-face assisté par ordinateur (CAPI), entretien par visioconférence, questionnaire auto-administré en ligne (CAWI), questionnaire auto-administré papier (PAPI)[^29].
+
+[^29]: Codebook ESS11e04_2, variable `mode` : « 1 Interview, Face to face (CAPI) · 2 Interview, Video (web based) · 3 Self completion, Self administered web based questionnaire (CAWI) · 4 Self completion, Self administered paper questionnaire (PAPI) · 9 Not available ». Présence de la variable vérifiée sur les dix fichiers du kit.
+
+Dans le fichier de la vague 11, seules les deux premières modalités sont effectivement utilisées : **96,3 % de face-à-face et 3,7 % de visioconférence**. Le recours à la vidéo varie fortement selon les pays : 48 % en Norvège, 42 % en Islande, 27 % en Finlande, 12 % en Suède, contre 4 % en France et 3 % au Royaume-Uni[^30].
+
+[^30]: Calculs effectués sur `ESS11e04_2.csv` (croisement `cntry` × `mode`, 50 116 observations). Les modalités CAWI et PAPI sont documentées dans le codebook mais ne sont utilisées par aucun répondant de ce fichier.
+
+::: callout-warning
+## Le mode influence les réponses
+
+Un répondant face à un enquêteur a davantage tendance à donner une réponse socialement valorisée qu'un répondant seul devant un écran, particulièrement sur les questions sensibles. Comparer deux vagues ou deux pays qui n'ont pas utilisé les mêmes modes mélange donc effet de mode et différence réelle d'attitude.
+
+Ce point va gagner en importance : avec la vague 13 entièrement auto-administrée, toute comparaison avec les vagues antérieures devra en tenir compte. La variable `mode` permet de contrôler ce facteur sur les vagues 10 et suivantes.
+:::
+
+## La traduction
+
+Comparer la France et la Pologne suppose que la question dise la même chose dans les deux langues. L'ESS s'appuie pour cela sur le protocole **TRAPD**, fondé sur une approche par comité, dont les étapes sont[^31] :
+
+[^31]: ESS ERIC, *ESS Round 13 Survey Specification*, section 7.2 : « The translation protocol requires the following steps, based on the TRAPD process: questionnaire translation using a committee or team approach, starting with two parallel translations, a review discussion and adjudication step ('TRA' in TRAPD) \[…\] national pre-testing ('P' within the TRAPD scheme); \[…\] sign-off on translations and documentation of the translation process ('D' in TRAPD). »
+
+- **T**raduction : deux traductions parallèles indépendantes ;
+- **R**evue : discussion confrontant ces versions ;
+- **A**djudication : arbitrage des désaccords ;
+- **P**ré-test national auprès de répondants réels ;
+- **D**ocumentation de l'ensemble des décisions.
+
+S'y ajoutent une vérification externe par un prestataire linguistique spécialisé, des contrôles de qualité par GESIS, et une harmonisation entre pays partageant une même langue — par exemple entre la France, la Belgique et la Suisse pour le français[^32].
+
+[^32]: *Ibid.*, sections 7.2.1 et 7.2.2. L'évaluation externe est réalisée par le prestataire cApStAn.
+
+Toutes les étapes doivent être achevées avant le début de la collecte, et les traductions des questions du module central ne peuvent pas être modifiées sans l'accord de l'équipe de traduction et du siège — précisément pour préserver la comparabilité temporelle[^33].
+
+[^33]: *Ibid.*, section 7.2.1 : « changes to their translations of questions in the core module of the ESS questionnaire and of repeated questions from repeat rotating modules MUST NOT be implemented without approval from the ESS translation team at GESIS and ESS HQ. »
+
+Cette procédure n'élimine pas tout problème. L'ESS a par exemple signalé et corrigé une erreur dans la traduction autrichienne de la vague 1, où l'expression « race or ethnic group » avait été rendue par un terme signifiant « couleur de peau et langue », usage jugé non conforme à ses standards ; les variables concernées ont été retirées du fichier intégré[^34]. Ce qui compte est que ces problèmes soient détectables, documentés et corrigés.
+
+[^34]: ESS, « ESS Data Portal », notice de correction : <https://www.europeansocialsurvey.org/data-portal>
+
+## Accéder aux données
+
+Les données anonymisées sont accessibles gratuitement pour tout usage non commercial, sans droit d'accès privilégié pour quiconque, sous licence Creative Commons BY-NC-SA 4.0[^35]. Seule la création d'un compte sur le [portail](https://ess.sikt.no/en/ "Portail des données de l'ESS") est requise.
+
+[^35]: ESS ERIC, *ESS Round 13 Survey Specification*, section 8.9 : « The ESS ERIC shall allow free access to all anonymised data of the European Social Survey for non-commercial use. There shall be no privileged access rights by any person to such data except during its processing and preparation for public use. » Licence utilisateur : <https://creativecommons.org/licenses/by-nc-sa/4.0/>
+
+[![Portail des données de l'ESS. Cliquer sur "Explore ESS data" pour explorer et télécharger les vagues](images/Capture%20d'écran%202026-09-07%20160147.png)](https://ess.sikt.no/en/series/321b06ad-1b98-4b7d-93ad-ca8a24e8788a)
+
+Le portail propose plusieurs formats. Le **CSV** est universel mais ne conserve que les codes numériques, sans libellés. Le format **SPSS** (`.sav`), lisible sous R avec le package `haven`, conserve libellés de variables et de modalités. Un format **STATA** est également disponible.
+
+Trois documents accompagnent chaque vague : le **questionnaire source**, qui donne la formulation exacte des questions ; le **codebook**, qui liste toutes les variables avec leurs modalités et leurs codes de non-réponse ; et les **rapports de documentation** par pays, qui décrivent le plan de sondage et le déroulement du terrain.
+
+::: callout-note
+## Quelles vagues télécharger ?
+
+Nous utiliserons principalement la dernière vague disponible à date de l'écriture de ces kits, c'est-à-dire la vague 11. Nous vous invitons à vous créer un compte et à télécharger en priorité cette [vague](https://ess.sikt.no/en/datafile/242aaa39-3bbb-40f5-98bf-bfb1ce53d8ef) si vous souhaitez reproduire nos analyses.
+
+[![Vague 11 de l'ESS](images/Capture%20d'écran%202026-09-07%20161259.png)](https://ess.sikt.no/en/datafile/242aaa39-3bbb-40f5-98bf-bfb1ce53d8ef)
+
+Toutefois , la section de traitements statistiques avancés mobilisera [l'intégralité des onze vagues disponibles](https://ess.sikt.no/en/series/321b06ad-1b98-4b7d-93ad-ca8a24e8788a). Selon votre progression, vous pourrez passez vers ce module plus lourd.
+:::
+
+### Citer les données
+
+L'ESS impose une formule de citation. Pour la vague 11 :
+
+> European Social Survey European Research Infrastructure (ESS ERIC) (2025). *ESS round 11 - 2023. Social inequalities in health, Gender in contemporary Europe.* Sikt – Norwegian Agency for Shared Services in Education and Research. <https://doi.org/10.21338/ess11-2023>
+
+Le fichier de données possède un DOI distinct, propre à son édition[^36]. Les fichiers étant corrigés et réédités au fil du temps, préciser l'édition utilisée fait partie de la reproductibilité.
+
+[^36]: ESS, « Disclaimer », qui liste les formules de citation et les DOI par vague et par édition : <https://www.europeansocialsurvey.org/contact/disclaimer>
+
+## Ce qu'il faut savoir avant d'analyser
+
+Trois points conditionnent la validité de tout résultat. Ils sont traités en pratique dans les pages consacrées à R.
+
+**Les non-réponses sont codées, pas vides.** Un refus, un « ne sait pas » ou une question non posée sont représentés par des valeurs numériques, qui varient d'une variable à l'autre. Laissées dans un calcul, elles produisent des résultats absurdes sans aucun message d'erreur.
+
+**Les données doivent être pondérées.** Les probabilités de sélection et les taux de réponse diffèrent selon les profils. L'ESS fournit des variables de pondération, produites à partir des fichiers de plan de sondage déposés par chaque pays[^37]. Un résultat non pondéré décrit l'échantillon obtenu, pas la population.
+
+[^37]: ESS ERIC, *ESS Round 13 Survey Specification*, section 9.6 : le *Sample Design Data File* (SDDF) déposé par chaque pays permet au panel SWEP de produire les indicateurs de plan de sondage (strate, unité primaire, domaine) et les pondérations.
+
+**La comparabilité ne va jamais de soi.** Entre deux vagues, une variable peut avoir changé de formulation, de modalités ou de mode de passation. Entre deux pays, la traduction et le contexte peuvent déplacer le sens d'un item. Ces vérifications se font dans la documentation, avant l'analyse.
+
+## Pour aller plus loin
+
+<!-- À COMPLÉTER : liens vers le portail ESS, la page méthodologie, le site du CDSP, ESS EduNet, et la série Topline Findings. -->

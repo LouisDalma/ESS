@@ -2,3 +2,99 @@
 title: "L'ESS, qu'est-ce que c'est et pourquoi l'utiliser ?"
 author: "Louis Dalmazzo"
 ---
+
+## Une enquête académique, pas un sondage d'opinion
+
+L'*European Social Survey* (ESS) est une enquête par questionnaire menée tous les deux ans en Europe depuis 2001. Elle a été conçue par et pour la recherche : son objectif n'est pas de produire un chiffre rapide sur l'actualité, mais de constituer une infrastructure de données pensée pour être exploitée pendant des décennies par des chercheurs de toutes disciplines. Cette finalité explique l'essentiel de ses caractéristiques : sa lenteur, son coût, sa rigueur méthodologique, et la gratuité de ses données.
+
+Sa qualité scientifique a été reconnue en 2005 par le prix Descartes de la Commission européenne, distinction rare pour une enquête en sciences sociales[^1]. En 2025, on recensait plus de 7500 publication en anglais s'appuyant sur ses données[^2].
+
+[^1]: Social sciences among the winners of 2005 Descartes Prize. European Commission. Disponible sur <https://cordis.europa.eu/article/id/24874-social-sciences-among-the-winners-of-2005-descartes-prize>
+
+[^2]: ESS Impact. European Social Survey. Disponible sur <https://www.europeansocialsurvey.org/findings/ess-impact>
+
+### Une infrastructure européenne
+
+Depuis 2013, l'ESS a le statut d'**ERIC** (*European Research Infrastructure Consortium*), un cadre juridique européen qui la place sur le même plan institutionnel que de grandes infrastructures de recherche comme les observatoires ou les accélérateurs de particules. Concrètement, cela signifie que les États membres financent l'enquête et siègent à son assemblée générale, ce qui lui donne une stabilité de financement inaccessible à un projet de recherche ordinaire.
+
+L'organisation repose sur trois niveaux. Une **équipe scientifique centrale** conçoit le questionnaire et fixe les normes méthodologiques. Des **équipes nationales**, une par pays, conduisent le terrain et assurent la traduction. Un **centre d'archivage**, hébergé par Sikt en Norvège, traite, documente et diffuse les données.
+
+La vague 11, la plus récente accessible, réunit **50 116 répondants dans 30 pays**. La France y contribue pour 1 771 personnes.
+
+Cette finalité de recherche a des conséquences très concrètes sur la manière dont l'enquête est construite, et donc sur la confiance qu'on peut accorder aux résultats.
+
+### L'échantillonnage probabiliste
+
+C'est le point le plus important, et celui qui distingue le plus nettement l'ESS d'un sondage commercial. L'ESS impose à tous les pays participants un **échantillonnage aléatoire** : chaque personne de la population visée a une probabilité connue et non nulle d'être sélectionnée. On tire au sort dans un registre de population, une liste d'adresses ou une base de logements, selon ce qui existe dans le pays.
+
+La plupart des sondages d'institut fonctionnent différemment, par la **méthode des quotas** : on ne tire pas au sort, on recrute des répondants, souvent dans un panel de volontaires inscrits en ligne, jusqu'à obtenir une structure d'échantillon qui ressemble à celle de la population sur quelques critères : sexe, âge, catégorie socioprofessionnelle, région.
+
+La méthode des quotas n'est pas illégitime, et ses avantages sont réels : elle est bien plus rapide et bien moins coûteuse. Mais elle repose sur une hypothèse forte, à savoir que les volontaires d'un panel ne diffèrent pas systématiquement des non-volontaires une fois les quotas respectés. L'échantillonnage aléatoire ne fait pas cette hypothèse. Il permet en outre de calculer une marge d'erreur au sens statistique du terme, ce qui n'est pas rigoureusement possible sur un échantillon par quotas.
+
+### Pas de substitution des non-répondants
+
+Corollaire du point précédent, et souvent ignoré : lorsqu'une personne tirée au sort refuse de répondre ou reste injoignable, l'ESS **interdit de la remplacer** par quelqu'un d'autre. L'échantillon final est donc plus petit que prévu, mais sa validité est préservée : remplacer les non-répondants par des personnes plus faciles à joindre biaiserait mécaniquement l'échantillon vers les profils les plus disponibles.
+
+### Un questionnaire stable, traduit selon un protocole strict
+
+Le questionnaire combine deux parties. Un **module central** (*core module*), reposé à l'identique à chaque vague, permet de suivre les mêmes indicateurs dans le temps : confiance institutionnelle, participation politique, bien-être, position sociale. Des **modules tournants** (*rotating modules*), qui changent d'une vague à l'autre, approfondissent un thème particulier.
+
+La traduction suit une procédure formalisée : traduction indépendante par plusieurs traducteurs, mise en commun, arbitrage, documentation des choix. C'est un point technique, mais il conditionne toute comparaison internationale. Si la question française et la question polonaise ne veulent pas dire exactement la même chose, comparer les réponses n'a aucun sens.
+
+## L'ESS en France
+
+En France, la collecte de l'ESS est coordonnée par le **Centre de données socio-politiques (CDSP)**, unité d'appui à la recherche associée à Sciences Po Paris et au CNRS. Le CDSP assure la conduite du terrain, la traduction, le contrôle qualité et la documentation de la partie française de l'enquête.
+
+<!-- À COMPLÉTER : préciser le rôle exact du CDSP pour la vague en cours + lien vers la page ESS France du CDSP. -->
+
+## Accéder aux données
+
+Les données sont **gratuites**. Elles nécessitent seulement la création d'un compte sur le portail, à des fins de suivi des usages et non de restriction d'accès.
+
+Deux formats sont utiles sous R :
+
+- Le format **CSV**, universel. C'est celui utilisé dans ce site. Sa limite : il ne conserve que les codes numériques, sans les libellés. Le code `1` de la variable `gndr` n'est pas accompagné de l'étiquette « Homme ».
+- Le format **SPSS** (`.sav`), lisible avec le package `haven`, qui conserve libellés de variables et de modalités.
+
+<!-- À COMPLÉTER : lien direct vers le portail de données + capture d'écran de la page de téléchargement. -->
+
+Pour chaque vague, le portail met aussi à disposition une documentation indispensable : le **questionnaire source**, le **codebook** — liste de toutes les variables avec leurs modalités et leurs codes — et les **rapports méthodologiques** par pays.
+
+## Ce que contient un fichier ESS
+
+Un point d'ordre pratique, qui surprend souvent : les fichiers ne sont pas identiques d'une vague à l'autre. Le tableau ci-dessous recense ce que contiennent les fichiers effectivement utilisés dans ce site.
+
+| Vague | Répondants | Variables | `edulvlb` | `anweight` |
+|-------|------------|-----------|-----------|------------|
+| 1     | 42 359     | 567       | non       | oui        |
+| 2     | 47 537     | 604       | non       | **non**    |
+| 3     | 43 000     | 519       | non       | **non**    |
+| 4     | 56 752     | 674       | non       | oui        |
+| 5     | 52 458     | 675       | oui       | oui        |
+| 6     | 54 673     | 625       | oui       | oui        |
+| 7     | 40 185     | 602       | oui       | oui        |
+| 9     | 49 519     | 575       | oui       | oui        |
+| 10    | 37 611     | 621       | oui       | oui        |
+| 11    | 50 116     | 691       | oui       | oui        |
+
+Trois enseignements s'en dégagent, qui valent pour toute analyse multi-vagues.
+
+Le **nombre de variables change** à chaque vague, du fait des modules tournants. Une variable présente en vague 6 peut être absente en vague 7.
+
+La variable de diplôme `edulvlb` n'existe **qu'à partir de la vague 5**. Avant, le niveau d'éducation est codé autrement. Une série longue sur le diplôme exige donc un travail d'harmonisation, pas une simple concaténation de fichiers.
+
+Le poids d'analyse `anweight` est **absent des vagues 2 et 3**. Un script qui l'appelle mécaniquement sur toutes les vagues échouera sur celles-là ; il faut alors se rabattre sur `pspwght`.
+
+## Trois choses à savoir avant d'analyser
+
+**Les non-réponses ont des codes numériques.** L'ESS ne laisse pas de cases vides : un refus, un « ne sait pas » ou une absence de réponse sont codés par des valeurs numériques, généralement des suites de 7, de 8 et de 9. Ces valeurs n'ont aucun sens substantiel. Laissées telles quelles dans un calcul, elles produisent des résultats absurdes — et sans le moindre message d'erreur.
+
+**Les données doivent être pondérées.** Toutes les personnes n'ont pas la même probabilité d'être sélectionnées, et le taux de réponse varie selon les profils. L'ESS fournit des variables de pondération à appliquer à tout calcul. Un résultat non pondéré est, sauf cas particulier, un résultat faux.
+
+**La comparabilité dans le temps n'est jamais automatique.** Une variable peut porter le même nom d'une vague à l'autre tout en ayant changé de libellé, de modalités ou de position dans le questionnaire. Avant toute comparaison, vérifier dans la documentation que la question est réellement identique.
+
+Ces trois points sont traités en pratique dans la page [Manipuler les données](manipuler_donnees_r.qmd).
+
+## Pour aller plus loin
+
+<!-- À COMPLÉTER : liens vers le portail ESS, le site du CDSP, ESS EduNet (ressources en anglais), et publications françaises s'appuyant sur l'ESS. -->
