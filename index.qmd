@@ -1,49 +1,29 @@
 ---
-title: "S'initier aux méthodes quantitatives en utilisant l'European Social Survey"
+title: "Introduction aux méthodes quantitatives en utilisant l'European Social Survey"
 author: "Louis Dalmazzo"
 ---
 
 ## Découvrir l'ESS
 
-Depuis 2001, l'European Social Survey (ESS) interroge des dizaine de milliers de personnes dans plus de trente pays européens sur leurs valeurs, leurs opinions, leurs comportements. Par sa méthodologie, l'ESS est l'une des sources les plus fiables et les plus accessibles pour comprendre les sociétés européennes dans sa durée. Surtout, son fonctionnement en fait un point d'entrée particulièrement accessible pour toutes les personnes souhaitant s'initier aux méthodes quantitatives en sciences humaines et sociales.
-
-Ce site propose des outils pour explorer ces données soi-même : des guides thématiques, des tutoriels pour apprendre à manipuler les données sous R, et des ressources pensées spécifiquement dans un contexte académique, professionnel, ou personnel. L'objectif n'est pas seulement de présenter des résultats, mais de donner les moyens pour les reproduire et les vérifier soi-même.
-
-Que vous soyez un étudiant, un enseignant à la recherche de supports, ou un journaliste qui cherche des données fiables, vous trouverez ici un point de départ adapté à votre niveau.
-
-Le site est organisé en cinq espaces, du plus général au plus spécialisé.
-
-Comprendre l'ESS revient sur les fondamentaux : l'origine de l'infrastructure, ce qu'elle mesure, à quelle fréquence, avec quelles méthodes. Il montrera de surcroît comment télécharger les données de l'ESS.
-
-Introduction à R commencera par une présentation du langage R et de son interface utilisateur : RStudio. Il expliquera d'une part comment installer les deux programmes, puis détaillera la présentation de l'interface RStudio. Enfin, il expliquera comment installer des extensions bien utiles au traitement de données
-
-Traitement de données simple continuera par l'import des données, le recodage des variables, puis des premiers traiements statistiques sommaires (tris à plat, tris croisés, khi-deux).
-
-Traitement de données avancées
-
-Espace enseignant rassemble des fiches de classe et des exercices corrigés, pensés pour s'intégrer dans les programmes existants.
-
-Espace journalistes offre un accès rapide aux données vérifiées : visualisations prêtes à l'emploi, méthodologie simplifiée, etc.
-
-```{r}
-#####
-```
-
-## 
-
-Depuis 2001, l'*European Social Survey* (ESS) interroge tous les deux ans des dizaines de milliers de personnes à travers l'Europe sur leurs valeurs, leurs opinions et leurs comportements : la confiance dans les institutions, le rapport au travail, les attitudes face à l'immigration ou au changement climatique. Par sa méthodologie, l'ESS est l'une des sources les plus fiables et les plus accessibles pour comprendre les sociétés européennes dans la durée.
-
-Surtout, son fonctionnement en fait un point d'entrée particulièrement adapté à toute personne souhaitant s'initier aux méthodes quantitatives en sciences humaines et sociales : les données sont gratuites, documentées, et suffisamment riches pour poser de vraies questions sans être écrasantes.
-
-Ce site propose des outils pour explorer ces données soi-même. Des guides thématiques, des tutoriels pour apprendre à manipuler les données sous R, et des ressources pensées pour un contexte académique, professionnel ou personnel. L'objectif n'est pas seulement de présenter des résultats, mais de donner les moyens de les reproduire et de les vérifier soi-même.
+Depuis 2001, l'*European Social Survey* (ESS) interroge plusieurs dizaines de milliers de personnes dans plus de trente pays européens sur leurs valeurs, leurs opinions, leurs comportements. Par sa méthodologie, l'ESS est l'une des sources les plus fiables et les plus accessibles pour comprendre les sociétés européennes dans sa durée. Surtout, son fonctionnement en fait un point d'entrée particulièrement accessible pour toutes les personnes souhaitant s'initier aux méthodes quantitatives en sciences humaines et sociales.
 
 ## Ce que vous trouverez ici
 
-Le site est organisé en quatre grands ensembles, du plus général au plus spécialisé.
+Ce site propose des outils pour explorer ces données soi-même : des guides thématiques, des tutoriels pour apprendre à manipuler les données sous R, et des ressources pensées spécifiquement dans un contexte académique, professionnel, ou personnel. L'objectif n'est pas seulement de présenter des résultats, mais de donner les moyens pour les reproduire et les vérifier soi-même. Il est organisé en quatre (corr) grands ensembles, du plus général au plus spécialisé.
 
-[**Comprendre l'ESS**](ess_presentation.qmd) revient sur les fondamentaux : ce qui distingue l'ESS d'un sondage d'institut, comment son échantillonnage garantit sa fiabilité, et pourquoi elle permet de comparer les sociétés européennes dans le temps. À lire avant toute chose, même sans intention de coder.
+[**Comprendre l'ESS**](ess_presentation.qmd) revient sur l'origine du dispositif : la gouvernance, la construction des enquêtes, l'échantillonnage, les modes de passation, ou encore la modalités de traduction.
 
-**Apprendre R** propose une initiation progressive, en quatre temps. On commence par [découvrir R et RStudio](r_presentation.qmd) et installer son environnement de travail, puis par les [premiers pas](premiers_pas_r.qmd) dans le langage lui-même. Vient ensuite la [manipulation des données](manipuler_donnees_r.qmd) de l'ESS : import, recodage, pondération, premiers tableaux, [aller plus loin](traitement_avance_r.qmd) aborde les croisements de variables et la visualisation. Enfin, traitements avancés nous permet d'aborder les analyses factorielles, classifications, et régressions.
+**Apprendre R** propose une initiation progressive, en quatre temps :
+
+1.  On commence par [découvrir R et RStudio](r_presentation.qmd) et installer son environnement de travail.
+
+2.  Vient ensuite les [premiers pas](premiers_pas_r.qmd) dans le langage lui-même, où on apprendra les bases du code sous R : manipulation de données, import, inspection des données, recodages.
+
+3.  On poursuivra avec la visualisation des données : diagrammes, box plot, nuages de points, etc (def à faire)
+
+4.  Après cela, on pourra commencer nos [traitements statistiques simples](manipuler_donnees_r.qmd) : pondération, tris à plats, tris croisés, interprêtation d'un khi-deux...
+
+5.  Pour ensuite entrer en détail dans des traitements statistiques avancés : analyses factorielles, classifications, régressions multiples.
 
 Les **espaces dédiés** rassemblent des ressources spécifiques. L'[espace enseignants](espace_enseignant.qmd) propose des séquences prêtes à l'emploi et des jeux de données allégés. L'[espace journalistes](espace_journaliste.qmd) se concentre sur la lecture critique et la vérification d'un chiffre, sans nécessairement passer par le code.
 
@@ -53,4 +33,4 @@ Vous n'avez jamais ouvert R et vous ne savez pas ce qu'est l'ESS : suivez le sit
 
 Vous connaissez déjà R mais pas l'ESS : lisez [Comprendre l'ESS](ess_presentation.qmd), puis rendez-vous directement à la section sur la [manipulation des données](manipuler_donnees_r.qmd), où sont traités les points propres à cette enquête (codes de non-réponse, pondération).
 
-Vous cherchez un chiffre fiable sans vouloir programmer : l'[espace journalistes](espace_journaliste.qmd) est fait pour ça.
+Vous cherchez un chiffre fiable sans vouloir programmer : l'[espace journalistes](espace_journaliste.qmd) est fait pour cela.

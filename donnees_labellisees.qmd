@@ -1,0 +1,193 @@
+---
+title: "Importer les données labellisées"
+author: "Louis Dalmazzo"
+---
+
+## Pourquoi pas le CSV
+
+Le portail de l'ESS propose trois formats : CSV, SPSS (`.sav`) et Stata (`.dta`). Le CSV a l'avantage d'être universel, mais il a un défaut majeur : c'est un fichier texte, et un fichier texte ne peut transporter que des nombres. Toute l'information *sur* ces nombres — ce que mesure la variable, ce que signifie le code 2, quels codes sont des non-réponses — reste dans un document séparé, le codebook, que l'analyste doit consulter à la main.
+
+Les formats SPSS et Stata transportent cette information avec les données. C'est ce qu'on appelle des **données labellisées**, et sous R, c'est le package `haven` qui les lit.
+
+```{r}
+#| message: false
+library(tidyverse)
+library(haven)
+library(labelled)
+library(questionr)
+
+ESS11 <- read_sav("01_Data/ESS11e04_2.sav")
+```
+
+::: {.callout-tip}
+## Le fichier SPSS est plus léger que le CSV
+Contre-intuitif, mais vérifiable : pour la vague 11, le `.sav` pèse 59,8 Mo contre 82,7 Mo pour le `.csv`, alors qu'il contient *plus* d'information. Les formats binaires stockent les nombres de manière compacte, là où le texte écrit chaque chiffre caractère par caractère.
+:::
+
+## Trois choses que le fichier apporte
+
+### 1. Les libellés de variables
+
+Chaque variable porte une description en clair. Les 691 variables de la vague 11 en ont une, sans exception.
+
+```{r}
+var_label(ESS11$edulvlb)
+var_label(ESS11$lrscale)
+```
+
+Cela change radicalement la façon d'explorer le fichier. Plutôt que de fouiller le codebook pour trouver la variable qui traite du diplôme, on la cherche **par son libellé** avec `look_for()` :
+
+```{r}
+look_for(ESS11, "education") |> head(10)
+```
+
+C'est probablement le gain le plus important au quotidien. Sur un fichier de cette taille, chercher par mot-clé remplace des allers-retours fastidieux dans un document HTML de plusieurs milliers de lignes.
+
+La recherche accepte plusieurs termes, et porte à la fois sur les noms de variables et sur les libellés :
+
+```{r}
+look_for(ESS11, "trust", "police")
+```
+
+### 2. Les libellés de modalités
+
+Les valeurs numériques transportent leur signification. 662 des 691 variables en ont.
+
+```{r}
+val_labels(ESS11$gndr)
+```
+
+Une variable labellisée s'affiche avec son code *et* son étiquette, ce que `freq()` exploite directement :
+
+```{r}
+freq(ESS11$gndr)
+```
+
+Plus besoin d'écrire soi-même `factor(gndr, levels = c(1,2), labels = c("Homme","Femme"))` : l'information était déjà dans le fichier.
+
+### 3. Les non-réponses déjà converties
+
+C'est le point le plus important, et le moins visible. Le fichier SPSS ne se contente pas d'étiqueter les codes de non-réponse : il les **déclare comme manquants**. `read_sav()` les convertit alors en `NA` dès l'import, sans qu'on ait rien à demander.
+
+```{r}
+mean(ESS11$lrscale, na.rm = TRUE)
+```
+
+La moyenne du positionnement politique vaut directement 5,03 sur l'échelle 0-10, sans aucun recodage préalable. Les codes 77, 88 et 99 ont disparu à l'import.
+
+```{r}
+freq(ESS11$lrscale)
+```
+
+Les libellés « Refusal », « Don't know » et « No answer » restent affichés — l'information est conservée — mais avec un effectif de zéro : plus aucune observation ne porte ces valeurs.
+
+## Voir ce que l'import a fait
+
+Cette conversion automatique est confortable, mais il serait imprudent de l'utiliser sans avoir vu ce qu'elle fait. L'argument `user_na = TRUE` permet de charger le fichier **sans** convertir, pour observer les données telles qu'elles sont réellement stockées.
+
+```{r}
+ESS11_brut <- read_sav("01_Data/ESS11e04_2.sav", user_na = TRUE)
+
+mean(ESS11_brut$lrscale, na.rm = TRUE)
+```
+
+Le résultat, **14,03**, est logiquement impossible : aucune moyenne d'une échelle bornée à 10 ne peut dépasser 10. C'est exactement ce que produirait une lecture naïve du fichier CSV, où les codes 77 et 88 — qui concernent près de 15 % des répondants — sont comptés comme des positions politiques d'extrême droite.
+
+```{r}
+freq(ESS11_brut$lrscale)
+```
+
+Cette comparaison mérite d'être faite au moins une fois. Elle montre concrètement ce que le format fait pour vous, et ce qui arrive quand il ne le fait pas.
+
+::: {.callout-important}
+## Ce que le format ne fait pas à votre place
+La conversion automatique ne concerne que les codes **déclarés manquants** par l'ESS : refus, ne sait pas, sans réponse, non applicable. Elle ne touche pas aux modalités qui sont de vraies réponses, même quand elles ne sont pas exploitables sur une échelle ordinale.
+
+Le cas typique est le code `5555` de `edulvlb`, qui signifie « Other » : un diplôme réellement déclaré, mais non classable dans la nomenclature CITE. Il **survit à l'import** :
+
+```{r}
+sum(ESS11$edulvlb == 5555, na.rm = TRUE)
+```
+
+Ces répondants devront être écartés d'un recodage ordinal du diplôme, mais c'est un **choix analytique** qui vous incombe, à documenter en note méthodologique — pas un nettoyage technique. La même logique vaut pour le code `55` de `eisced` et le `0` (« non harmonisable »).
+:::
+
+## Le type `haven_labelled`
+
+Une variable importée depuis un `.sav` n'est ni tout à fait numérique, ni un facteur : elle appartient à une classe intermédiaire.
+
+```{r}
+class(ESS11$gndr)
+```
+
+Cette classe conserve à la fois les valeurs numériques et leurs étiquettes. C'est pratique pour explorer, mais certaines fonctions ne savent pas la traiter et se comportent alors comme si elles avaient reçu de simples nombres. Le principe posé par les auteurs du package est clair : `haven_labelled` est une **structure intermédiaire**, faite pour être convertie avant analyse.
+
+Deux conversions, selon l'usage.
+
+**Vers un facteur**, pour une variable catégorielle destinée à un tableau ou un graphique :
+
+```{r}
+ESS11 <- ESS11 |>
+  mutate(sexe = to_factor(gndr))
+
+freq(ESS11$sexe)
+```
+
+**Vers du numérique**, pour une variable ordinale qu'on veut traiter comme une quantité :
+
+```{r}
+ESS11 <- ESS11 |>
+  mutate(lrscale_num = as.numeric(lrscale))
+
+mean(ESS11$lrscale_num, na.rm = TRUE)
+```
+
+La règle pratique : convertir juste après l'import, ou juste avant l'analyse, mais ne pas laisser traîner des variables `haven_labelled` dans un modèle statistique sans savoir comment la fonction les traite.
+
+## Et si l'on travaille quand même en CSV ?
+
+Le CSV reste utile dans certains contextes : partage avec quelqu'un qui n'a pas R, ouverture dans un tableur, contrainte institutionnelle. Dans ce cas, tout le travail que le `.sav` fait automatiquement doit être refait à la main, et il faut alors connaître les codes de non-réponse de chaque variable.
+
+Une difficulté réelle : ces codes ne sont pas uniformes. En dépouillant le codebook de la vague 11, on trouve au moins huit configurations distinctes parmi les 691 variables.
+
+| Codes manquants | Nombre de variables |
+|---|---|
+| aucun | 166 |
+| 66, 77, 88, 99 | 119 |
+| 7777, 8888, 9999 | 103 |
+| 7, 8, 9 | 86 |
+| 6666, 7777, 8888, 9999 | 58 |
+| 77, 88, 99 | 45 |
+| 6666, 7777, 9999 | 42 |
+| 6, 7, 8, 9 | 36 |
+
+Appliquer mécaniquement un jeu de codes à toutes les variables est donc dangereux. Dans notre fichier, `agea` contient de véritables répondants de **88 et 89 ans**, et code l'absence de réponse par **999** : y appliquer `c(77, 88, 99)` supprimerait de vraies personnes, silencieusement.
+
+Le fichier `ess11_codes_manquants.csv` fourni avec ce kit recense, pour chacune des 691 variables, ses codes manquants et ses éventuels codes « Other ». Il a été extrait du codebook officiel par le script `02_extraire_codes_codebook.py`, réutilisable pour n'importe quelle vague.
+
+```{r}
+#| eval: false
+codes <- read.csv("01_Data/ess11_codes_manquants.csv")
+
+nettoyer_ess <- function(donnees, table_codes) {
+  for (v in intersect(names(donnees), table_codes$variable)) {
+    if (!is.numeric(donnees[[v]])) next
+    chaine <- table_codes$codes_manquants[table_codes$variable == v]
+    if (length(chaine) != 1 || is.na(chaine) || chaine == "") next
+    valeurs <- as.numeric(strsplit(chaine, " ")[[1]])
+    donnees[[v]] <- ifelse(donnees[[v]] %in% valeurs, NA, donnees[[v]])
+  }
+  donnees
+}
+```
+
+::: {.callout-note}
+## Pourquoi ce détour n'est plus nécessaire
+Ce dispositif reconstruit à la main exactement ce que le fichier `.sav` déclare nativement. Il est conservé ici pour deux raisons : comprendre ce que le format fait à votre place, et disposer d'une solution si vous héritez d'un fichier CSV sans pouvoir revenir à la source.
+
+Pour un travail neuf, téléchargez le `.sav` ou le `.dta`. C'est plus simple, plus léger, et moins susceptible d'erreur silencieuse.
+:::
+
+## Ce qu'il faut retenir
+
+Le format labellisé apporte les libellés de variables, les libellés de modalités, et la conversion automatique des non-réponses. Il ne dispense pas de trois décisions qui restent les vôtres : le sort des modalités « Other », le regroupement des variables trop détaillées, et la pondération.

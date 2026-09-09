@@ -1,0 +1,112 @@
+---
+title: "Espace enseignants"
+subtitle: "Séquences et ressources prêtes à l'emploi"
+author: "Louis Dalmazzo"
+---
+
+## À qui s'adressent ces ressources
+
+Les séquences proposées ici visent trois publics : les classes de lycée en sciences économiques et sociales, les premières années d'enseignement supérieur en sciences sociales, et la formation continue à l'analyse de données.
+
+Elles sont construites pour être utilisables **avec ou sans R**. Chaque séquence indique une version « sans ordinateur », fondée sur des tableaux fournis, et une version « avec R » pour les contextes équipés.
+
+## Trois obstacles à anticiper
+
+L'expérience de l'enseignement des méthodes quantitatives fait apparaître trois difficultés récurrentes, qu'il vaut mieux traiter frontalement que contourner.
+
+**L'installation prend du temps.** Installer R, RStudio et les packages sur un parc informatique d'établissement peut occuper une séance entière, et échoue régulièrement pour des raisons de droits administrateur. Deux parades : préparer les postes en amont avec le service informatique, ou basculer sur **Posit Cloud**, qui fonctionne dans un navigateur sans rien installer.
+
+**Le fichier complet est trop lourd.** Le fichier de la vague 11 pèse plus de 80 Mo et compte 691 variables. Il est décourageant pour un débutant et lent à ouvrir sur du matériel modeste. Il est préférable de distribuer un extrait réduit, préparé à l'avance.
+
+**Le nettoyage des données n'est pas un détail technique.** La tentation est grande de fournir des données déjà nettoyées pour gagner du temps. C'est une erreur pédagogique : la neutralisation des codes de non-réponse et la pondération *sont* le contenu à enseigner, bien davantage que la syntaxe de R. Un élève qui sait recoder proprement une variable a compris quelque chose de durable ; un élève qui sait taper `mean()` sur des données prémâchées n'a rien appris.
+
+## Préparer un extrait pour la classe
+
+Le script suivant produit un fichier léger, limité à la France et à une dizaine de variables. Il s'exécute une fois, par l'enseignant, et le fichier obtenu est distribué aux élèves.
+
+```{r}
+#| eval: false
+library(tidyverse)
+
+ESS11 <- read.csv("01_Data/ESS11e04_2.csv", sep = ",")
+
+extrait <- ESS11 |>
+  select(idno, cntry, gndr, agea, edulvlb, trstplc, ppltrst,
+         stflife, lrscale, anweight) |>
+  filter(cntry == "FR")
+
+write.csv(extrait, "ess11_france_extrait.csv", row.names = FALSE)
+```
+
+Le fichier obtenu ne compte que dix colonnes et environ 1 800 lignes : il s'ouvre instantanément, y compris dans un tableur.
+
+::: {.callout-important}
+## Conserver la pondération dans l'extrait
+La variable `anweight` doit impérativement figurer dans l'extrait. Sans elle, les élèves produiront des résultats non pondérés, c'est-à-dire faux — et l'occasion d'enseigner la pondération sera perdue.
+:::
+
+## Séquence 1 — Qu'est-ce qu'un échantillon représentatif ?
+
+**Niveau** : lycée, sciences économiques et sociales.
+**Durée** : une séance.
+**Prérequis** : aucun. Aucun ordinateur nécessaire.
+
+L'objectif est de faire comprendre pourquoi un échantillon doit être corrigé avant d'être lu.
+
+On distribue aux élèves deux tableaux du niveau de diplôme en France : la version non pondérée et la version pondérée.
+
+| Niveau de diplôme | Échantillon brut | Après pondération |
+|---|---|---|
+| Faible | 18,0 % | 26,6 % |
+| Moyen | 41,6 % | 40,1 % |
+| Élevé | 40,3 % | 33,3 % |
+
+*Source : ESS vague 11, France, 1 763 répondants renseignés.*
+
+La question posée est simple : pourquoi ces deux tableaux diffèrent-ils, alors qu'ils décrivent les mêmes personnes ?
+
+La discussion conduit à identifier le mécanisme : les personnes diplômées acceptent plus volontiers de répondre à une enquête. L'échantillon obtenu n'est donc pas le reflet exact de la population, et la pondération corrige cet écart en donnant un peu plus de poids aux profils sous-représentés.
+
+Prolongement possible : demander aux élèves lequel des deux tableaux ils publieraient, et ce qu'il faudrait écrire en note de bas de page.
+
+## Séquence 2 — Les valeurs impossibles
+
+**Niveau** : lycée ou première année de supérieur.
+**Durée** : une demi-séance.
+**Prérequis** : aucun. Fonctionne au tableau ou sur ordinateur.
+
+L'objectif est de faire découvrir aux élèves qu'un calcul juste peut produire un résultat absurde.
+
+On annonce le résultat suivant : la moyenne du positionnement politique des Français sur une échelle allant de 0 (extrême gauche) à 10 (extrême droite) vaut **14,03**.
+
+On laisse la classe réagir. L'anomalie est immédiatement perçue — une moyenne ne peut pas dépasser le maximum de l'échelle — mais l'explication ne l'est pas.
+
+On distribue alors le tri à plat complet, qui fait apparaître les modalités 77 (« refus de répondre ») et 88 (« ne sait pas ») aux côtés des valeurs 0 à 10. Les élèves identifient eux-mêmes le problème : des codes administratifs ont été traités comme des positions politiques.
+
+Après retrait de ces codes, la moyenne tombe à **5,03**.
+
+Cette séquence installe durablement un réflexe : toujours regarder la distribution d'une variable avant d'en calculer la moyenne.
+
+## Séquence 3 — Comparer des pays
+
+**Niveau** : première année de supérieur.
+**Durée** : une à deux séances.
+**Prérequis** : séances précédentes, ordinateur avec R.
+
+Les élèves produisent eux-mêmes la comparaison européenne de la confiance dans la police, en suivant la page [Aller plus loin](traitement_avance_r.qmd).
+
+Les résultats s'échelonnent d'environ 3,5 en Ukraine à 8,2 en Finlande, la France se situant à 6,4, exactement à la médiane des trente pays.
+
+Le travail d'interprétation compte davantage que le travail technique. Deux questions à poser :
+
+Ces écarts peuvent-ils s'expliquer par le hasard de l'échantillonnage ? Non : l'amplitude est bien trop grande, contrairement aux écarts de quelques dixièmes observés entre groupes sociaux à l'intérieur d'un même pays.
+
+Ces écarts mesurent-ils la qualité réelle des polices concernées ? Pas directement. Ils mesurent des perceptions déclarées, qui dépendent aussi de l'histoire politique du pays, du contexte du moment et du rapport général aux institutions. C'est l'occasion d'introduire la distinction entre mesure d'opinion et mesure d'un fait.
+
+## Exercices avec corrigés
+
+<!-- À COMPLÉTER : rédiger une série d'exercices progressifs avec corrigés, sur le modèle : énoncé, données fournies, correction commentée. Prévoir une version élève et une version enseignant. -->
+
+## Alignement avec les programmes
+
+<!-- À COMPLÉTER : identifier les points précis des programmes de SES (seconde, première, terminale) auxquels ces séquences se rattachent, en citant les intitulés officiels. -->

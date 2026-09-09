@@ -124,7 +124,7 @@ Concrètement, ces deux modules expliquent l'essentiel des **328 variables prés
 
 ## L'échantillonnage
 
-### Le tirage au sort, sans exception
+### Le tirage au sort
 
 L'ESS impose un échantillonnage aléatoire à toutes les étapes. La spécification officielle est explicite et catégorique : les procédures doivent garantir que chaque membre de la population étudiée a une probabilité connue et strictement positive d'être sélectionné, les probabilités de sélection doivent être connues et enregistrées. **L'échantillonnage par quotas n'est autorisé à aucune étape, non plus que la substitution des logements ou des individus non répondants**, y compris les inéligibles[^18].
 

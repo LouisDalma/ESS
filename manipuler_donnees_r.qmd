@@ -63,9 +63,47 @@ Le résultat est beaucoup plus clair. A gauche, apparaissent les modalités de l
 
 Félicitations, vous venez de faire un tri à plat ! Continuons maintenant avec des données un peu plus parlantes.
 
+## L'import des données 
+
+### Importer des données labellisées
+
+Le portail de l'ESS propose trois formats : CSV, SPSS (`.sav`) et Stata (`.dta`). Le CSV a l'avantage d'être universel, mais il a un défaut majeur : c'est un fichier texte, et un fichier texte ne peut transporter que des nombres. Toute l'information *sur* ces nombres, (ce que mesure la variable), reste dans un document séparé, le codebook, que l'analyste doit consulter à la main.
+
+Les formats SPSS et Stata transportent cette information avec les données : c'est ce qu'on appelle des **données labellisées**. Sous R, on utilise deux packages : `haven` nous permet de lire ces données, tandis que `labelled` nous permet de les manipuler.
+
+```{r}
+# install.packages("haven")
+# install.packages(labelled)
+
+library(haven)
+library(labelled)
+```
+
+C'est ce format qu'on utilisera pour l'ESS.
+
 ## Cas pratiques avec les données de l'ESS
 
-Jusqu'ici, `mtcars` était directement disponible dans R. Avec l'ESS, il faut d'abord importer les données, à partir du fichier `.csv` téléchargé. On utilise ici la dernière vague disponible. On va utiliser la fonction read.csv().
+Jusqu'ici, `mtcars` était directement disponible dans R. Que vous utilisiez l'ESS, ou toutes autres données, il est nécessaire de les importer. On va utiliser la fonction read_sav() du package haven.
+
+```{r}
+ESS11 <- read_sav("01_Data/ESS11e04_2.sav")
+```
+
+Décortiquons cette ligne avant de continuer :
+
+`ESS11` est le nom qu'on choisit pour l'objet qui va contenir nos données une fois importées. Rien d'obligatoire dans ce nom : on aurait pu écrire donnees, ou ess en minuscule, peu importe.
+
+`<-` est la flèche d'assignation. Concrètement, la flèche prend l'élément qui est à droite et le place dans l'objet à gauche.
+
+`read.csv()` est la fonction qui permet de lire un fichier .csv et le transformer en tableau de données (data frame) exploitable sous R.
+
+`"01_Data/ESS11e04_2.csv"` est le premier argument, le chemin vers le fichier à lire, entre guillemets parce qu'il s'agit de texte, et pas un nombre, ni un objet déjà existant. Le chemin est relatif au dossier du projet, raison pour laquelle on n'a pas besoin de d'écrire le chemin complet de l'ordinateur.
+
+`,` la virgule sépare les deux arguments
+
+`sep=","` est le second argument. Il indique à R quel caractère sépare les colonnes dans le fichier .csv, en l'occurence une virgule. Même si la virgule est déjà la valeur par défaut de read.csv (contrairement à read.csv2), l'écrire explicitement rend le code plus lisible.
+
+Avec l'ESS, il faut d'abord importer les données, à partir du fichier `.csv` téléchargé. On utilise ici la dernière vague disponible. On va utiliser la fonction read.csv().
 
 ```{r}
 ESS11 <- read.csv("01_Data/ESS11e04_2.csv", sep=",")

@@ -13,10 +13,12 @@ website:
       - text: "Présentation de R et RStudio"
         href: r_presentation.qmd
       - text: "Traitement basique des données"
-        href: manipuler_donnees_r.qmd
+        href: manipuler_donnees_r_2.qmd
       - text: "Traitement avancé des données"
         href: traitement_avance_r.qmd
-      - text: "Espace journaliste"
+      - text: "Espace enseignants"
+        href : espace_enseignant.qmd
+      - text: "Espace journalistes"
         href : espace_journaliste.qmd
         
 

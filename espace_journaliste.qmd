@@ -1,4 +1,69 @@
 ---
-title: "Espace Journaliste"
+title: "Espace journalistes"
+subtitle: "Lire, vérifier et citer un chiffre issu de l'ESS"
 author: "Louis Dalmazzo"
 ---
+
+Cette page ne suppose aucune connaissance de R. Elle s'adresse à qui doit citer un chiffre d'enquête sans nécessairement le produire soi-même.
+
+## Pourquoi l'ESS plutôt qu'un sondage
+
+Trois arguments, dans l'ordre d'importance.
+
+**L'échantillon est tiré au sort.** L'ESS sélectionne aléatoirement des personnes dans la population, là où la plupart des sondages d'institut recrutent des volontaires inscrits dans un panel, en respectant des quotas. Seul le tirage au sort autorise le calcul d'une marge d'erreur au sens statistique.
+
+**Les non-répondants ne sont pas remplacés.** Quand une personne tirée au sort refuse, l'ESS ne lui substitue personne. L'échantillon obtenu est plus petit, mais il n'est pas biaisé vers les profils les plus faciles à joindre.
+
+**Tout est documenté et vérifiable.** Le questionnaire, les taux de réponse par pays, la méthode de pondération et les données elles-mêmes sont publics et gratuits. N'importe qui peut refaire le calcul. C'est rarement le cas des sondages commerciaux, dont les données brutes ne sont généralement pas diffusées.
+
+En contrepartie, l'ESS est **lente**. Le terrain a lieu tous les deux ans, et les données sont publiées plusieurs mois après. Ce n'est pas l'outil pour réagir à l'actualité de la semaine ; c'est l'outil pour situer cette actualité dans une tendance longue.
+
+## Cinq réflexes avant de citer un chiffre
+
+**1. Vérifier que le chiffre est pondéré.** C'est le point le plus important, et le plus souvent négligé. Un résultat non pondéré décrit les personnes qui ont répondu ; un résultat pondéré estime la population. L'écart n'est pas cosmétique : sur le niveau de diplôme en France, la part des diplômés du supérieur passe de 40 % dans l'échantillon brut à 33 % après pondération. Sept points d'écart, uniquement dus au fait que les personnes diplômées répondent davantage aux enquêtes.
+
+**2. Regarder l'effectif du sous-groupe.** Un chiffre national repose sur environ 1 800 personnes en France. Un chiffre portant sur « les 18-24 ans diplômés du supérieur » peut n'en concerner qu'une centaine, avec une marge d'erreur bien plus large. Plus le sous-groupe est fin, moins le chiffre est solide.
+
+**3. Se méfier des petits écarts.** Un écart de deux ou trois points entre deux groupes, ou de deux ou trois dixièmes sur une échelle en 0-10, entre généralement dans la marge d'incertitude. Exemple concret : sur les données françaises de la vague 11, la confiance dans la police vaut 6,5 chez les peu diplômés, 6,2 au niveau intermédiaire et 6,4 chez les diplômés du supérieur. Ces écarts ne dessinent aucune tendance et ne devraient pas être commentés comme tels.
+
+**4. Vérifier la comparabilité avant de comparer.** Deux vagues ne sont comparables que si la question est rigoureusement identique. Une variable peut garder son nom tout en ayant changé de libellé ou de modalités. De même, comparer deux pays suppose que la traduction du questionnaire dit bien la même chose — c'est en général le cas dans l'ESS, mais cela se vérifie dans la documentation.
+
+**5. Ne pas confondre pourcentage en ligne et en colonne.** « 35 % des femmes ont un diplôme du supérieur » et « 52 % des diplômés du supérieur sont des femmes » sont deux affirmations différentes, calculées sur le même tableau. L'une ne se déduit pas de l'autre.
+
+## Ce qu'il faut écrire dans l'encadré méthodologique
+
+Un encadré correct mentionne cinq éléments :
+
+- la source précise : *European Social Survey*, numéro de la vague, année du terrain ;
+- la population de référence : personnes de 15 ans et plus résidant dans le pays ;
+- l'effectif sur lequel porte le chiffre cité, pas seulement l'effectif total ;
+- la mention explicite que les données sont pondérées ;
+- pour toute comparaison dans le temps, la mention que la question est identique d'une vague à l'autre.
+
+Formulation type : « Source : European Social Survey, vague 11 (terrain 2023-2024), 1 771 répondants en France, données pondérées. »
+
+## Ce que l'ESS permet de dire, et ce qu'elle ne permet pas
+
+L'ESS mesure des **déclarations** à un moment donné. Elle établit très bien qu'une opinion est plus répandue dans un groupe que dans un autre, ou qu'elle a évolué entre deux vagues.
+
+Elle n'établit pas de **causalité**. Constater que les personnes diplômées font davantage confiance aux institutions ne dit pas que le diplôme produit la confiance : les deux peuvent dépendre d'un troisième facteur, l'origine sociale par exemple. La formulation « les personnes diplômées déclarent davantage faire confiance » est exacte ; « le diplôme augmente la confiance » ne l'est pas.
+
+Elle ne mesure pas non plus des **comportements observés**, mais des comportements déclarés, avec les écarts que cela suppose — la participation électorale déclarée est systématiquement supérieure à la participation réelle, dans toutes les enquêtes.
+
+## Un exemple de traitement possible
+
+Les données permettent par exemple de suivre la confiance dans la police en France depuis 2002. Sur les vagues disponibles, la moyenne pondérée passe d'environ 5,7 à 5,9 dans les années 2000 à environ 6,4 sur les vagues les plus récentes.
+
+Un tel mouvement, régulier et de près d'un demi-point sur vingt ans, est d'une tout autre nature que les écarts de quelques dixièmes évoqués plus haut : il repose sur une dizaine de mesures indépendantes allant dans le même sens. C'est le type de résultat que seule une enquête à protocole stable permet d'établir.
+
+<!-- À COMPLÉTER : ajouter le graphique de la série, et vérifier dans la documentation ESS que le libellé de trstplc est resté strictement identique sur toutes les vagues concernées avant publication. -->
+
+## Obtenir un chiffre sans coder
+
+Le portail de données de l'ESS propose un outil d'analyse en ligne permettant de produire des tris à plat et des tris croisés directement dans le navigateur, sans logiciel.
+
+<!-- À COMPLÉTER : lien vers l'outil d'analyse en ligne + capture d'écran, en signalant l'option de pondération à activer. -->
+
+Point de vigilance : dans ce type d'interface, **la pondération n'est pas toujours activée par défaut**. Il faut vérifier ce réglage avant de relever un chiffre.
+
+Pour une demande ponctuelle et documentée, le CDSP peut également être sollicité directement.
