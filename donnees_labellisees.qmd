@@ -19,8 +19,9 @@ library(questionr)
 ESS11 <- read_sav("01_Data/ESS11e04_2.sav")
 ```
 
-::: {.callout-tip}
+::: callout-tip
 ## Le fichier SPSS est plus léger que le CSV
+
 Contre-intuitif, mais vérifiable : pour la vague 11, le `.sav` pèse 59,8 Mo contre 82,7 Mo pour le `.csv`, alors qu'il contient *plus* d'information. Les formats binaires stockent les nombres de manière compacte, là où le texte écrit chaque chiffre caractère par caractère.
 :::
 
@@ -99,8 +100,9 @@ freq(ESS11_brut$lrscale)
 
 Cette comparaison mérite d'être faite au moins une fois. Elle montre concrètement ce que le format fait pour vous, et ce qui arrive quand il ne le fait pas.
 
-::: {.callout-important}
+::: callout-important
 ## Ce que le format ne fait pas à votre place
+
 La conversion automatique ne concerne que les codes **déclarés manquants** par l'ESS : refus, ne sait pas, sans réponse, non applicable. Elle ne touche pas aux modalités qui sont de vraies réponses, même quand elles ne sont pas exploitables sur une échelle ordinale.
 
 Le cas typique est le code `5555` de `edulvlb`, qui signifie « Other » : un diplôme réellement déclaré, mais non classable dans la nomenclature CITE. Il **survit à l'import** :
@@ -150,16 +152,16 @@ Le CSV reste utile dans certains contextes : partage avec quelqu'un qui n'a pas 
 
 Une difficulté réelle : ces codes ne sont pas uniformes. En dépouillant le codebook de la vague 11, on trouve au moins huit configurations distinctes parmi les 691 variables.
 
-| Codes manquants | Nombre de variables |
-|---|---|
-| aucun | 166 |
-| 66, 77, 88, 99 | 119 |
-| 7777, 8888, 9999 | 103 |
-| 7, 8, 9 | 86 |
-| 6666, 7777, 8888, 9999 | 58 |
-| 77, 88, 99 | 45 |
-| 6666, 7777, 9999 | 42 |
-| 6, 7, 8, 9 | 36 |
+| Codes manquants        | Nombre de variables |
+|------------------------|---------------------|
+| aucun                  | 166                 |
+| 66, 77, 88, 99         | 119                 |
+| 7777, 8888, 9999       | 103                 |
+| 7, 8, 9                | 86                  |
+| 6666, 7777, 8888, 9999 | 58                  |
+| 77, 88, 99             | 45                  |
+| 6666, 7777, 9999       | 42                  |
+| 6, 7, 8, 9             | 36                  |
 
 Appliquer mécaniquement un jeu de codes à toutes les variables est donc dangereux. Dans notre fichier, `agea` contient de véritables répondants de **88 et 89 ans**, et code l'absence de réponse par **999** : y appliquer `c(77, 88, 99)` supprimerait de vraies personnes, silencieusement.
 
@@ -181,8 +183,9 @@ nettoyer_ess <- function(donnees, table_codes) {
 }
 ```
 
-::: {.callout-note}
+::: callout-note
 ## Pourquoi ce détour n'est plus nécessaire
+
 Ce dispositif reconstruit à la main exactement ce que le fichier `.sav` déclare nativement. Il est conservé ici pour deux raisons : comprendre ce que le format fait à votre place, et disposer d'une solution si vous héritez d'un fichier CSV sans pouvoir revenir à la source.
 
 Pour un travail neuf, téléchargez le `.sav` ou le `.dta`. C'est plus simple, plus léger, et moins susceptible d'erreur silencieuse.

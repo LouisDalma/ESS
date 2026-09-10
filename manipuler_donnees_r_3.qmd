@@ -3,28 +3,63 @@ title: "Le traitement basique des données sous R"
 author: "Louis Dalmazzo"
 ---
 
-# 
+Cette partie couvre les gestes fondamentaux du travail sur données quantitatives : équiper R, importer un fichier, inspecter ce qu'il contient, sélectionner ce dont on a besoin et recoder les variables pour les rendre exploitables. A la fin, les données seront prêtes pour l'analyse.
 
-Avant de commencer la manipulation de données, il faut équiper R des bons outils. R en base sait déjà faire beaucoup de choses : créer des tableaux, filtrer des lignes, calculer des statistiques, entre autre. Mais deux collections de fonctions vont nous simplifier la vie tout au long de ce kit : le *tidyverse* et *questionr*.
+# Equiper R
 
-### Le tidyverse
+Avant de commencer la manipulation de données, il faut équiper R des bons outils. R en base sait déjà faire beaucoup de choses : créer des tableaux, filtrer des lignes, calculer des statistiques, entre autre. Pour autant, le logiciel n'a pas vocation à tout savoir faire tout seul, et c'est bien normal. Aucun langage ne pourrait anticiper tous les besoin de tous ses utilisateurs, de la biologie à la sociologie.
+
+C'est là qu'interviennent les packages. On commence par une présentation de ceux que l'on va utiliser ici.
+
+::: callout-note
+### Les packages
+
+Un package est une extension du langage R qui ajoute des fonction non présentes nativement, généralement écrites par des chercheurs ou des praticiens confrontés à un besoin que R base ne couvrait pas, puis mises à disposition de tous. Chaque package ajoute un outil précis, répondant à des besoins spécifiques. Aujourd'hui, la quasi totalité du travail statistique repose sur des packages, plutôt que sur R base.
+:::
+
+## Le tidyverse
 
 Le tidyverse n'est pas un package unique. C'est en réalité une collection d'une dizaine de packages, qui partagent la même philosophie et la même syntaxe. Citons par exemple "*dplyr*" pour manipuler les données ou encore "*ggplot*" pour les visualiser.
 
-### questionr
+## questionr
 
 questionr est développé par des chercheurs et ingénieurs français (Julien Barnier, François Briatte et Joseph Larmarange), pour l'enseignement de l'analyse de données en sciences sociales. Ses fonctions les plus utiles nous permettront de produire des tableaux sur les variables que l'on souhaitera analyser.
 
-## Installer, puis charger
+## haven et labelled 
+
+Ces deux packages travaillent ensemble sur les fichiers issus d'autres logiciels de statistiques.
+
+`haven` sait lire les formats SPSS (.sav), Stata (.dta) et SAS.
+
+`labelled`, également développé par Joseph Larmarange, permet de manipuler ces données une fois importées. On pourra explorer les libellés, chercher une variable par mot clé, convertir les variables avant l'analyse.
+
+# Installer, puis charger
 
 D'abord, une distinction à garder en tête : l'installation et le chargement des packages sont deux étapes différentes. `install.packages()` télécharge le package sur l'ordinateur, tandis que `library()` active le package pour la session de travail en cours. Autrement dit, l'installation se fait une seule fois, tandis que le chargement doit se faire à chaque ouverture de votre session R.
+
+::: callout-note
+### Exécuter une commande 
+
+On peut exécuter une commande au choix depuis la console ou dans son script. La console exécute immédiatement la commande sans conserver ce qui a été écrit. A l'inverse, le script conserve tout ce qu'on y écrit, mais n'exécute pas automatiquement les commandes. Il faudra placer son curseur sur la ligne qu'on souhaite exécuter, puis appuyer simultanément sur **CTRL** et **Entrée**.
+
+On peut également sélectionner plusieurs lignes à la fois. Dans ce cas, elles s'éxécutent les unes après les autres, dans l'ordre où elles sont écrites.
+
+### La structure d'une fonction : 
+
+Basiquement, une fonction est une commande qui déclenche une action précise. Elle prend la structure suivante :
+
+`nom_fonction(argument_1, argument_2)`
+
+Ici, les fonctions qu'on utilise sont install.packages() et library(), mais la structure restera la même pour l'ensemble des fonction qu'on utilisera plus tard. On en parlera en détail pour les recodages de variables.
+:::
 
 ```{r}
 
 # On commence par installer les packages. Pensez par ailleurs aux guillemets
 # install.packages("tidyverse")
 # install.packages("questionr")
-
+# install.packages("haven")
+# install.packages("labelled")
 ```
 
 Une fois installés, ne réexécutez plus ces lignes de commande. Les packagages sont sur votre ordinateur. A présent, on peut charger les packages. Vous devrez exécuter ces lignes à chaque ouverture de R.
@@ -35,9 +70,11 @@ Une fois installés, ne réexécutez plus ces lignes de commande. Les packagages
 
 library(tidyverse)
 library(questionr)
+library(haven)
+library(labelled)
 ```
 
-### Un premier essai
+## Un premier essai
 
 Avant de passer aux données de l'ESS, on peut faire un essai sur un jeu de données déjà inclus sour R base, `mtcars`. mtcars est un data frame. Autrement dit, il s'agit simplement d'un tableur, avec des lignes (ici des voitures), et des colonnes. Faisons un test en écrivant simplement `mtcars` dans notre console (ou notre script).
 
@@ -63,210 +100,45 @@ Le résultat est beaucoup plus clair. A gauche, apparaissent les modalités de l
 
 Félicitations, vous venez de faire un tri à plat ! Continuons maintenant avec des données un peu plus parlantes.
 
-## L'import des données 
+# L'import des données
 
-### Importer des données labellisées
+Jusqu'ici, `mtcars` était directement disponible dans R. Que vous utilisiez l'ESS, ou toutes autres données, il est nécessaire de les importer
+
+## Les formats de données 
 
 Le portail de l'ESS propose trois formats : CSV, SPSS (`.sav`) et Stata (`.dta`). Le CSV a l'avantage d'être universel, mais il a un défaut majeur : c'est un fichier texte, et un fichier texte ne peut transporter que des nombres. Toute l'information *sur* ces nombres, (ce que mesure la variable), reste dans un document séparé, le codebook, que l'analyste doit consulter à la main.
 
-Les formats SPSS et Stata transportent cette information avec les données : c'est ce qu'on appelle des **données labellisées**. Sous R, on utilise deux packages : `haven` nous permet de lire ces données, tandis que `labelled` nous permet de les manipuler.
+Les formats SPSS et Stata offrent la possibilité de transporter ces informations : c'est ce qu'on appelle des **données labellisées**. On pourra les mobiliser grâce aux packages `haven` et`labelled` que nous avons installé et chargé plus tôt.
 
-```{r}
-# install.packages("haven")
-# install.packages(labelled)
+::: callout-note
+### Quel format privilégier ? 
 
-library(haven)
-library(labelled)
-```
+Un fichier `.sav` ou `.dta` *peut* transporter libellés et codes de non réponse déjà déclarés. L'ESS le fait, ce qui simplifie le travail ; c'est pourquoi nous l'utiliserons ici.
 
-C'est ce format qu'on utilisera pour l'ESS.
+Ce n'est toutefois pas garanti par le format lui-même : d'autres sources livrent des fichiers labellisés où les valeurs manquantes restent de simples nombres non déclarés, sans plus d'information qu'un CSV. Le bon réflexe, quelle que soit la source, est de vérifier plutôt que supposer avec la méthode qu'on montrera plus bas.
 
-### Cas pratiques avec les données de l'ESS
+Pour autant, les données sous format .csv demeurent un format extrêmement fréquent. Elles sont présentes systématiquement, contrairement au formats `.sav` ou `.dta` qui se font un peu plus rares. Dans ce cas, on utilisera la fonction read.csv() pour importer ses données.
 
-Jusqu'ici, `mtcars` était directement disponible dans R. Que vous utilisiez l'ESS, ou toutes autres données, il est nécessaire de les importer. On va utiliser la fonction read_sav() du package haven.
+Dans tous les cas, **une revue manuelle systématique du codebook est indispensable** avant l'import des données, pour comprendre les données qu'on va traiter.
+:::
+
+## Cas pratiques avec les données de l'ESS
+
+On renseigne la ligne suivante dans son script :
 
 ```{r}
 ESS11 <- read_sav("01_Data/ESS11e04_2.sav")
 ```
 
-Décortiquons cette ligne avant de continuer :
+Regardons là de plus près :
 
 `ESS11` est le nom qu'on choisit pour l'objet qui va contenir nos données une fois importées. Rien d'obligatoire dans ce nom : on aurait pu écrire donnees, ou ess en minuscule, peu importe.
 
 `<-` est la flèche d'assignation. Concrètement, la flèche prend l'élément qui est à droite et le place dans l'objet à gauche.
 
-`read_sav` est la fonction qui permet de lire un fichier .sav et le transformer en tableau de données (data frame) exploitable sous R.
+`read_sav` est la fonction issue du package `haven` qui permet de lire un fichier .sav et le transformer en tableau de données (data frame) exploitable sous R.
 
 `"01_Data/ESS11e04_2.sav"` est l'argument donné à la fonction ; ici il s'agit du chemin vers le fichier à lire, entre guillemets parce qu'il s'agit de texte, et pas un nombre, ni un objet déjà existant. Le chemin est relatif au dossier du projet, raison pour laquelle on n'a pas besoin de d'écrire le chemin complet de l'ordinateur.
-
-::: callout-note
-On recommandera de prioriser le format .sav ou .dta le cas échéant. Néanmoins, si ces fichiers ne sont pas disponibles, on pourra sans problème importer des .csv avec la fonction `read.csv()`, qui reste le format le plus fréquent.
-:::
-
-## Trois choses que le fichier apporte
-
-### 1. Les libellés de variables
-
-Chaque variable porte une description en clair. Les 691 variables de la vague 11 en ont une, sans exception.
-
-```{r}
-var_label(ESS11$edulvlb)
-var_label(ESS11$lrscale)
-```
-
-Cela change radicalement la façon d'explorer le fichier. Plutôt que de fouiller le codebook pour trouver la variable qui traite du diplôme, on la cherche **par son libellé** avec `look_for()` :
-
-```{r}
-# look_for(ESS11, "education") |> head(10)
-```
-
-C'est probablement le gain le plus important au quotidien. Sur un fichier de cette taille, chercher par mot-clé remplace des allers-retours fastidieux dans un document HTML de plusieurs milliers de lignes.
-
-La recherche accepte plusieurs termes, et porte à la fois sur les noms de variables et sur les libellés :
-
-```{r}
-# look_for(ESS11, "trust", "police")
-```
-
-### 2. Les libellés de modalités
-
-Les valeurs numériques transportent leur signification. 662 des 691 variables en ont.
-
-```{r}
-val_labels(ESS11$gndr)
-```
-
-Une variable labellisée s'affiche avec son code *et* son étiquette, ce que `freq()` exploite directement :
-
-```{r}
-freq(ESS11$gndr)
-```
-
-Plus besoin d'écrire soi-même `factor(gndr, levels = c(1,2), labels = c("Homme","Femme"))` : l'information était déjà dans le fichier.
-
-### 3. Les non-réponses déjà converties
-
-C'est le point le plus important, et le moins visible. Le fichier SPSS ne se contente pas d'étiqueter les codes de non-réponse : il les **déclare comme manquants**. `read_sav()` les convertit alors en `NA` dès l'import, sans qu'on ait rien à demander.
-
-```{r}
-mean(ESS11$lrscale, na.rm = TRUE)
-```
-
-La moyenne du positionnement politique vaut directement 5,03 sur l'échelle 0-10, sans aucun recodage préalable. Les codes 77, 88 et 99 ont disparu à l'import.
-
-```{r}
-freq(ESS11$lrscale)
-```
-
-Les libellés « Refusal », « Don't know » et « No answer » restent affichés — l'information est conservée — mais avec un effectif de zéro : plus aucune observation ne porte ces valeurs.
-
-## Voir ce que l'import a fait
-
-Cette conversion automatique est confortable, mais il serait imprudent de l'utiliser sans avoir vu ce qu'elle fait. L'argument `user_na = TRUE` permet de charger le fichier **sans** convertir, pour observer les données telles qu'elles sont réellement stockées.
-
-```{r}
-
-ESS11_brut <- read_sav("01_Data/ESS11e04_2.sav", user_na = TRUE)
-mean(ESS11_brut$lrscale, na.rm = TRUE)
-```
-
-Le résultat, **14,03**, est logiquement impossible : aucune moyenne d'une échelle bornée à 10 ne peut dépasser 10. C'est exactement ce que produirait une lecture naïve du fichier CSV, où les codes 77 et 88 — qui concernent près de 15 % des répondants — sont comptés comme des positions politiques d'extrême droite.
-
-```{r}
-freq(ESS11_brut$lrscale)
-```
-
-Cette comparaison mérite d'être faite au moins une fois. Elle montre concrètement ce que le format fait pour vous, et ce qui arrive quand il ne le fait pas.
-
-::: callout-important
-## Ce que le format ne fait pas à votre place
-
-La conversion automatique ne concerne que les codes **déclarés manquants** par l'ESS : refus, ne sait pas, sans réponse, non applicable. Elle ne touche pas aux modalités qui sont de vraies réponses, même quand elles ne sont pas exploitables sur une échelle ordinale.
-
-Le cas typique est le code `5555` de `edulvlb`, qui signifie « Other » : un diplôme réellement déclaré, mais non classable dans la nomenclature CITE. Il **survit à l'import** :
-
-```{r}
-sum(ESS11$edulvlb == 5555, na.rm = TRUE)
-```
-
-Ces répondants devront être écartés d'un recodage ordinal du diplôme, mais c'est un **choix analytique** qui vous incombe, à documenter en note méthodologique — pas un nettoyage technique. La même logique vaut pour le code `55` de `eisced` et le `0` (« non harmonisable »).
-:::
-
-## Le type `haven_labelled`
-
-Une variable importée depuis un `.sav` n'est ni tout à fait numérique, ni un facteur : elle appartient à une classe intermédiaire.
-
-```{r}
-class(ESS11$gndr)
-```
-
-Cette classe conserve à la fois les valeurs numériques et leurs étiquettes. C'est pratique pour explorer, mais certaines fonctions ne savent pas la traiter et se comportent alors comme si elles avaient reçu de simples nombres. Le principe posé par les auteurs du package est clair : `haven_labelled` est une **structure intermédiaire**, faite pour être convertie avant analyse.
-
-Deux conversions, selon l'usage.
-
-**Vers un facteur**, pour une variable catégorielle destinée à un tableau ou un graphique :
-
-```{r}
-ESS11 <- ESS11 |>   mutate(sexe = to_factor(gndr)) 
-freq(ESS11$sexe)
-```
-
-**Vers du numérique**, pour une variable ordinale qu'on veut traiter comme une quantité :
-
-```{r}
-ESS11 <- ESS11 |>   mutate(lrscale_num = as.numeric(lrscale))
-mean(ESS11$lrscale_num, na.rm = TRUE)
-```
-
-La règle pratique : convertir juste après l'import, ou juste avant l'analyse, mais ne pas laisser traîner des variables `haven_labelled` dans un modèle statistique sans savoir comment la fonction les traite.
-
-## Et si l'on travaille quand même en CSV ?
-
-Le CSV reste utile dans certains contextes : partage avec quelqu'un qui n'a pas R, ouverture dans un tableur, contrainte institutionnelle. Dans ce cas, tout le travail que le `.sav` fait automatiquement doit être refait à la main, et il faut alors connaître les codes de non-réponse de chaque variable.
-
-Une difficulté réelle : ces codes ne sont pas uniformes. En dépouillant le codebook de la vague 11, on trouve au moins huit configurations distinctes parmi les 691 variables.
-
-| Codes manquants        | Nombre de variables |
-|------------------------|---------------------|
-| aucun                  | 166                 |
-| 66, 77, 88, 99         | 119                 |
-| 7777, 8888, 9999       | 103                 |
-| 7, 8, 9                | 86                  |
-| 6666, 7777, 8888, 9999 | 58                  |
-| 77, 88, 99             | 45                  |
-| 6666, 7777, 9999       | 42                  |
-| 6, 7, 8, 9             | 36                  |
-
-Appliquer mécaniquement un jeu de codes à toutes les variables est donc dangereux. Dans notre fichier, `agea` contient de véritables répondants de **88 et 89 ans**, et code l'absence de réponse par **999** : y appliquer `c(77, 88, 99)` supprimerait de vraies personnes, silencieusement.
-
-Le fichier `ess11_codes_manquants.csv` fourni avec ce kit recense, pour chacune des 691 variables, ses codes manquants et ses éventuels codes « Other ». Il a été extrait du codebook officiel par le script `02_extraire_codes_codebook.py`, réutilisable pour n'importe quelle vague.
-
-```{r}
-#| eval: false
-
-codes <- read.csv("01_Data/ess11_codes_manquants.csv")
-
-nettoyer_ess <- function(donnees, table_codes) {
-  for (v in intersect(names(donnees), table_codes$variable)) {
-    if (!is.numeric(donnees[[v]])) next
-    chaine <- table_codes$codes_manquants[table_codes$variable == v]
-    if (length(chaine) != 1 || is.na(chaine) || chaine == "") next
-    valeurs <- as.numeric(strsplit(chaine, " ")[[1]])
-    donnees[[v]] <- ifelse(donnees[[v]] %in% valeurs, NA, donnees[[v]])
-  }
-  donnees
-}
-```
-
-## Pourquoi ce détour n'est plus nécessaire
-
-Ce dispositif reconstruit à la main exactement ce que le fichier `.sav` déclare nativement. Il est conservé ici pour deux raisons : comprendre ce que le format fait à votre place, et disposer d'une solution si vous héritez d'un fichier CSV sans pouvoir revenir à la source.
-
-Pour un travail neuf, téléchargez le `.sav` ou le `.dta`. C'est plus simple, plus léger, et moins susceptible d'erreur silencieuse.
-
-## Ce qu'il faut retenir
-
-Le format labellisé apporte les libellés de variables, les libellés de modalités, et la conversion automatique des non-réponses. Il ne dispense pas de trois décisions qui restent les vôtres : le sort des modalités « Other », le regroupement des variables trop détaillées, et la pondération.
 
 ## Un premier coup d'oeil
 
@@ -298,13 +170,74 @@ dim(ESS11)
 # head(ESS11)
 ```
 
-`head()` affiche les dix premières lignes sur toutes les colonnes. Encore une fois peu lisible sur un grand jeu de données, mais la fonction est à connaître.
+`head()` affiche les dix premières lignes sur toutes les colonnes.
 
 ```{r}
 # str(ESS11)
 ```
 
-`str()` est sans doute la plus informative des quatre. Elle liste chaque variable avec son type.
+`str()` décrit chaque variable avec son type. Elle affiche les premières valeurs, ou encore les libellés et leurs tables de correspondance si on l'applique sur des variables d'un dataframe importé avec `haven`.
+
+```{r}
+# class(ESS11)
+```
+
+`class()` est une fonction qui répond quant à elle a une question beaucoup plus précise : à quel type appartient cet objet ou cette variable précise ?
+
+## Les types de variables
+
+Au sein d'un jeu de données, chaque variable (colonne) a une nature spécifique, en fonction de ce qu'elle contient.
+
+### Les variables de type character
+
+Elles représentent du texte. Par exemple, lorsque l'on renseigne sa profession ("Artisan", "infirmière", "technicienne"), on renseigne une chaîne de texte. Dans l'ESS, on peut également prendre pour exemple le pays d'origine des répondants :
+
+```{r}
+
+class(ESS11$cntry)
+```
+
+### Les variables de type integer
+
+Ce sont des nombres entiers, sans décimales. Beaucoup de variables de notre jeu de données sont codées de cette manière, chaque nombre représentant une modalité de réponse. Par exemple avec la variable sur le degré de confiance dans la police sur une échelle de 1 à 10 :
+
+```{r}
+class(ESS11$trstplc)
+```
+
+*NB : En général, les non réponses sont filtrées. Ici, 77 correspond à "refus de répondre", 88 correspond à "ne sait pas" et 99 aux non réponses.*
+
+On peut utiliser des variables de type integer pour des échelles, ici typiquement une échelle de 1 à 10. On peut également les utiliser pour des modalités de réponses différentes. Par exemple pour le genre, la variable correspondante (gndr) est de type integer : 1 pour les hommes, 2 pour les femmes. Quand il y a des non réponses, ce qui n'est pas le cas pour ce millésime, on les recode en 9.
+
+```{r}
+str(ESS11$gndr)
+```
+
+### Les variables de type numérique
+
+Ce sont des nombres avec des décimales. On peut par exemple penser aus variables de pondération, que l'on verra en détail plus tard.
+
+```{r}
+str(ESS11$anweight)
+```
+
+### Le cas particulier des variables de type factor
+
+Ce sont des variables qui ne peuvent prendre qu'un nombre fixe et fermé de valeurs possibles, appelées des levels. Elles n'existent jamais en tant que tel, il faut les construire explicitement. On montre ici un exemple en reprenant l'exemple du genre.
+
+```{r}
+ESS11 <- ESS11 |>   mutate(gndr_f = factor(gndr, levels = c(1, 2), labels = c("Homme", "Femme")))
+```
+
+*NB : nous verrons plus tard en détail la construction et le recodage des variables ; cette section n'a que pour but de présenter les différentes variables possibles.*
+
+```{r}
+str(ESS11$gndr_f)
+```
+
+Les levels indiquent quelles valeurs d'origine correspondent à des catégories valides (ici 1 et 2), tandis que labels leur donne un nom lisible. Une éventuelle valeur 9 deviendrait automatiquement NA, puisqu'elle n'apparaît pas dans les levels.
+
+Comme expliqué plut tôt, les variables factor demandent la plupart du temps un recodage manuel. On ne les trouvera jamais dans un import csv, qui appelle exclusivement des variables catégorielles. Pour autant, il est possible de trouver certains jeux de données avec des variables factor, notamment des jeux de données au format Stata.
 
 ::: callout-note
 ### Les types de variables
@@ -362,6 +295,147 @@ Les levels indiquent quelles valeurs d'origine correspondent à des catégories 
 
 Comme expliqué plut tôt, les variables factor demandent la plupart du temps un recodage manuel. On ne les trouvera jamais dans un import csv, qui appelle exclusivement des variables catégorielles. Pour autant, il est possible de trouver certains jeux de données avec des variables factor, notamment des jeux de données au format Stata.
 :::
+
+## Trois choses que le fichier apporte
+
+### 1. Les libellés de variables
+
+Chaque variable porte une description en clair. Les 691 variables de la vague 11 en ont une, sans exception.
+
+```{r}
+var_label(ESS11$edulvlb) var_label(ESS11$lrscale)
+```
+
+Cela change radicalement la façon d'explorer le fichier. Plutôt que de fouiller le codebook pour trouver la variable qui traite du diplôme, on la cherche **par son libellé** avec `look_for()` :
+
+```{r}
+# look_for(ESS11, "education") |> head(10)
+```
+
+C'est probablement le gain le plus important au quotidien. Sur un fichier de cette taille, chercher par mot-clé remplace des allers-retours fastidieux dans un document HTML de plusieurs milliers de lignes.
+
+La recherche accepte plusieurs termes, et porte à la fois sur les noms de variables et sur les libellés :
+
+```{r}
+# look_for(ESS11, "trust", "police")
+```
+
+### 2. Les libellés de modalités
+
+Les valeurs numériques transportent leur signification. 662 des 691 variables en ont.
+
+```{r}
+val_labels(ESS11$gndr)
+```
+
+Une variable labellisée s'affiche avec son code *et* son étiquette, ce que `freq()` exploite directement :
+
+```{r}
+freq(ESS11$gndr)
+```
+
+Plus besoin d'écrire soi-même `factor(gndr, levels = c(1,2), labels = c("Homme","Femme"))` : l'information était déjà dans le fichier.
+
+### 3. Les non-réponses déjà converties
+
+C'est le point le plus important, et le moins visible. Le fichier SPSS ne se contente pas d'étiqueter les codes de non-réponse : il les **déclare comme manquants**. `read_sav()` les convertit alors en `NA` dès l'import, sans qu'on ait rien à demander.
+
+```{r}
+mean(ESS11$lrscale, na.rm = TRUE)
+```
+
+La moyenne du positionnement politique vaut directement 5,03 sur l'échelle 0-10, sans aucun recodage préalable. Les codes 77, 88 et 99 ont disparu à l'import.
+
+```{r} freq(ESS11$lrscale)}
+```
+
+Les libellés « Refusal », « Don't know » et « No answer » restent affichés — l'information est conservée — mais avec un effectif de zéro : plus aucune observation ne porte ces valeurs.
+
+## Voir ce que l'import a fait
+
+Cette conversion automatique est confortable, mais il serait imprudent de l'utiliser sans avoir vu ce qu'elle fait. L'argument `user_na = TRUE` permet de charger le fichier **sans** convertir, pour observer les données telles qu'elles sont réellement stockées.
+
+```{r}
+ESS11_brut <- read_sav("01_Data/ESS11e04_2.sav", user_na = TRUE) 
+mean(ESS11_brut$lrscale, na.rm = TRUE)
+```
+
+Le résultat, **14,03**, est logiquement impossible : aucune moyenne d'une échelle bornée à 10 ne peut dépasser 10. C'est exactement ce que produirait une lecture naïve du fichier CSV, où les codes 77 et 88 — qui concernent près de 15 % des répondants — sont comptés comme des positions politiques d'extrême droite.
+
+```{r} freq(ESS11_brut$lrscale)}
+```
+
+Cette comparaison mérite d'être faite au moins une fois. Elle montre concrètement ce que le format fait pour vous, et ce qui arrive quand il ne le fait pas.
+
+::: callout-important
+## Ce que le format ne fait pas à votre place
+
+La conversion automatique ne concerne que les codes **déclarés manquants** par l'ESS : refus, ne sait pas, sans réponse, non applicable. Elle ne touche pas aux modalités qui sont de vraies réponses, même quand elles ne sont pas exploitables sur une échelle ordinale.
+
+Le cas typique est le code `5555` de `edulvlb`, qui signifie « Other » : un diplôme réellement déclaré, mais non classable dans la nomenclature CITE. Il **survit à l'import** :
+
+```{r} sum(ESS11$edulvlb == 5555, na.rm = TRUE)}
+```
+
+Ces répondants devront être écartés d'un recodage ordinal du diplôme, mais c'est un **choix analytique** qui vous incombe, à documenter en note méthodologique — pas un nettoyage technique. La même logique vaut pour le code `55` de `eisced` et le `0` (« non harmonisable »).
+:::
+
+## Le type `haven_labelled`
+
+Une variable importée depuis un `.sav` n'est ni tout à fait numérique, ni un facteur : elle appartient à une classe intermédiaire.
+
+```{r} class(ESS11$gndr)}
+```
+
+Cette classe conserve à la fois les valeurs numériques et leurs étiquettes. C'est pratique pour explorer, mais certaines fonctions ne savent pas la traiter et se comportent alors comme si elles avaient reçu de simples nombres. Le principe posé par les auteurs du package est clair : `haven_labelled` est une **structure intermédiaire**, faite pour être convertie avant analyse.
+
+Deux conversions, selon l'usage.
+
+**Vers un facteur**, pour une variable catégorielle destinée à un tableau ou un graphique :
+
+```{r} ESS11 <- ESS11 |>   mutate(sexe = to_factor(gndr))  freq(ESS11$sexe)}
+```
+
+**Vers du numérique**, pour une variable ordinale qu'on veut traiter comme une quantité :
+
+```{r} ESS11 <- ESS11 |>   mutate(lrscale_num = as.numeric(lrscale)) mean(ESS11$lrscale_num, na.rm = TRUE)}
+```
+
+La règle pratique : convertir juste après l'import, ou juste avant l'analyse, mais ne pas laisser traîner des variables `haven_labelled` dans un modèle statistique sans savoir comment la fonction les traite.
+
+## Et si l'on travaille quand même en CSV ?
+
+Le CSV reste utile dans certains contextes : partage avec quelqu'un qui n'a pas R, ouverture dans un tableur, contrainte institutionnelle. Dans ce cas, tout le travail que le `.sav` fait automatiquement doit être refait à la main, et il faut alors connaître les codes de non-réponse de chaque variable.
+
+Une difficulté réelle : ces codes ne sont pas uniformes. En dépouillant le codebook de la vague 11, on trouve au moins huit configurations distinctes parmi les 691 variables.
+
+| Codes manquants        | Nombre de variables |
+|------------------------|---------------------|
+| aucun                  | 166                 |
+| 66, 77, 88, 99         | 119                 |
+| 7777, 8888, 9999       | 103                 |
+| 7, 8, 9                | 86                  |
+| 6666, 7777, 8888, 9999 | 58                  |
+| 77, 88, 99             | 45                  |
+| 6666, 7777, 9999       | 42                  |
+| 6, 7, 8, 9             | 36                  |
+
+Appliquer mécaniquement un jeu de codes à toutes les variables est donc dangereux. Dans notre fichier, `agea` contient de véritables répondants de **88 et 89 ans**, et code l'absence de réponse par **999** : y appliquer `c(77, 88, 99)` supprimerait de vraies personnes, silencieusement.
+
+Le fichier `ess11_codes_manquants.csv` fourni avec ce kit recense, pour chacune des 691 variables, ses codes manquants et ses éventuels codes « Other ». Il a été extrait du codebook officiel par le script `02_extraire_codes_codebook.py`, réutilisable pour n'importe quelle vague.
+
+```{r} #| eval: false  codes <- read.csv("01_Data/ess11_codes_manquants.csv")  nettoyer_ess <- function(donnees, table_codes) {   for (v in intersect(names(donnees), table_codes$variable)) {     if (!is.numeric(donnees[[v]])) next     chaine <- table_codes$codes_manquants[table_codes$variable == v]     if (length(chaine) != 1 || is.na(chaine) || chaine == "") next     valeurs <- as.numeric(strsplit(chaine, " ")[[1]])     donnees[[v]] <- ifelse(donnees[[v]] %in% valeurs, NA, donnees[[v]])   }   donnees }
+```
+
+## Pourquoi ce détour n'est plus nécessaire
+
+Ce dispositif reconstruit à la main exactement ce que le fichier `.sav` déclare nativement. Il est conservé ici pour deux raisons : comprendre ce que le format fait à votre place, et disposer d'une solution si vous héritez d'un fichier CSV sans pouvoir revenir à la source.
+
+Pour un travail neuf, téléchargez le `.sav` ou le `.dta`. C'est plus simple, plus léger, et moins susceptible d'erreur silencieuse.
+
+## Ce qu'il faut retenir
+
+Le format labellisé apporte les libellés de variables, les libellés de modalités, et la conversion automatique des non-réponses. Il ne dispense pas de trois décisions qui restent les vôtres : le sort des modalités « Other », le regroupement des variables trop détaillées, et la pondération.
 
 ## Manipuler ses données :
 
