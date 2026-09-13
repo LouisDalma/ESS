@@ -102,7 +102,7 @@ Le résultat est beaucoup plus clair. A gauche, apparaissent les modalités de l
 
 Restons sur mtcars encore un instant. Au sein d'un jeu de données, chaque variable (colonne) a une nature spécifique selon ce qu'elle contient. R distingue quatrre types fondamentaux, que nous illustrons ici. Pour connaître le type de variable, on utilise la fonction `class()`.
 
-### Les variables numériques 
+### Les variables numériques
 
 Elles contiennent des nombres, avec ou sans décimales. C'est de loin le cas le plus fréquent :
 
@@ -122,7 +122,7 @@ class(mtcars$cyl)
 On pourra croiser des variables de type `integer`, réservées aux nombres entiers stricts. C'est ce qu'il se passe notamment lorsqu'on importe des jeux de données au format `.csv` : si une colonne ne contient que des nombres entiers, elle sera classée par défaut comme `integer`. Néanmoins cette différence ne change rien à la manière dont on pourra traiter ces variables. `numeric` et `integer` s'utiliseront de la même manière.
 :::
 
-### Les variables de texte 
+### Les variables de texte
 
 Elles sont de type `character`. Lorsqu'on renseigne une profession ("artisan", "infirmière", "technicienne"), on renseigne une chaîne de caractères. Dans `mtcars`, ce sont les noms de modèles :
 
@@ -206,7 +206,7 @@ On peut regarder dans le cadran supérieur droit de RStudio. Dans l'onglet *Envi
 
 On clique à présent sur cette ligne pour ouvrir un onglet dans la partie supérieure gauche de notre écran : le Data viewer. C'est une vue tabulaire, un peu comme un tableur, qu'on peut faire défiler ligne par ligne et colonne par colonne, et même trier en cliquant sur les en-têtes. C'est le réflexe le plus rapide pour un premier contact visuel avec des données inconnues.
 
-![Le Data Viewer de RStudio](images/Capture d'écran 2026-09-11 130001.png)
+![Le Data Viewer de RStudio](images/Capture%20d'écran%202026-09-11%20130001.png)
 
 ## Une autre manière d'inspecter ses données
 
@@ -262,7 +262,7 @@ Ce résultat est la conséquence de l'import au format `.sav`. Sous R, un objet 
 `double` est le nom que R donne en interne à ce qu'on a appelé jusqu'ici "numérique". C'est la même chose, sous un autre nom. Autrement dit, sous ses libellés, cette variable reste un nombre ordinaire.
 
 ::: callout-note
-### Pourquoi `double` et pas`integer` ? 
+### Pourquoi `double` et pas`integer` ?
 
 Le terme "*double*" vient de l'informatique, et désigne la manière de stocker un nombre décimal. En l'occurence, SPSS ne fait pas la différence entre les nombres entiers et les nombres décimaux ; il les stocke toujours en "double". On ne verra donc jamais de variable "integer" dans un fichier `.sav`
 :::
@@ -275,25 +275,32 @@ Le type `haven_labelled` est une **structure intermédiaire** conçue pour l'exp
 
 Chaque variable porte une description en clair. Les 691 variables de la vague 11 en ont une, sans exception.
 
-```{r} var_label(ESS11$edlvdfr) var_label(ESS11$lrscale)}
+```{r}
+var_label(ESS11$edlvdfr)
+var_label(ESS11$lrscale)
 ```
+
+`{r} var_label(ESS11$edlvdfr) var_label(ESS11$lrscale)}`
 
 Cela change la façon d'explorer le fichier. Plutôt que de fouiller le codebook pour trouver la variable qui traite du diplôme, on la cherche **par son libellé** avec `look_for()` :
 
-```{r} look_for(ESS11, "education") |> head(6)}
+```{r}
+look_for(ESS11, "smoking", "health") |> head(2)
 ```
 
 Sur un fichier de cette taille, chercher par mot-clé remplace des allers-retours fastidieux dans un document de plusieurs milliers de lignes. La recherche accepte plusieurs termes et porte à la fois sur les noms de variables et sur les libellés :
 
-```{r} look_for(ESS11, "smoking")}
-```
+`{r} look_for(ESS11, "smoking")}`
 
 ## Les libellés de modalités
 
 Les valeurs numériques transportent leur signification. 662 des 691 variables en ont.
 
-```{r} val_labels(ESS11$cgtsmok)}
+```{r}
+val_labels(ESS11$cgtsmok)
 ```
+
+`{r} val_labels(ESS11$cgtsmok)}`
 
 ## Les non-réponses déjà converties
 
@@ -301,23 +308,26 @@ C'est le point le plus important, et le moins visible. Le fichier SPSS ne se con
 
 Pour comprendre ce que cela signifie, chargeons volontairement le fichier **sans** cette conversion, grâce à l'argument `user_na = TRUE` :
 
-```{r} ESS11_brut <- read_sav("01_Data/ESS11e04_2.sav", user_na = TRUE)  mean(ESS11_brut$lrscale, na.rm = TRUE)}
+```{r}
+ESS11_brut <- read_sav("01_Data/ESS11e04_2.sav", user_na = TRUE)
+mean(ESS11_brut$lrscale, na.rm = TRUE)
 ```
+
+Comment est-ce possible ? Une échelle bornée à 10 ne peut pas dépasser 10
+
+REPRENDRE ICI
 
 Le positionnement politique est mesuré sur une échelle de 0 (extrême gauche) à 10 (extrême droite). Une moyenne de **14,03** est donc logiquement impossible. Regardons le tri à plat :
 
-```{r} freq(ESS11_brut$lrscale)}
-```
+`{r} freq(ESS11_brut$lrscale)}`
 
 Les modalités 0 à 10 sont de vraies réponses, mais 77 signifie « refus de répondre », 88 « ne sait pas » et 99 « sans réponse ». Ces absences de réponse, qui concernent environ 15 % des répondants, sont **codées sous forme de nombres**. Comptées comme des positions politiques d'extrême droite, elles font exploser la moyenne.
 
 Comparons avec l'import normal :
 
-```{r} mean(ESS11$lrscale, na.rm = TRUE)}
-```
+`{r} mean(ESS11$lrscale, na.rm = TRUE)}`
 
-```{r} freq(ESS11$lrscale)}
-```
+`{r} freq(ESS11$lrscale)}`
 
 La moyenne vaut cette fois 5,03, une valeur interprétable. Les libellés « Refusal », « Don't know » et « No answer » restent affichés — l'information est conservée — mais avec un effectif de zéro : plus aucune observation ne porte ces valeurs.
 
@@ -328,8 +338,7 @@ La conversion ne concerne que les codes **déclarés manquants** par l'ESS : ref
 
 Le cas typique est le code `5555` de `edlvdfr`, qui signifie « Other » : un diplôme réellement déclaré, mais non classable dans la nomenclature. Il **survit à l'import** :
 
-```{r} sum(ESS11$edlvdfr == 5555, na.rm = TRUE)}
-```
+`{r} sum(ESS11$edlvdfr == 5555, na.rm = TRUE)}`
 
 Écarter ces répondants d'un recodage ordinal est un **choix analytique** qui vous incombe, à documenter en note méthodologique — pas un nettoyage technique.
 
