@@ -12,18 +12,20 @@ website:
         href: ess_pres.qmd
       - text: "Présentation de R et RStudio"
         href: r_presentation.qmd
-      - text: "L'import et le recodage des données"
-        href: import_recodages_r.qmd
-      - text: "La visualisation des données"
-        href: visualisation_donnees.qmd
-      - text: "Traitement simple des données"
-        href: traitement_simple_r.qmd  
-      - text: "Traitement avancé des données"
-        href: traitement_avance_r.qmd
+      - text: "Manipuler ses données"
+        menu:
+          - text: "L'import et le recodage des données"
+            href: import_recodages_r.qmd
+          - text: "La visualisation des données"
+            href: visualisation_donnees.qmd
+          - text: "Traitement simple des données"
+            href: traitement_simple_r.qmd
+          - text: "Traitement avancé des données"
+            href: traitement_avance_r.qmd
       - text: "Espace enseignants"
-        href : espace_enseignant.qmd
+        href: espace_enseignant.qmd
       - text: "Espace journalistes"
-        href : espace_journaliste.qmd
+        href: espace_journaliste.qmd
         
 
 format:

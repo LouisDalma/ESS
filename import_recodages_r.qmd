@@ -1,5 +1,5 @@
 ---
-title: "Le traitement basique des données sous R"
+title: "L'import et le recodage des données"
 author: "Louis Dalmazzo"
 ---
 
@@ -9,21 +9,21 @@ Cette partie couvre les gestes fondamentaux du travail sur données quantitative
 
 Avant de commencer la manipulation de données, il faut équiper R des bons outils. R en base sait déjà faire beaucoup de choses : créer des tableaux, filtrer des lignes, calculer des statistiques, entre autre. Pour autant, le logiciel n'a pas vocation à tout savoir faire tout seul, et c'est bien normal. Aucun langage ne pourrait anticiper tous les besoin de tous ses utilisateurs, de la biologie à la sociologie.
 
-C'est là qu'interviennent les packages. On commence par une présentation de ceux que l'on va utiliser ici.
+C'est là qu'interviennent les **packages**. On commence par une présentation de ceux que l'on va utiliser ici.
 
-::: callout-note
-### Les packages
+::: callout-important
+## Les packages
 
 Un package est une extension du langage R qui ajoute des fonction non présentes nativement, généralement écrites par des chercheurs ou des praticiens confrontés à un besoin que R base ne couvrait pas, puis mises à disposition de tous. Chaque package ajoute un outil précis, répondant à des besoins spécifiques. Aujourd'hui, la quasi totalité du travail statistique repose sur des packages, plutôt que sur R base.
 :::
 
-## Le tidyverse
+### Le tidyverse
 
-Le tidyverse n'est pas un package unique. C'est en réalité une collection d'une dizaine de packages, qui partagent la même philosophie et la même syntaxe. Citons par exemple "*dplyr*" pour manipuler les données ou encore "*ggplot*" pour les visualiser.
+Le `tidyverse` n'est pas un package unique. C'est en réalité une collection d'une dizaine de packages, qui partagent la même philosophie et la même syntaxe. Citons par exemple "*dplyr*" pour manipuler les données ou encore "*ggplot*" pour les visualiser.
 
-## questionr
+### questionr
 
-questionr est développé par des chercheurs et ingénieurs français (Julien Barnier, François Briatte et Joseph Larmarange), pour l'enseignement de l'analyse de données en sciences sociales. Ses fonctions les plus utiles nous permettront de produire des tableaux sur les variables que l'on souhaitera analyser.
+`questionr` est développé par des chercheurs et ingénieurs français (Julien Barnier, François Briatte et Joseph Larmarange), pour l'enseignement de l'analyse de données en sciences sociales. Ses fonctions les plus utiles nous permettront de produire des tableaux sur les variables que l'on souhaitera analyser.
 
 ## haven et labelled
 
@@ -50,7 +50,7 @@ Basiquement, une fonction est une commande qui déclenche une action précise. E
 
 `nom_fonction(argument_1, argument_2)`
 
-Ici, les fonctions qu'on utilise sont install.packages() et library(), mais la structure restera la même pour l'ensemble des fonction qu'on utilisera plus tard. On en parlera en détail pour les recodages de variables.
+Ici, les fonctions qu'on utilise sont `install.packages()` et `library()`, mais la structure restera la même pour l'ensemble des fonction qu'on utilisera plus tard. On en parlera en détail pour les recodages de variables.
 :::
 
 ```{r}
@@ -79,7 +79,7 @@ library(labelled)
 Avant de passer aux données de l'ESS, on peut faire un essai sur un jeu de données déjà inclus sour R base, `mtcars`. mtcars est un data frame. Autrement dit, il s'agit simplement d'un tableur, avec des lignes (ici des voitures), et des colonnes. Faisons un test en écrivant simplement `mtcars` dans notre console (ou notre script).
 
 ```{r}
-mtcars
+head(mtcars)
 ```
 
 On voit le jeu de données, très similaire à ce que l'on pourrait par exemple trouver sur un tableur Excel. On a en ligne des modèles de voitures, et en colonne un certain nombre d'attributs leur correspondant, comme le nombre de vitesses (gear), le poids du véhicule (wt, en milliers de livres), la puissance brute (hp), ou encore le nombre de cylindres (cyl). Prenons pour exemple cette dernière variable.
@@ -164,11 +164,11 @@ Jusqu'ici, `mtcars` était directement disponible dans R. Que vous utilisiez l'E
 
 ## Les formats de données
 
-Le portail de l'ESS propose trois formats : CSV, SPSS (`.sav`) et Stata (`.dta`). Le CSV a l'avantage d'être universel, mais il a un défaut majeur : c'est un fichier texte, et un fichier texte ne peut transporter que des nombres. Toute l'information *sur* ces nombres, (ce que mesure la variable), reste dans un document séparé, le codebook, que l'utilisateur ou l'utilisatrice doit consulter à la main.
+Le portail de l'ESS propose trois formats : CSV (`.csv`), SPSS (`.sav`) et Stata (`.dta`). Le CSV a l'avantage d'être universel, mais il a un défaut majeur : c'est un fichier texte, et un fichier texte ne peut transporter que des nombres. Toute l'information *sur* ces nombres, (ce que mesure la variable), reste dans un document séparé, le codebook, que l'utilisateur ou l'utilisatrice doit consulter à la main.
 
 Les formats SPSS et Stata offrent la possibilité de transporter ces informations : c'est ce qu'on appelle des **données labellisées**. On pourra les mobiliser grâce aux packages `haven` et`labelled` que nous avons installé et chargé plus tôt.
 
-::: callout-note
+::: callout-tip
 ### Quel format privilégier ?
 
 Un fichier `.sav` ou `.dta` *peut* transporter libellés et codes de non réponse déjà déclarés. L'ESS le fait, ce qui simplifie le travail ; c'est pourquoi nous l'utiliserons ici.
@@ -190,6 +190,9 @@ ESS11 <- read_sav("01_Data/ESS11e04_2.sav")
 
 Regardons là de plus près :
 
+::: callout-note
+### Explications de la ligne :
+
 `ESS11` est le nom qu'on choisit pour l'objet qui va contenir nos données une fois importées. Rien d'obligatoire dans ce nom : on aurait pu écrire donnees, ou ess en minuscule, peu importe.
 
 `<-` est la flèche d'assignation. Concrètement, la flèche prend l'élément qui est à droite et le place dans l'objet à gauche.
@@ -197,6 +200,7 @@ Regardons là de plus près :
 `read_sav` est la fonction issue du package `haven` qui permet de lire un fichier .sav et le transformer en tableau de données (data frame) exploitable sous R.
 
 `"01_Data/ESS11e04_2.sav"` est l'argument donné à la fonction ; ici il s'agit du chemin vers le fichier à lire, entre guillemets parce qu'il s'agit de texte, et pas un nombre, ni un objet déjà existant. Le chemin est relatif au dossier du projet, raison pour laquelle on n'a pas besoin de d'écrire le chemin complet de l'ordinateur.
+:::
 
 ## Un premier coup d'oeil
 
@@ -261,7 +265,7 @@ Ce résultat est la conséquence de l'import au format `.sav`. Sous R, un objet 
 
 `double` est le nom que R donne en interne à ce qu'on a appelé jusqu'ici "numérique". C'est la même chose, sous un autre nom. Autrement dit, sous ses libellés, cette variable reste un nombre ordinaire.
 
-::: callout-note
+::: {.callout-tip collapse="true"}
 ### Pourquoi `double` et pas `integer` ?
 
 Le terme "*double*" vient de l'informatique, et désigne la manière de stocker un nombre décimal. En l'occurence, SPSS ne fait pas la différence entre les nombres entiers et les nombres décimaux ; il les stocke toujours en "double". On ne verra donc jamais de variable "integer" dans un fichier `.sav`
@@ -458,10 +462,10 @@ Par exemple, on ne garde ici les personnes qui ont entre 18 et 25 ans, résidant
 | `&`       | et (les deux conditions doivent être vraies)          |
 | `\|`      | ou (au moins une des deux conditions doit être vraie) |
 
-Par exemple, on ne garde dans l'exemple ci-dessous que les personnes qui ont entre 25 et 65 ans.
+Ici, notre ligne renvoie directement `TRUE` ou `FALSE` par ligne. C'est ce mécanisme qu'on utilisera plus bas avec `case_when()`, quand il n'y aura plus de `filter()`.
 
 ```{r}
-filter(ESS11_reduit, agea >= 25 & agea <= 65)
+table(ESS11_reduit$agea >= 25 & ESS11_reduit$agea <= 65)
 ```
 :::
 
@@ -507,7 +511,7 @@ freq(ESS11_FR$genre_r)
 La variable du diplôme est typiquement l'exemple d'une variable inexploitable en l'état.
 
 ```{r}
-val_labels(ESS11_FR$edlvdfr)
+head(val_labels(ESS11_FR$edlvdfr))
 ```
 
 Un tri à plat nous montre 26 modalités, plus les codes de non réponses et d'autres. Personne ne retient le sens de 26 catégories d'un coup d'oeil. De plus, certaines catégories ne comptent presque personne. Par exemple avec le DAEU (diplôme d'accès aux études universitaires) qui ne rassemble que quatre répondants. Les deux catégories de doctorant n'en comptent que 19 chacune, tout comme le diplpome d'aide soignante. A l'inverse, le CAP/BEP en rassemble 347 à lui seul.
@@ -544,11 +548,12 @@ ESS11_FR <- ESS11_FR |>
   mutate(edlvdfr_r = ifelse(edlvdfr == 5555, NA, edlvdfr))
 ```
 
-Détaillons la ligne :
+::: callout-note
+**Explication du recodage :**
 
 `mutate()` : comme vu précédemment, c'est la fonction qui permet de **créer ou de modifier** une colonne.
 
-`edlvdfr_r =` le nom de la nouvelle colonne. Le suffixe `_r`, pour "recodée" est une convention pratique : on conserve `edlvdfr` intacte, ce qui permet de revenir en arrière ou de vérifier le recodage. Autrement dit,
+`edlvdfr_r =` le nom de la nouvelle colonne. Le suffixe `_r`, pour "recodée" est une convention pratique : on conserve `edlvdfr` intacte, ce qui permet de revenir en arrière ou de vérifier le recodage.
 
 `ifelse(condition, valeur_si_vrai, valeur_si_faux)` est une fonction de test, qui prend toujours trois arguments dans cet ordre. Elle examine pour chaque ligne du tableau, une par une, et retourne l'un ou l'autre des deux résultats selon le cas.
 
@@ -557,6 +562,7 @@ Détaillons la ligne :
 `NA` : est le deuxième argument, donc la valeur retournée si la condition est vraie. Si une des lignes contient `5555` pour la variable `edlvdfr`, dans ce cas elle devient `NA`, c'est-à-dire une valeur manquante, plutôt qu'un nombre.
 
 `edlvdfr`: est le troisième argument, donc la valeur retournée si la condition est fausse. Si la valeur d'origine n'est pas `5555`, on la garde telle quelle, inchangée.
+:::
 
 ### Regrouper les modalités en trois catégories
 
@@ -573,7 +579,8 @@ ESS11_FR <- ESS11_FR |>
   )
 ```
 
-Détaillons notre recodage.
+::: callout-note
+**Explication du recodage :**
 
 `diplome` : est le nom de la nouvelle variable qu'on va créer.
 
@@ -586,8 +593,9 @@ Détaillons notre recodage.
 `edlvdfr_r >= 7 & edlvdfr_r <= 16` combine deux conditions avec `&`, qui signifie « et ». Il faut que les deux soient vraies simultanément : la valeur doit être à la fois supérieure ou égale à 7 **et** inférieure ou égale à 16.
 
 `"Inférieur au Bac"`, `"Bac à Bac +2"` et `"Bac +3 et au delà"` sont les modalités attribuées à droite du tilde, dès lors que la condition à gauche est vraie.
+:::
 
-### Ordonner les catégories : 
+### Ordonner les catégories :
 
 Il faut maintenant ordonner ses modalités. R trie automatiquement par ordre alphabétique : on se trouve donc avec "Bac +3 et au delà" en premier et "Inférieur au Bac" en dernier.
 
@@ -617,7 +625,7 @@ Les deux fonctions produisent le même résultat (un facteur) mais elles ne part
 `factor()`, la fonction de base de R, s'utilise quand cette correspondance n'existe pas ou plus. C'est le cas ici : `diplome` vient d'être créée par `case_when()`, elle contient déjà du texte lisible ("Inférieur au Bac", etc.), mais R ne sait pas encore dans quel ordre ranger ces catégories. Il n'y a donc rien à convertir, seulement un ordre à fixer.
 :::
 
-### Tout recoder en une seule fois 
+### Tout recoder en une seule fois
 
 Nous avons décomposé les trois étapes du recodage. En pratique, elles s'écrivent dans un seul `mutate()`, qui accepte plusieurs arguments à la suite dès lors qu'ils sont séparés d'une virgule.
 
@@ -637,15 +645,181 @@ ESS11_FR <- ESS11_FR |>
 freq(ESS11_FR$diplome)
 ```
 
+::: callout-important
 #### **A retenir :**
 
-Un recodage prend donc en pratique cette forme ci-dessus :
+Un recodage en variable catégorielle prend donc en pratique cette forme ci-dessus :
 
 - Un première ligne qui **neutralise les valeurs** qu'on souhaite exclure en les plaçant en NA
 
 - Une deuxième ligne qui **regroupe les valeurs en catégories** interprétables.
 
 - Une dernière ligne qui **convertit le tout en factor** afin de créer des **niveaux ordonnés**.
+:::
+
+## Traiter une échelle numérique : l'âge
+
+L'exemple suivant nous permet de montrer d'autres manières de recoder ses données. On prend l'exemple de la variable numérique de l'âge. L'âge étant déjà un nombre, il nous suffit simplement de convertir l'habillage labellisé hérité de l'import en variable numérique. Pour cela, on utilise la fonction `as.numeric()`.
+
+```{r}
+ESS11_FR <- ESS11_FR |>
+  mutate(age = as.numeric(agea))
+```
+
+::: callout-note
+On n'oublie pas de regarder si des non réponses sont glisées dans nos modalités. Le cas échéant, on devrait les neutraliser, comme montré précédemment :
+
+```{r}
+ESS11_FR <- ESS11_FR |> 
+  mutate(agea_r = ifelse(agea == 999, NA, agea),
+         age = as.numeric(agea_r))
+
+```
+:::
+
+Contrairement à to_factor() qui convertissait vers des catégories, on convertir notre variable labellisée en nombres manipulables. On peut par exemple regarder la moyenne et la médiane, et les quartiles. Pour cela, on utilise respectivement les fonction `mean()`, `median()` , et `quantile()` :
+
+```{r}
+mean(ESS11_FR$age, na.rm = TRUE)
+median(ESS11_FR$age, na.rm = TRUE)
+quantile(ESS11_FR$age, na.rm = TRUE)
+```
+
+::: callout-note
+### Rappel : moyenne, médianne, quantiles. {.callout-note}
+
+On peut décrire une variable numérique de différentes manières :
+
+- **La moyenne** permet de mesurer la valeur autour de laquelle l'ensemble des observations se répartissent. Elle est calcuée en divisant la somme de toutes les valeurs par leur nombre. L'âge moyen des répondants français vaut 50,2 ans.
+
+- **La médiane** est la valeur qui sépare la population en deux moitiés égales. 50% des personnes sont au dessus, 50% des personnes sont en dessous. Ici l'âge médian des répondants est de 52 ans.
+
+- **Les quantiles** généralisent la médiane à d'autres nombres de part égales. On parle de **quartiles** pour quatre parts de 25%, de **déciles** pour dix parts de 10%, de **centiles** pour cent parts de 1%. Les trois quartiles d'âge des répondants français vallent respectivement 35, 52, et 65 ans.
+:::
+
+### L'âge comme variable catégorielle
+
+Traiter l'âge comme un nombre permet des moyennes, mais interdit les tris croisés : on ne croise pas une variable qui prend 75 valeurs différentes avec une autre. Pour comparer des groupes d'âge, il faut regrouper ses valeurs.
+
+#### **Première possibilité : des tranches d'âge définies à l'avance**
+
+C'est l'approche la plus courante. On fixe des bornes qui font sens socialement, indépendamment de la distribution observée. On choisit dans cet exemple cinq tranches d'âges.
+
+```{r}
+ESS11_FR <- ESS11_FR |>
+  mutate(
+    age_tranche = case_when(
+      age <= 24 ~ "15-24 ans",
+      age <= 34 ~ "25-34 ans",
+      age <= 49 ~ "35-49 ans",
+      age <= 64 ~ "50-64 ans",
+      age >= 65 ~ "65 ans et plus"
+    ),
+    age_tranche = factor(age_tranche,
+                         levels = c("15-24 ans", "25-34 ans", "35-49 ans",
+                                    "50-64 ans", "65 ans et plus"))
+  )
+
+freq(ESS11_FR$age_tranche)
+```
+
+::: callout-tip
+Lorsqu'on utilise `case_when()` , les conditions sont évaluées **dans l'ordre**, de haut en bas, et attribue à chaque individu la première condition qui est vraie.
+
+Il n'est donc pas nécessaire d'écrire `age >= 25 & age <= 34 ~ "25-34 ans"` pour la deuxième ligne dans la mesure où R sait que la condition de la première ligne `age <= 24 ~ "15-24 ans"` n'a pas été satisfaite.
+
+L'ordre des conditions est donc essentiel. Si on les écrivait dans un autre ordre, une condition pourrait être vraie trop tôt et la personne serait classée dans la mauvaise catégorie.
+:::
+
+#### **Seconde possibilité : découper en groupes d'effectifs égaux**
+
+On peut également découper notre variable en quantiles. Moins courant et intuitif pour l'âge, on ne le verra pas souvent appliqué à cette variable. On souhaite néanmoins montrer un exemple de recodage utilisant cette méthode, en l'occurence par quartiles :
+
+```{r}
+ESS11_FR <- ESS11_FR |>
+  mutate(
+    age_quartile = ntile(age, 4),
+    age_quartile = factor(age_quartile,
+                          levels = 1:4,
+                          labels = c("Q1", "Q2", "Q3", "Q4"))
+  )
+
+freq(ESS11_FR$age_quartile)
+```
+
+On utilise ici la fonction `ntile()` issue du package *dplyr*. On renseigne 4 pour créer nos quartiles, quatre groupes de taille égale. Comme ntile() renvoie des nombres bruts (1 à 4) que R ne reconnaît pas comme groupes distincts. On convertit donc notre variable numérique en factor, dans la mesure où nos quantiles sont des variables catégorielles. Enfin, contrairement à la variable du diplôme, on souhaite leur donner un nom. On ajoute donc `labels = c("Q1", "Q2", "Q3", "Q4")` pour attribuer à chacun de nos niveaux des noms de modalités spécifiques.
+
+# La pondération
+
+Nos variables sont propres. Reste une étape avant toute analyse, et c'est celle qui distingue une enquête d'un simple comptage.
+
+## Pourquoi pondérer
+
+Trois écarts séparent l'échantillon de la population.
+
+Les **probabilités de sélection** diffèrent selon les individus : selon le plan de sondage, une personne vivant seule et une personne dans un ménage de cinq n'ont pas la même chance d'être tirées au sort.
+
+Les **taux de réponse** varient selon les profils. Les personnes très diplômées, les retraités, les personnes intéressées par la politique répondent plus volontiers. Sans correction, l'échantillon les surreprésente.
+
+Pour une comparaison internationale, les **tailles d'échantillon ne sont pas proportionnelles aux populations** : 1 771 répondants en France, 1 248 en Slovénie, pour des populations sans commune mesure.
+
+## Les quatre variables de pondération
+
+| Variable | Rôle |
+|------------------------------------|------------------------------------|
+| `dweight` | Poids de sondage : corrige les probabilités de sélection inégales |
+| `pspwght` | Poids post-stratifié : corrige en plus la non-réponse |
+| `pweight` | Poids de population : rend les pays proportionnels à leur population |
+| `anweight` | Poids d'analyse, combinant les deux précédents. **À utiliser par défaut** |
+
+## Un tri à plat pondéré
+
+`freq()` n'a pas d'argument `weights` — c'est une erreur que j'ai propagée dans une version antérieure de ce kit. La fonction à utiliser pour un tri à plat pondéré est `wtd.table()`, qui accepte les poids, complétée d'un calcul de pourcentages :
+
+```{r}
+freq(ESS11_FR$diplome)
+```
+
+```{r}
+tab_pondere <- wtd.table(ESS11_FR$diplome, weights = ESS11_FR$anweight) 
+tab_pondere
+```
+
+```{r}
+round(100 * tab_pondere / sum(tab_pondere), 1)
+```
+
+`wtd.table()` renvoie les effectifs pondérés, pas des pourcentages : on les calcule nous-mêmes en divisant chaque effectif par leur somme, puis en multipliant par 100. `round(..., 1)` arrondit à une décimale pour la lisibilité.
+
+L'écart est net, et il va toujours dans le même sens : la version non pondérée surestime les diplômés. C'est la trace directe du fait que les personnes diplômées acceptent plus volontiers de répondre à une enquête.
+
+::: callout-important
+## La règle à retenir
+
+Tout pourcentage, toute moyenne, tout tableau destiné à être lu, cité ou publié doit être pondéré. Un résultat non pondéré décrit **l'échantillon obtenu** ; un résultat pondéré estime **la population**. Seul le second présente un intérêt.
+:::
+
+## `pspwght` ou `anweight` ?
+
+À l'intérieur d'un seul pays, `pweight` est une constante : les deux poids donnent exactement les mêmes pourcentages. La distinction n'apparaît qu'en additionnant plusieurs pays, où `pweight` évite qu'un répondant slovène pèse autant qu'un répondant allemand dans un résultat « européen ».
+
+En pratique : `anweight` par défaut, dans tous les cas.
+
+## Faut-il rescaler les poids ?
+
+```{r} sum(ESS11_fr$anweight) nrow(ESS11_fr)}
+```
+
+La somme des poids dépasse l'effectif réel, parce que `pweight` vaut environ 3,18 pour la France. Pour un pourcentage ou une moyenne, cela n'a **aucune importance** : ces statistiques sont des rapports de sommes pondérées, et toute constante multipliant tous les poids se simplifie.
+
+Deux situations justifient malgré tout un rescale : afficher une colonne d'effectifs qui ait un sens intuitif, et alimenter une fonction comme `lm()` qui interprète les poids comme des poids de précision. Le calcul consiste à diviser par la moyenne des poids :
+
+```{r} #| eval: false ESS11_fr <- ESS11_fr |>   mutate(anweight_r = anweight / mean(anweight))}
+```
+
+Plus simple encore sur un seul pays : `pspwght` somme déjà au nombre de répondants, par construction.
+
+AAA
 
 prend trois arguments, dans cet ordre. La condition, `edlvdfr == 5555` : est-ce que cette ligne vaut 5555 ? La valeur si vrai, `NA` : dans ce cas, on met une valeur manquante. La valeur si faux, `edlvdfr` : sinon, on garde la valeur d'origine, inchangée.
 
@@ -665,45 +839,3 @@ ESS11_FR <- ESS11_FR |>
 freq(ESS11_FR$diplome)
 
 ```
-
-### Neutraliser les non-réponses
-
-Le traitement des non réponses est essentielle dans toute analyse sur données d'enquête, et dont l'oubli produit les erreurs les plus importantes.
-
-Prenons notre variable de positionnement politique déclaré sur une échelle gauche/droite allant de 0 à 10. Calculons sa moyenne en France, avec la fonction `mean()` :
-
-```{r}
-mean(ESS11_FR$lrscale)
-
-```
-
-Comment est-ce possible ? Une échelle bornée à 10 ne peut pas dépasser 10. Pour comprendre cette erreur, faisons un tri à plat, comme appris précédemment avec la fonction `freq()` :
-
-```{r}
-freq(ESS11_FR$lrscale)
-```
-
-Les modalités de 0 à 10 sont de vraies réponses, mais 77 signifie "refus de répondre" et 88 "ne sait pas". Ces absences de réponses, concernant environ 11% des répondants français, sont codées en nombre. Il est donc important de systématiquement bien regarder le dictionnaire des codes et de faire un tri à plat sur nos variables d'intérêt avant d'interpréter quoi que ce soit.
-
-On doit donc remplacer ces nombres par NA, c'est à dire des valeurs manquantes reconnues par R. Pour cela, on utilise la fonction mutate
-
-```{r}
-ESS11_FR <- ESS11_FR |>
-  mutate(lrscale = ifelse(lrscale %in% c(77, 88, 99), NA, lrscale))
-```
-
-Décortiquons cette ligne :
-
-`ESS11_FR <- ESS11_FR|>` : on part de l'objet ESS11_FR et on le fait passer par le pipe. Le résultat final est réaffecté dans ce même nom. Il est essentiel de réassigner ses modifications à l'objet grâce la flèche. Sans cela, le recodage ne serait conservé nulle part.
-
-`mutate()` : c'est la fonction principale. Elle permet de créer ou de modifier une colonne. On lui donne un nom de colonne, un signe égal, et l'instruction qui calcule sa nouvelle valeur
-
-`lrscale =` : *à gauche du signe égal*. C'est le même nom que celui qu'on utilise à droite. Cela veut dire qu'on écrase l'ancienne valeur `lrscale` pour en faire une nouvelle. On aurait également pu créer une nouvelle variable, en écrivant par exemple `lr_scale_r = ifelse(lrscale ...)`. Nous aurions eu dans ce cas deux variables : `lrscale` la variable d'origine, et `lrscale_r` qui serait notre nouvelle variable recodée.
-
-`ifelse(condition, valeur_si_vrai, valeur_si_faux)` : la fonction de test, qui prend toujours trois arguments dans cet ordre. Elle examine pour chaque ligne du tableau, une par une, et retourne l'un ou l'autre des deux résultats selon le cas.
-
-`lrscale %in% c(77, 88, 99)` : est la condition, donc le premier argument. Nous avons vu l'utilisation de c() plus haut, qui crée un vecteur contenant ici trois valeurs : 77, 88 et 99. Le résultat renvoie un vrai ou faux pour chaque ligne : *est-ce que ma ligne contient ces trois valeurs, ou non ?*
-
-`NA` : est le deuxième argument, donc la valeur retournée si la condition est vraie. Si une des lignes contient 77, 88 ou 99 pour la variable `lrscale`, dans ce cas elle devient `NA`, c'est-à-dire une valeur manquante, plutôt qu'un nombre.
-
-`lrscale` : est le troisième argument, donc la valeur retournée si la condition est fausse. Si la valeur d'origine n'est ni 77, 88 ou 99, on la garde telle quelle, inchangée.
