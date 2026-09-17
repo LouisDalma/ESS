@@ -751,91 +751,48 @@ On utilise ici la fonction `ntile()` issue du package *dplyr*. On renseigne 4 po
 
 # La pondération
 
-Nos variables sont propres. Reste une étape avant toute analyse, et c'est celle qui distingue une enquête d'un simple comptage.
+## Pourquoi pondérer ?
 
-## Pourquoi pondérer
+Nous avons 1771 répondants français. L'ESS souhaite décrire l'ensemble des individus de 15 ans et plus résidant en France, c'est-à-dire à peu près 56 millions de personnes. Cet écart est immense, et il implique que chaque répondant représente un nombre différent de personnes non interrogées. C'est ce que la pondération va chercher à chiffrer.
 
-Trois écarts séparent l'échantillon de la population.
+### Le plan de sondage
 
-Les **probabilités de sélection** diffèrent selon les individus : selon le plan de sondage, une personne vivant seule et une personne dans un ménage de cinq n'ont pas la même chance d'être tirées au sort.
+On peut revenir à la manière dont l'échantillon est constitué. L'ESS impose un tirage aléatoire. Pour autant, cela ne veut pas dire que tout le monde a la même probabilité d'être interrogé. En France, l'INSEE fournit l'échantillon à partir du Fichier démographique sur les logements et les individus (Fidéli) qui effectue un tirage systématique sur fichier trié. Si cette méthode assure une très bonne sélection, ça peut-être moins le cas dans d'autres situations, par exemple quand un individu est situé à l'intérieur d'un ménage.
 
-Les **taux de réponse** varient selon les profils. Les personnes très diplômées, les retraités, les personnes intéressées par la politique répondent plus volontiers. Sans correction, l'échantillon les surreprésente.
+### La non-réponse
 
-Pour une comparaison internationale, les **tailles d'échantillon ne sont pas proportionnelles aux populations** : 1 771 répondants en France, 1 248 en Slovénie, pour des populations sans commune mesure.
+Une deuxième source d'écart va concerner la non-réponse. Les taux de réponse varient sans qu'on puisse le prévoir à l'avance : la correction se fait donc après coup, par comparaison avec des données extérieures connues sur quelques caractéristiques comme le sexe, l'âge, ou la profession. On ajuste les poids jusqu'à ce que la répartition pondérée de l'échantillon coïncide avec celle, de la population. On appelle cela le **calage sur marges**.
+
+### La taille des pays
+
+Les deux premiers écarts se corrigent à l'intérieur d'un pays. Le troisième n'apparaît qu'en les additionnant. L'ESS interroge un nombre comparable de répondants dans chaque pays, quelle que soit sa population réelle : additionner brutalement les échantillons donnerait le même poids à un habitant d'un petit pays qu'à un habitant d'un grand. Pour résoudre ce problème, on utilise des poids qui rapporte la population du pays au nombre de répondants du fichier : plus un pays a d'habitants pour un même nombre de répondants, plus chacun de ses répondants doit peser lourd pour représenter fidèlement sa population.
 
 ## Les quatre variables de pondération
+
+Pour corriger ces biais, la documentation de l'ESS fournit quatre variables de pondération
 
 | Variable | Rôle |
 |------------------------------------|------------------------------------|
 | `dweight` | Poids de sondage : corrige les probabilités de sélection inégales |
 | `pspwght` | Poids post-stratifié : corrige en plus la non-réponse |
 | `pweight` | Poids de population : rend les pays proportionnels à leur population |
-| `anweight` | Poids d'analyse, combinant les deux précédents. **À utiliser par défaut** |
-
-## Un tri à plat pondéré
-
-`freq()` n'a pas d'argument `weights` — c'est une erreur que j'ai propagée dans une version antérieure de ce kit. La fonction à utiliser pour un tri à plat pondéré est `wtd.table()`, qui accepte les poids, complétée d'un calcul de pourcentages :
-
-```{r}
-freq(ESS11_FR$diplome)
-```
-
-```{r}
-tab_pondere <- wtd.table(ESS11_FR$diplome, weights = ESS11_FR$anweight) 
-tab_pondere
-```
-
-```{r}
-round(100 * tab_pondere / sum(tab_pondere), 1)
-```
-
-`wtd.table()` renvoie les effectifs pondérés, pas des pourcentages : on les calcule nous-mêmes en divisant chaque effectif par leur somme, puis en multipliant par 100. `round(..., 1)` arrondit à une décimale pour la lisibilité.
-
-L'écart est net, et il va toujours dans le même sens : la version non pondérée surestime les diplômés. C'est la trace directe du fait que les personnes diplômées acceptent plus volontiers de répondre à une enquête.
+| `anweight` | Poids d'analyse, combinant les deux précédents |
 
 ::: callout-important
-## La règle à retenir
+### Quelle variable utiliser ? 
 
-Tout pourcentage, toute moyenne, tout tableau destiné à être lu, cité ou publié doit être pondéré. Un résultat non pondéré décrit **l'échantillon obtenu** ; un résultat pondéré estime **la population**. Seul le second présente un intérêt.
+Pour une analyse portant sur un seul pays, en l'occurence la France, **`pspwght` suffit** : cette variable corrige tout ce qui doit l'être, et son total correspond directement au nombre de répondants, sans artefact à expliquer. `pweight`, contenu dans `anweight` n'est qu'à utiliser quand on compare plusieurs pays européens.
 :::
 
-## `pspwght` ou `anweight` ?
+## Pondérer en pratique
 
-À l'intérieur d'un seul pays, `pweight` est une constante : les deux poids donnent exactement les mêmes pourcentages. La distinction n'apparaît qu'en additionnant plusieurs pays, où `pweight` évite qu'un répondant slovène pèse autant qu'un répondant allemand dans un résultat « européen ».
-
-En pratique : `anweight` par défaut, dans tous les cas.
-
-## Faut-il rescaler les poids ?
-
-```{r} sum(ESS11_fr$anweight) nrow(ESS11_fr)}
-```
-
-La somme des poids dépasse l'effectif réel, parce que `pweight` vaut environ 3,18 pour la France. Pour un pourcentage ou une moyenne, cela n'a **aucune importance** : ces statistiques sont des rapports de sommes pondérées, et toute constante multipliant tous les poids se simplifie.
-
-Deux situations justifient malgré tout un rescale : afficher une colonne d'effectifs qui ait un sens intuitif, et alimenter une fonction comme `lm()` qui interprète les poids comme des poids de précision. Le calcul consiste à diviser par la moyenne des poids :
-
-```{r} #| eval: false ESS11_fr <- ESS11_fr |>   mutate(anweight_r = anweight / mean(anweight))}
-```
-
-Plus simple encore sur un seul pays : `pspwght` somme déjà au nombre de répondants, par construction.
-
-AAA
-
-prend trois arguments, dans cet ordre. La condition, `edlvdfr == 5555` : est-ce que cette ligne vaut 5555 ? La valeur si vrai, `NA` : dans ce cas, on met une valeur manquante. La valeur si faux, `edlvdfr` : sinon, on garde la valeur d'origine, inchangée.
+Une manière pourrait consister dans un premier temps à simplement faire nos calculs sur données pondérées :
 
 ```{r}
-ESS11_FR <- ESS11_FR |>
-  mutate(
-    edlvdfr_r = ifelse(edlvdfr == 5555, NA, edlvdfr),
-    diplome = case_when(
-      edlvdfr_r <= 6                  ~ "Inférieur au Bac",
-      edlvdfr_r >= 7 & edlvdfr_r <= 16  ~ "Bac à Bac +2",
-      edlvdfr_r >= 17                 ~ "Bac +3 et au delà"
-    ),
-    diplome = factor(diplome,
-                     levels = c("Inférieur au Bac", "Bac à Bac +2", "Bac +3 et au delà"))
-  )
+wtd.table(ESS11_FR$diplome, weights = ESS11_FR$pspwght)
+```
 
-freq(ESS11_FR$diplome)
-
+```{r}
+class(ESS11_FR$pspwght)
+summary(ESS11_FR$pspwght)
 ```
