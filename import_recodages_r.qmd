@@ -780,9 +780,7 @@ Le format `.rds` est propre à R. Il conserve tout ce qu'on vient de construire 
 
 Pour recharger ces données dans un autre script, ou dans la page suivante :
 
-```{r} eval: false}
-ESS11_FR <- readRDS("01_Data/ESS11_FR_recode.rds")
-```
+`{r} eval: false} ESS11_FR <- readRDS("01_Data/ESS11_FR_recode.rds")`
 
 ::: callout-note
 ### Pourquoi c'est nécessaire ici
@@ -790,7 +788,7 @@ ESS11_FR <- readRDS("01_Data/ESS11_FR_recode.rds")
 Chaque document Quarto s'exécute dans une session R indépendante. Les objets créés dans cette page n'existent pas dans la suivante : sans cette sauvegarde, il faudrait réimporter le fichier `.sav` et refaire l'intégralité des recodages au début de chaque nouvelle page.
 :::
 
-# Où en sommes nous ? 
+# Où en sommes nous ?
 
 Récapitulons. Nous avons équipé R des packages nécessaires, importé un fichier labellisé et compris ce que ce format apporte, inspecté le contenu du jeu de données, réduit le tableau aux variables utiles, filtré la France, converti les variables labellisées en facteurs, et regroupé les variables trop détaillées en catégories interprétables.
 
@@ -802,7 +800,6 @@ Le jeu de données est désormais exploitable. La page suivante aborde la pondé
 
 Nous avons 1771 répondants français. L'ESS souhaite décrire l'ensemble des individus de 15 ans et plus résidant en France, c'est-à-dire à peu près 56 millions de personnes. Cet écart est immense, et il implique que chaque répondant représente un nombre différent de personnes non interrogées. C'est ce que la pondération va chercher à chiffrer.
 
-<<<<<<< HEAD
 ::: callout-important
 Tout pourcentage, toute moyenne, tout tableau destiné à être lu, cité ou publié doit être pondéré. Un résultat non pondéré décrit **l'échantillon obtenu** ; un résultat pondéré estime **la population**. Seul le second présente un intérêt.
 :::
@@ -831,7 +828,7 @@ Pour corriger ces biais, la documentation de l'ESS fournit quatre variables de p
 | `anweight` | Poids d'analyse, combinant les deux précédents |
 
 ::: callout-important
-### Quelle variable utiliser ? 
+### Quelle variable utiliser ?
 
 Pour une analyse portant sur un seul pays, en l'occurence la France, **`pspwght` suffit** : cette variable corrige tout ce qui doit l'être, et son total correspond directement au nombre de répondants, sans artefact à expliquer. `pweight`, contenu dans `anweight` n'est qu'à utiliser quand on compare plusieurs pays européens.
 :::
@@ -852,7 +849,7 @@ wtd.table() est une fonction également issue du package *questionr*. Contrairem
 
 On voit qu'on passe de 318 individus qui ont un diplôme inférieur au bac à 468. A l'inverse, on perd en individus ayant un Bac +3 et plus, passant de 464 à 388.
 
-###  Déclarer un plan de sondage
+### Déclarer un plan de sondage
 
 On souhaite aller un peu plus loin dans notre analyse :
 
