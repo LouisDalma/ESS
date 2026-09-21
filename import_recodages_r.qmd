@@ -29,24 +29,24 @@ Le `tidyverse` n'est pas un package unique. C'est en réalité une collection d'
 
 Ces deux packages travaillent ensemble sur les fichiers issus d'autres logiciels de statistiques.
 
-`haven` sait lire les formats SPSS (.sav), Stata (.dta) et SAS.
+`haven` sait lire les formats SPSS (`.sav`), Stata (`.dta`) et SAS.
 
 `labelled`, également développé par Joseph Larmarange, permet de manipuler ces données une fois importées. On pourra explorer les libellés, chercher une variable par mot clé, convertir les variables avant l'analyse.
 
 # Installer, puis charger
 
-D'abord, une distinction à garder en tête : l'installation et le chargement des packages sont deux étapes différentes. `install.packages()` télécharge le package sur l'ordinateur, tandis que `library()` active le package pour la session de travail en cours. Autrement dit, l'installation se fait une seule fois, tandis que le chargement doit se faire à chaque ouverture de votre session R.
+D'abord, une distinction à garder en tête : l'installation et le chargement des packages sont deux étapes différentes. `install.packages()` télécharge le package sur l'ordinateur, tandis que `library()` active le package pour la session de travail en cours. Autrement dit, l'installation se fait une seule fois, tandis que le chargement doit se faire à chaque ouverture de la session R.
 
 ::: callout-note
 ### Exécuter une commande
 
-On peut exécuter une commande au choix depuis la console ou dans son script. La console exécute immédiatement la commande sans conserver ce qui a été écrit. A l'inverse, le script conserve tout ce qu'on y écrit, mais n'exécute pas automatiquement les commandes. Il faudra placer son curseur sur la ligne qu'on souhaite exécuter, puis appuyer simultanément sur **CTRL** et **Entrée**.
+On peut exécuter une commande au choix depuis la console ou dans son script. La console exécute immédiatement la commande sans conserver ce qui a été écrit. A l'inverse, le script conserve tout ce qu'on y écrit, mais n'exécute pas automatiquement les commandes. Il faudra placer son curseur sur la ligne qu'on souhaite exécuter, puis appuyer simultanément sur **CTRL** et **Entrée** (**Command** et **Entrée** sur MacOS).
 
 On peut également sélectionner plusieurs lignes à la fois. Dans ce cas, elles s'éxécutent les unes après les autres, dans l'ordre où elles sont écrites.
 
 ### La structure d'une fonction :
 
-Basiquement, une fonction est une commande qui déclenche une action précise. Elle prend la structure suivante :
+Une fonction est une commande qui déclenche une action précise. Elle prend la structure suivante :
 
 `nom_fonction(argument_1, argument_2)`
 
@@ -747,7 +747,7 @@ ESS11_FR <- ESS11_FR |>
 freq(ESS11_FR$age_quartile)
 ```
 
-On utilise ici la fonction `ntile()` issue du package *dplyr*. On renseigne 4 pour créer nos quartiles, quatre groupes de taille égale. Comme ntile() renvoie des nombres bruts (1 à 4) que R ne reconnaît pas comme groupes distincts. On convertit donc notre variable numérique en factor, dans la mesure où nos quantiles sont des variables catégorielles. Enfin, contrairement à la variable du diplôme, on souhaite leur donner un nom. On ajoute donc `labels = c("Q1", "Q2", "Q3", "Q4")` pour attribuer à chacun de nos niveaux des noms de modalités spécifiques.
+On utilise ici la fonction `ntile()` issue du package *dplyr*. On renseigne `4` pour créer nos quartiles, quatre groupes de taille égale. Comme `ntile()` renvoie des nombres bruts (1 à 4) que R ne reconnaît pas comme groupes distincts. On convertit donc notre variable numérique en factor, dans la mesure où nos quantiles sont des variables catégorielles. Enfin, contrairement à la variable du diplôme, on souhaite leur donner un nom. On ajoute donc `labels = c("Q1", "Q2", "Q3", "Q4")` pour attribuer à chacun de nos niveaux des noms de modalités spécifiques.
 
 # Vérifier et sauvegarder ses recodages
 
@@ -821,7 +821,7 @@ Les deux premiers écarts se corrigent à l'intérieur d'un pays. Le troisième 
 Pour corriger ces biais, la documentation de l'ESS fournit quatre variables de pondération
 
 | Variable | Rôle |
-|------------------------------------|------------------------------------|
+|----|----|
 | `dweight` | Poids de sondage : corrige les probabilités de sélection inégales |
 | `pspwght` | Poids post-stratifié : corrige en plus la non-réponse |
 | `pweight` | Poids de population : rend les pays proportionnels à leur population |

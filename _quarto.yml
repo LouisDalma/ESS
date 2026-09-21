@@ -2,16 +2,18 @@ project:
   type: website
 
 website:
-  title: "Introduction au quanti avec l'ESS"
+  title: "Kits pédagogiques avec l'ESS"
   navbar:
     left:
       - href: index.qmd
-        text: Home
+        text: Accueil
       - about.qmd
       - text: "L'ESS"
         href: ess_pres.qmd
       - text: "Présentation de R et RStudio"
         href: r_presentation.qmd
+      - text: "Premiers pas sous RStudio"
+        href: premiers_pas_r.qmd
       - text: "Manipuler ses données"
         menu:
           - text: "L'import et le recodage des données"
