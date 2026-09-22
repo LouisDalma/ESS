@@ -5,14 +5,14 @@ author: "Louis Dalmazzo"
 
 Cette partie couvre les gestes fondamentaux du travail sur données quantitatives : équiper R, importer un fichier, inspecter ce qu'il contient, sélectionner ce dont on a besoin et recoder les variables pour les rendre exploitables. A la fin, les données seront prêtes pour l'analyse.
 
-# Equiper R
+# Les packages sous R
 
 Avant de commencer la manipulation de données, il faut équiper R des bons outils. R en base sait déjà faire beaucoup de choses : créer des tableaux, filtrer des lignes, calculer des statistiques, entre autre. Pour autant, le logiciel n'a pas vocation à tout savoir faire tout seul, et c'est bien normal. Aucun langage ne pourrait anticiper tous les besoin de tous ses utilisateurs, de la biologie à la sociologie.
 
 C'est là qu'interviennent les **packages**. On commence par une présentation de ceux que l'on va utiliser ici.
 
 ::: callout-important
-## Les packages
+## Qu'est-ce qu'un package ?
 
 Un package est une extension du langage R qui ajoute des fonction non présentes nativement, généralement écrites par des chercheurs ou des praticiens confrontés à un besoin que R base ne couvrait pas, puis mises à disposition de tous. Chaque package ajoute un outil précis, répondant à des besoins spécifiques. Aujourd'hui, la quasi totalité du travail statistique repose sur des packages, plutôt que sur R base.
 :::
@@ -780,10 +780,12 @@ Le format `.rds` est propre à R. Il conserve tout ce qu'on vient de construire 
 
 Pour recharger ces données dans un autre script, ou dans la page suivante :
 
-`{r} eval: false} ESS11_FR <- readRDS("01_Data/ESS11_FR_recode.rds")`
+```{r} eval: false}
+ESS11_FR <- readRDS("01_Data/ESS11_FR_recode.rds")
+```
 
 ::: callout-note
-### Pourquoi c'est nécessaire ici
+### Pourquoi cette manipulation est nécessaire ? 
 
 Chaque document Quarto s'exécute dans une session R indépendante. Les objets créés dans cette page n'existent pas dans la suivante : sans cette sauvegarde, il faudrait réimporter le fichier `.sav` et refaire l'intégralité des recodages au début de chaque nouvelle page.
 :::
@@ -821,7 +823,7 @@ Les deux premiers écarts se corrigent à l'intérieur d'un pays. Le troisième 
 Pour corriger ces biais, la documentation de l'ESS fournit quatre variables de pondération
 
 | Variable | Rôle |
-|----|----|
+|------------------------------------|------------------------------------|
 | `dweight` | Poids de sondage : corrige les probabilités de sélection inégales |
 | `pspwght` | Poids post-stratifié : corrige en plus la non-réponse |
 | `pweight` | Poids de population : rend les pays proportionnels à leur population |

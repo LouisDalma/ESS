@@ -3,31 +3,31 @@ title: "Premiers pas sous RStudio"
 author: "Louis Dalmazzo"
 ---
 
-Cette partie présente les briques élémentaires du langage R : exécuter une commande, écrire un script, créer des objets, manipuler des vecteurs, utiliser des fonctions et comprendre les messages que R renvoie. Ce sont les gestes sur lesquels repose tout le reste du site.
+Cette partie présentera les bases du langage R : exécuter une commande, écrire un script, créer des objets, manipuler des vecteurs, utiliser des fonction et comprendre les erreurs et messages de R. Ces bases sont essentielles pour comprendre le fonctionnement même du langage R.
 
-On suppose ici que R et RStudio sont installés, et qu'un projet RStudio a été créé, comme décrit dans la [page précédente](r_presentation.qmd). Aucun package ni aucun fichier de données n'est nécessaire : tout le code de cette page s'exécute tel quel, dès la première ouverture de RStudio.
+On suppose que R et RStudio sont installés, et qu'un projet RStudio a été créé, comme expliqué dans la [page précédente](r_presentation.qmd). Aucun package ni aucun fichier de données ne sont ici nécessaires.
 
-Les exemples reprennent volontairement la forme de variables de l'ESS (des codes pays à deux lettres, une échelle de bonheur allant de 0 à 10), mais les valeurs sont inventées. On passera aux vraies données dans la partie suivante.
+Les exemples qu'on utilisera prennent comme exemple certaines variables de l'ESS (codes des pays, échelle du bonheur par exemple), mais avec des valeurs pour l'instant factices. On utilisera les vraies données de l'ESS dans la partie suivante.
 
 ::: callout-note
 ## Lire les blocs de code de ce site
 
-Chaque bloc grisé contient du code R. Lorsqu'il est exécuté, il est suivi de ce que R affiche en retour. Une icône apparaît en haut à droite du bloc au survol de la souris, et permet de copier le code. Pour débuter, il est toutefois plus formateur de retaper les commandes soi-même : c'est en faisant des fautes de frappe qu'on apprend à lire les messages d'erreur.
+Chaque bloc grisé contient du code R, et est suivi de ce que R affiche en retour. Une icône apparaît en haut à droite du bloc au survol de la souris, et permet de copier le code. Pour débuter, il est toutefois plus formateur de retaper les commandes soi-même : c'est en faisant des fautes de frappe qu'on apprend à lire les messages d'erreur.
 :::
 
 # Écrire et exécuter du code
 
-## R comme une calculatrice
+## Le calcul sous R
 
-Ouvrez RStudio et cliquez dans la console, le panneau en bas à gauche. La dernière ligne commence par le symbole `>` : c'est l'**invite de commande**, qui signale que R attend une instruction. Tapez une opération, puis validez avec la touche Entrée :
+Une fois RStudio ouvert, on peut cliquer dans la console, c'est-à-dire le panneau dans la partie inférieure gauche. La dernière ligne commence par le symbole `>` : c'est l'**invite de commande**, qui signale que R attend une instruction. On tape une opération simple, suivie de la commande **Entrée** :
 
 ```{r}
 2 + 3
 ```
 
-R renvoie le résultat, précédé de `[1]`. Cette indication n'est pas le résultat lui-même : c'est un numéro de position, qui signale que la valeur affichée est le premier élément de la réponse. Elle prendra tout son sens un peu plus loin, avec les vecteurs.
+R renvoie le résultat, précédé de `[1]`. C'est le numéro de position, qui signale que la valeur affichée est le premier élément de la réponse.
 
-Les opérations arithmétiques usuelles s'écrivent ainsi :
+Les opérations arithmétiques habituelles s'écrivent ainsi de cette manière :
 
 | Opérateur | Opération      | Exemple | Résultat |
 |-----------|----------------|---------|----------|
@@ -37,14 +37,14 @@ Les opérations arithmétiques usuelles s'écrivent ainsi :
 | `/`       | division       | `7 / 2` | 3.5      |
 | `^`       | puissance      | `7 ^ 2` | 49       |
 
-R respecte les priorités de calcul habituelles, et les parenthèses permettent d'imposer un autre ordre :
+R respecte les priorités de calcul, et les parenthèses permettent d'imposer un autre ordre :
 
 ```{r}
 2 + 3 * 4
 (2 + 3) * 4
 ```
 
-**Le séparateur décimal est le point, jamais la virgule.** `3.5` est un nombre ; `3,5` produit une erreur, parce que la virgule a un autre rôle dans R : elle sépare les éléments d'une liste, ou les arguments d'une fonction, comme on le verra plus bas.
+Sous R, **le séparateur décimal est un point, jamais une virgule.** `3.5` est un nombre, tandis que `3,5` produit une erreur. En effet, sous R, la virgule per ===================================================================================================met entre autre de séparer les éléments d'une liste, ou les arguments d'une fonction.
 
 ```{r}
 #| eval: false
@@ -52,23 +52,21 @@ R respecte les priorités de calcul habituelles, et les parenthèses permettent 
 # Erreur : ',' inattendu(e) dans "3,"
 ```
 
-Les espaces, en revanche, ne changent rien au calcul : `2+3` et `2 + 3` donnent le même résultat. L'usage est d'entourer les opérateurs d'espaces, pour la lisibilité.
+Les espaces, en revanche, ne changent rien au calcul : `2+3` et `2 + 3` donnent le même résultat. L'usage est généralement de mettre des espaces entre les opérateurs.
 
 ::: callout-tip
-## Quand la console affiche `+` au lieu de `>`
+## Si la console affiche `+` au lieu de `>`
 
-Si vous validez une commande incomplète, par exemple `(2 + 3` sans parenthèse fermante, R ne renvoie ni résultat ni erreur : l'invite `>` est remplacée par un `+`, qui signifie que R attend la suite. Tapez ce qui manque (ici `)`), ou appuyez sur **Échap** pour abandonner la commande.
-
-Ce `+` n'a rien à voir avec l'addition. C'est la cause la plus fréquente d'une console qui « ne répond plus » : il manque presque toujours une parenthèse ou un guillemet fermant.
+Si on valide une commande incomplète, par exemple `(2 + 3` sans parenthèse à la fin, R ne renvoie ni résultat ni erreur : l'invite `>` est remplacée par un `+`, qui signifie que R attend le reste. Il suffit de taper ce qui manque (ici `)`), ou d'appuyer sur **Échap** pour abandonner.
 :::
 
 ## Écrire dans un script
 
 La console exécute immédiatement ce qu'on y tape, mais ne conserve rien. Pour garder une trace de son travail, on écrit dans un **script**, un simple fichier texte d'extension `.R` qui contient les commandes les unes à la suite des autres. En pratique, on travaille presque toujours dans le script, et on réserve la console aux essais rapides qu'on n'a pas besoin de garder.
 
-Pour créer un script : `File > New File > R Script`, ou **Ctrl + Maj + N** (**Cmd + Maj + N** sur macOS). Un onglet vide s'ouvre dans le panneau en haut à gauche : c'est l'éditeur. Enregistrez-le tout de suite avec **Ctrl + S** (**Cmd + S**), sous un nom explicite, par exemple `01_premiers_pas.R`, dans le dossier `02_Scripts/` de votre projet. Tant que des modifications ne sont pas enregistrées, le nom de l'onglet s'affiche en rouge.
+Pour créer un script : `File > New File > R Script`, ou **Ctrl + Maj + N** (**Cmd + Maj + N** sur macOS). Un onglet vide s'ouvre dans le panneau en haut à gauche : c'est l'éditeur. On l'enregistre tout de suite avec **Ctrl + S** (**Cmd + S**), sous un nom explicite, par exemple `01_premiers_pas.R`, dans le dossier `02_Scripts/` de son projet. Tant que des modifications ne sont pas enregistrées, le nom de l'onglet s'affiche en rouge.
 
-<!-- À COMPLÉTER : capture d'écran d'un script ouvert dans l'éditeur, avec le bouton Run entouré. -->
+![Exemple d'un script non sauvegardé](images/Capture d'écran 2026-09-22 092733.png)
 
 Écrire une commande dans le script ne l'exécute pas : le script n'est que du texte. Pour exécuter une ligne, placez le curseur n'importe où sur celle-ci, puis appuyez sur **Ctrl + Entrée** (**Cmd + Entrée** sur macOS), ou cliquez sur le bouton **Run**, en haut à droite de l'éditeur. La commande est envoyée dans la console, où elle s'affiche avec son résultat, et le curseur descend à la ligne suivante : en répétant Ctrl + Entrée, on exécute le script pas à pas.
 
@@ -123,7 +121,7 @@ resultat
 
 L'objet apparaît désormais dans le panneau *Environnement*, en haut à droite de RStudio. Ce panneau liste tout ce qui existe en mémoire : c'est le premier endroit à regarder pour vérifier qu'une commande a bien produit ce qu'on attendait.
 
-![L'objet "résultat" prenant la valeur 5 dans l'environnement](images/Capture d'écran 2026-09-21 151003.png)
+![L'objet "résultat" prenant la valeur 5 dans l'environnement](images/Capture%20d'écran%202026-09-21%20151003.png)
 
 ::: callout-tip
 ## Le raccourci qui fait gagner du temps
@@ -281,16 +279,16 @@ On reviendra plus bas sur les valeurs manquantes, et sur cet avertissement. `as.
 
 ## Rassembler plusieurs valeurs avec `c()`
 
-Jusqu'ici, chaque objet contenait une seule valeur. Une enquête en contient des milliers : l'âge de chaque répondant, son pays, sa réponse à chaque question. Pour rassembler plusieurs valeurs dans un même objet, on utilise la fonction `c()` (pour *combine*), en séparant les éléments par des virgules :
+Jusqu'à présent, chacun de nos objets crée ne contenait qu'une seule valeur. Or, une base de données quantitatives en contient des centaines, des milliers, voire des centaine de milliers. On prend pour exemple ici l'âge des répondants et leur pays d'origine. Pour rassembler plusieurs valeurs dans un même objet, on utilise la fonction `c()` (pour *combine*), en séparant les éléments par des virgules :
 
 ```{r}
 ages <- c(25, 42, 38, 61, 19, 72)
 pays <- c("FR", "DE", "FR", "ES", "DE", "FR")
 ```
 
-On obtient deux **vecteurs** : des suites ordonnées de valeurs. Imaginons qu'il s'agisse de l'âge et du pays de résidence des six répondants d'une petite enquête. Les deux vecteurs sont alignés, position par position : le premier répondant a 25 ans et vit en France, le quatrième a 61 ans et vit en Espagne. Retenez cette idée, elle prépare directement la notion de tableau.
+On obtient deux **vecteurs** : des suites ordonnées de valeurs. Imaginons qu'il s'agisse de l'âge et du pays de résidence des six répondants d'une petite enquête. Les deux vecteurs sont alignés, position par position : le premier répondant a 25 ans et vit en France, le quatrième a 61 ans et vit en Espagne.
 
-Remarquez au passage que `pays` contenait jusqu'ici `"France"` : il vient d'être écrasé, sans avertissement.
+On remarque par ailleurs que `pays` contenait jusqu'ici `"France"` : il vient d'être écrasé, sans avertissement.
 
 La fonction `length()` donne le nombre d'éléments d'un vecteur. Pour les suites de nombres entiers, l'opérateur `:` évite de tout écrire :
 
@@ -362,7 +360,7 @@ On obtient le pays des répondants de 40 ans ou plus. C'est, en miniature, ce qu
 
 # Les fonctions
 
-## L'anatomie d'une fonction
+## Qu'est-ce qu'une fonction ?
 
 On a déjà croisé plusieurs fonctions : `class()`, `as.numeric()`, `c()`, `length()`. Une fonction est une commande qui effectue une opération précise. Elle s'écrit toujours de la même manière : son nom, suivi de parenthèses qui contiennent les éléments sur lesquels elle doit travailler.
 
@@ -390,9 +388,9 @@ table(pays)
 
 Trois répondants résident en France, deux en Allemagne, un en Espagne. Remarquez l'ordre d'affichage : R range les valeurs textuelles par **ordre alphabétique**, qui n'est pas toujours l'ordre souhaité. On verra dans la partie suivante comment imposer l'ordre de son choix, et comment obtenir des pourcentages en plus des effectifs.
 
-## Compter avec des `TRUE` et des `FALSE`
+## Compter avec `TRUE` et `FALSE`
 
-Dans un calcul, R traite `TRUE` comme 1 et `FALSE` comme 0. Cette propriété, qui paraît anecdotique, rend deux services considérables :
+Dans un calcul, R compte `TRUE` comme un 1 et `FALSE` comme un 0. Cette propriété, est utile dans la mesure où elle nous permet de faire un décompte de nos répondants :
 
 ```{r}
 sum(ages >= 40)
@@ -445,7 +443,7 @@ round(mean(ages), digits = 1)
 
 Une telle ligne se lit **de l'intérieur vers l'extérieur** : R calcule d'abord `mean(ages)`, qui vaut 42,83333, puis passe ce résultat à `round()`, qui l'arrondit à une décimale. Avec deux fonctions, cela reste lisible. Au-delà, les parenthèses s'accumulent, et la lecture se fait à rebours de l'ordre des opérations. La partie suivante présentera le **pipe**, qui permet d'écrire les opérations dans l'ordre où elles s'exécutent.
 
-## Lire l'aide d'une fonction
+## Consulter l'aide d'une fonction
 
 La documentation d'une fonction s'ouvre avec un point d'interrogation, ou en plaçant le curseur sur son nom dans le script et en appuyant sur **F1** :
 
@@ -454,7 +452,7 @@ La documentation d'une fonction s'ouvre avec un point d'interrogation, ou en pla
 ?round
 ```
 
-La page s'affiche dans le panneau en bas à droite. Elle est souvent aride, mais trois rubriques suffisent la plupart du temps. **Usage** donne la liste des arguments, dans l'ordre, avec leurs valeurs par défaut : pour `round()`, on y lit que `digits` vaut `0` par défaut, ce qui explique l'arrondi à l'unité. **Arguments** décrit chacun d'eux. **Examples**, tout en bas, propose des exemples prêts à être exécutés, souvent la rubrique la plus utile pour débuter.
+La page s'affiche alors dans le panneau de la partie inférieure droite de RStudio. On distingue trois rubriques : **Usage** donne la liste des arguments, dans l'ordre, avec leurs valeurs par défaut : pour `round()`, on y lit que `digits` vaut `0` par défaut, ce qui explique l'arrondi à l'unité. **Arguments** décrit chacun d'eux. **Examples**, tout en bas, propose des exemples prêts à être exécutés, souvent la rubrique la plus utile pour débuter.
 
 RStudio aide aussi pendant la frappe : en tapant les premières lettres d'une fonction, puis la touche **Tab**, on obtient la liste des fonctions correspondantes ; à l'intérieur des parenthèses, la même touche affiche les arguments disponibles.
 
@@ -560,7 +558,7 @@ head(enquete, 3)   # premières lignes
 str(enquete)
 ```
 
-`str()` (pour *structure*) est sans doute la plus informative. Elle rappelle les dimensions du tableau, puis décrit chaque colonne sur une ligne : son nom, son type et ses premières valeurs. Les types y sont abrégés : `chr` pour le texte (*character*), `num` pour les nombres (*numeric*), `int` pour les nombres entiers (*integer*). On reviendra sur la distinction entre `num` et `int` dans la partie suivante ; elle n'a, en pratique, guère de conséquences.
+`str()` (pour *structure*) rappelle les dimensions du tableau, puis décrit chaque colonne sur une ligne : son nom, son type et ses premières valeurs. Les types sont abrégés : `chr` pour le texte (*character*), `num` pour les nombres (*numeric*), `int` pour les nombres entiers (*integer*). On reviendra sur la distinction entre `num` et `int` dans la partie suivante ; en pratique, les deux variables sont de même nature.
 
 ## Extraire une colonne avec `$`
 
@@ -591,7 +589,7 @@ Lisons cette ligne de l'intérieur vers l'extérieur. `enquete$pays == "FR"` rep
 Après avoir tapé `enquete$`, RStudio propose la liste des colonnes du tableau (la touche **Tab** la fait apparaître si elle ne s'affiche pas d'elle-même). Un réflexe précieux pour éviter les fautes de frappe, sur un fichier de 691 colonnes aux noms aussi peu mémorables que `edlvdfr` ou `hinctnta`.
 :::
 
-# Comprendre les messages de R
+# Les messages renvoyés par R
 
 ## Erreur, avertissement, message
 
@@ -640,68 +638,12 @@ moyenne(ages)
 4.  **Redémarrer R et relancer le script depuis le début.** Si l'erreur disparaît, elle venait d'un état particulier de la mémoire, et non du script lui-même.
 5.  **Chercher le message sur internet**, en le copiant tel quel. Les réponses sont bien plus nombreuses en anglais : pour obtenir les messages dans cette langue le temps d'une session, on peut exécuter `Sys.setLanguage("en")` dans la console.
 
-# Pour s'entraîner
-
-**Exercice 1.** Créez un vecteur `notes` contenant les valeurs 12, 15, 8, 17 et 11. Calculez leur moyenne arrondie à une décimale, puis le nombre et la proportion de notes supérieures ou égales à 10.
-
-::: {.callout-tip collapse="true"}
-## Correction
-
-```{r}
-notes <- c(12, 15, 8, 17, 11)
-round(mean(notes), digits = 1)
-sum(notes >= 10)
-mean(notes >= 10)
-```
-
-La moyenne vaut 12,6. Quatre notes sur cinq sont supérieures ou égales à 10, soit une proportion de 0,8.
-:::
-
-**Exercice 2.** Le code suivant ne renvoie pas la moyenne attendue. Trouvez les deux problèmes.
-
-```{r}
-#| eval: false
-Bonheur <- c(3, 8, NA, 7)
-mean(bonheur)
-```
-
-::: {.callout-tip collapse="true"}
-## Correction
-
-```{r}
-bonheur <- c(3, 8, NA, 7)
-mean(bonheur, na.rm = TRUE)
-```
-
-Premier problème : l'objet est créé sous le nom `Bonheur`, avec une majuscule, puis appelé `bonheur`. Dans une session vierge, R renvoie « objet 'bonheur' introuvable ». Mais si vous avez suivi cette page, un objet `bonheur` existe déjà en mémoire : R ne signale rien, et calcule la moyenne de l'ancien vecteur. C'est le cas le plus dangereux, puisque rien n'indique l'erreur, et c'est pour cette raison qu'il faut régulièrement relancer son script dans une session vierge.
-
-Second problème : le vecteur contient une valeur manquante. Sans `na.rm = TRUE`, la moyenne vaut `NA`. Une fois les deux problèmes corrigés, elle vaut 6.
-:::
-
-**Exercice 3.** Construisez un data frame `mini_ess` de quatre répondants, avec une colonne `pays` (FR, IT, FR, PL) et une colonne `age` (34, 51, 46, 29). Affichez sa structure, puis calculez l'âge moyen des répondants résidant en France.
-
-::: {.callout-tip collapse="true"}
-## Correction
-
-```{r}
-mini_ess <- data.frame(
-  pays = c("FR", "IT", "FR", "PL"),
-  age  = c(34, 51, 46, 29)
-)
-
-str(mini_ess)
-mean(mini_ess$age[mini_ess$pays == "FR"])
-```
-
-`mini_ess$pays == "FR"` repère les premier et troisième répondants ; les crochets ne gardent que leurs âges, 34 et 46, dont la moyenne vaut 40.
-:::
-
 # Où en sommes-nous ?
 
-Récapitulons. Nous savons désormais exécuter une commande depuis la console ou un script, commenter ce script, ranger des valeurs dans des objets et les modifier, distinguer les nombres, le texte et les valeurs logiques, rassembler des valeurs dans des vecteurs et en sélectionner une partie, utiliser des fonctions et leurs arguments, traiter les valeurs manquantes, construire et inspecter un petit tableau, et lire les messages que R renvoie.
+Pour résumer, nous avons appris à exécuter une commande puis la console ou un script, le commenter, ranger des valeurs dans des objets et les modifier, distinguer les nombres, le texte et les valeurs logiques, rassembler des valeurs dans des vecteurs et en sélectionner une partie, utiliser des fonctions et leurs arguments, traiter les valeurs manquantes, construire et inspecter un petit tableau, et lire les messages que R renvoie.
 
 | Écriture | Rôle |
-|--------------------------------------|----------------------------------|
+|------------------------------------|------------------------------------|
 | Ctrl + Entrée (Cmd + Entrée) | exécuter la ligne ou la sélection |
 | `#` | commenter une ligne |
 | `<-` | ranger une valeur dans un objet |

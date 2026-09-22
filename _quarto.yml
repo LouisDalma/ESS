@@ -14,15 +14,15 @@ website:
         href: r_presentation.qmd
       - text: "Premiers pas sous RStudio"
         href: premiers_pas_r.qmd
-      - text: "Manipuler ses données"
+      - text: "La manipulation des données"
         menu:
           - text: "L'import et le recodage des données"
             href: import_recodages_r.qmd
           - text: "La visualisation des données"
             href: visualisation_donnees.qmd
-          - text: "Traitement simple des données"
+          - text: "Le traitement simple des données"
             href: traitement_simple_r.qmd
-          - text: "Traitement avancé des données"
+          - text: "Le traitement avancé des données"
             href: traitement_avance_r.qmd
       - text: "Espace enseignants"
         href: espace_enseignant.qmd
