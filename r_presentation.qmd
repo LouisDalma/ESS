@@ -1,4 +1,341 @@
 ---
-title: "Une introduction au langage R et à l'interface RStudio"
+title: "Découvrir R et RStudio"
 author: "Louis Dalmazzo"
+bibliography: references.bib
+lang: fr
 ---
+
+Cette partie prépare l'environnement de travail. Elle présente les deux logiciels utilisés sur tout le site, R et RStudio, explique comment les installer et les configurer, puis comment organiser un dossier de travail qui accueillera les données de l'ESS et les scripts d'analyse.
+
+À la fin de cette page, vous disposerez de R et RStudio installés et réglés, d'un projet RStudio organisé en dossiers, et du fichier de la vague 11 de l'ESS rangé au bon endroit. C'est le point de départ exact supposé par la page suivante, [Premiers pas sous RStudio](premiers_pas_r.qmd), et par toutes celles qui viennent après.
+
+Les choix présentés ici ne sont pas propres à ce kit : ils reprennent les recommandations de guides de référence, cités au fil du texte et regroupés en fin de page. La page [Travailler de façon reproductible](bonnes_pratiques_r.qmd) explique plus en détail pourquoi ces recommandations existent.
+
+# Pourquoi R ?
+
+## Un langage conçu pour la statistique
+
+R est à la fois un langage de programmation et un logiciel conçus pour l'analyse statistique et la production de graphiques [@rcore]. Il a été créé au début des années 1990 par Ross Ihaka et Robert Gentleman, à l'université d'Auckland en Nouvelle-Zélande, pour enseigner la statistique [@ihaka1996]. Il s'inspire d'un langage plus ancien, S, développé aux laboratoires Bell ; son nom vient à la fois de cette filiation et de l'initiale de ses deux auteurs. La première version stable, R 1.0.0, date de février 2000. Le langage est aujourd'hui maintenu par une équipe internationale, la *R Core Team*.
+
+R est un **logiciel libre** : il est gratuit, son code source est public, et chacun peut l'utiliser, l'étudier et le redistribuer. Il fonctionne sous Windows, macOS et Linux.
+
+Surtout, R est extensible. N'importe qui peut écrire une extension, appelée **package**, et la proposer au CRAN (*Comprehensive R Archive Network*), le dépôt officiel du langage. En septembre 2026, le CRAN en compte près de 23 000, qui couvrent aussi bien l'économétrie que la cartographie, l'analyse textuelle ou, ce qui nous intéresse ici, le traitement des enquêtes. On apprendra à les installer dans la partie [L'import et le recodage des données](import_recodages_r.qmd).
+
+## Pourquoi passer par du code ?
+
+Passer par un langage de programmation plutôt que par un logiciel à menus déroulants demande un effort initial réel. Cet effort se justifie par trois avantages.
+
+**La reproductibilité.** Une analyse menée sous R laisse une trace écrite complète : le script. N'importe qui peut le relire, le vérifier, le relancer, et obtenir exactement les mêmes résultats. Un enchaînement de clics dans un tableur ne laisse aucune trace comparable : six mois plus tard, vous-même serez incapable de vous rappeler précisément quels filtres vous aviez appliqués. C'est pourquoi les guides de bonnes pratiques recommandent d'automatiser tout ce qui peut l'être [@gentzkow_shapiro2014] et d'éviter toute manipulation manuelle des données [@sandve2013]. Ce point fait l'objet d'une page entière : [Travailler de façon reproductible](bonnes_pratiques_r.qmd).
+
+**La répétabilité.** Une fois un traitement écrit, l'appliquer à un autre pays, à une autre vague ou à une autre variable demande de changer un mot. Refaire le même travail à la main dans un tableur demande de tout recommencer.
+
+**L'échelle.** Le fichier de la vague 11 de l'ESS compte 50 116 lignes et 691 colonnes. C'est un volume que les tableurs gèrent mal, et sur lequel la moindre erreur de manipulation passe inaperçue.
+
+::: callout-note
+## Et les autres logiciels ?
+
+R n'est pas le seul outil possible. SPSS, Stata et SAS, des logiciels commerciaux, restent très utilisés en sciences sociales, et le langage Python s'est largement diffusé dans l'analyse de données. Le plus important n'est d'ailleurs pas le logiciel choisi, mais le fait de travailler avec des scripts plutôt qu'avec des clics.
+
+Trois raisons justifient le choix de R pour ce kit. D'abord, il est gratuit, ce qui compte pour un public de lycéens, d'enseignants ou de journalistes. Ensuite, il dispose d'outils solides pour les données d'enquête : le package `survey`, développé par le statisticien Thomas Lumley [@lumley2004], permet de tenir compte du plan de sondage, et les packages `haven` et `labelled` lisent les fichiers SPSS de l'ESS en conservant leurs libellés. Enfin, il bénéficie de nombreuses ressources pédagogiques en français [@barnier_tidyverse; @larmarange_guider; @utilitr]. La statistique publique française a d'ailleurs fait ce choix : l'Insee a éteint son dernier serveur SAS fin 2025, au terme d'une migration de ses programmes vers R, Python et SQL [@cio2026].
+:::
+
+# R et RStudio : deux choses différentes
+
+C'est la première confusion à lever, parce qu'elle explique pourquoi il faut installer deux logiciels.
+
+**R** est le moteur : le langage lui-même et le programme qui exécute les calculs. Installé seul, il fonctionne, mais son interface est austère : une simple fenêtre où l'on tape des commandes.
+
+**RStudio** est un environnement de travail construit *par-dessus* R [@rstudio]. Il ne remplace pas R et ne sait rien calculer par lui-même : il fournit un éditeur de texte, un explorateur de fichiers, une visionneuse de graphiques, une aide intégrée et une interface pour Git. On parle d'**environnement de développement intégré** (IDE, pour *Integrated Development Environment*). RStudio est développé depuis 2011 par l'entreprise Posit, qui s'appelait RStudio jusqu'en 2022. Sa version de base est libre et gratuite.
+
+Une analogie : R est le moteur d'une voiture, RStudio est le tableau de bord et le volant. On peut faire tourner un moteur sans habitacle, mais on conduit nettement mieux avec.
+
+**Conséquence pratique : il faut installer R en premier, RStudio ensuite.** Au démarrage, RStudio cherche une installation de R sur l'ordinateur ; s'il n'en trouve aucune, il ne pourra rien exécuter.
+
+::: {.callout-tip collapse="true"}
+## Il existe d'autres environnements de travail
+
+RStudio n'est pas le seul environnement disponible pour R. *What They Forgot to Teach You About R* cite par exemple Visual Studio Code, ou les éditeurs Emacs et Vim [@bryan_wtf]. Posit développe aussi un environnement plus récent, Positron, construit sur la même base que Visual Studio Code, et dont la première version stable est parue en 2025. Posit s'est engagé à continuer de maintenir et de mettre à jour RStudio [@positron2025].
+
+Ce kit utilise RStudio, qui reste l'environnement le plus répandu dans l'enseignement de R, et celui sur lequel s'appuient la plupart des ressources citées sur ce site.
+:::
+
+# Installer son environnement
+
+## Étape 1 : installer R
+
+R se télécharge depuis le site du CRAN : [cran.r-project.org](https://cran.r-project.org/). La page d'accueil propose trois liens, selon le système d'exploitation.
+
+**Sous Windows**, cliquez sur *Download R for Windows*, puis sur *base*, puis sur le lien de téléchargement de la version la plus récente. Lancez le fichier téléchargé, et acceptez les options proposées par défaut. La page propose aussi un outil appelé *Rtools* : il ne sert qu'à compiler certains packages à partir de leur code source, et vous n'en aurez pas besoin pour ce kit.
+
+**Sous macOS**, cliquez sur *Download R for macOS*. La page propose deux installateurs, et il faut choisir celui qui correspond au processeur de votre ordinateur :
+
+-   le fichier dont le nom se termine par `arm64.pkg` est destiné aux Mac équipés d'une puce Apple (M1, M2, M3, M4...) ;
+-   le fichier dont le nom se termine par `x86_64.pkg` est destiné aux Mac équipés d'un processeur Intel.
+
+Pour savoir lequel vous avez, ouvrez le menu Pomme, puis *À propos de ce Mac* : la ligne *Puce* indique une puce Apple, la ligne *Processeur* un processeur Intel. Attention aussi à la version de macOS : depuis R 4.6, la version pour puce Apple nécessite macOS 14 (Sonoma) ou plus récent, et la version pour processeur Intel macOS 11 (Big Sur) ou plus récent [@mac_r].
+
+**Sous Linux**, R s'installe généralement avec le gestionnaire de paquets de la distribution. Le CRAN donne les instructions pour chacune d'elles.
+
+<!-- À COMPLÉTER : capture d'écran de la page de téléchargement du CRAN, avec le lien selon le système d'exploitation entouré. -->
+
+::: callout-note
+## Quelle version ?
+
+R suit un calendrier régulier : une nouvelle version intermédiaire paraît chaque printemps (4.5, puis 4.6...), suivie de quelques versions correctives dans l'année. Au moment où ces lignes sont écrites, en septembre 2026, la version la plus récente est R 4.6.1. Prenez simplement la dernière version proposée par le CRAN. Le seul impératif pour ce site est de disposer au moins de R 4.1, qui a introduit le pipe `|>` utilisé plus loin.
+:::
+
+## Étape 2 : installer RStudio
+
+RStudio se télécharge depuis le site de Posit : [posit.co/download/rstudio-desktop](https://posit.co/download/rstudio-desktop/). Choisissez **RStudio Desktop**, dans sa version libre et gratuite, qui suffit entièrement à l'usage décrit ici. Le site propose un installateur par système d'exploitation ; là encore, les options par défaut conviennent.
+
+<!-- À COMPLÉTER : capture d'écran de la page de téléchargement de RStudio Desktop. -->
+
+## Étape 3 : vérifier l'installation
+
+Une fois les deux logiciels installés, votre ordinateur compte deux nouvelles applications : R et RStudio. **Ouvrez toujours RStudio**, jamais R directement. C'est une confusion fréquente au début : l'application R seule ouvre la fenêtre austère évoquée plus haut.
+
+Au lancement, RStudio affiche dans la console, en bas à gauche, un texte d'accueil dont la première ligne indique la version de R qu'il a trouvée. Si ce texte apparaît, l'installation a fonctionné. On peut aussi demander la version de R avec la commande suivante, à taper dans la console puis à valider avec Entrée :
+
+```{r}
+R.version.string
+```
+
+La sortie ci-dessus correspond à l'ordinateur sur lequel cette page a été générée ; sur le vôtre, elle indiquera la version que vous venez d'installer. C'est votre première commande R : la page suivante expliquera en détail ce qui vient de se passer.
+
+## Une alternative sans installation
+
+Si vous ne pouvez rien installer sur votre machine, par exemple sur un ordinateur d'établissement scolaire, deux solutions permettent d'utiliser RStudio directement dans un navigateur web.
+
+**Posit Cloud** ([posit.cloud](https://posit.cloud/)) propose un compte gratuit. L'offre gratuite limite le nombre d'heures de calcul par mois et la mémoire disponible : c'est suffisant pour les premiers exercices, mais contraignant pour travailler sur le fichier complet de l'ESS. Les conditions exactes sont détaillées sur le site.
+
+**Le SSP Cloud** ([datalab.sspcloud.fr](https://datalab.sspcloud.fr/)), plateforme développée par l'Insee, propose gratuitement RStudio et d'autres outils dans un navigateur, avec davantage de ressources. Il est réservé aux agents du service public et aux élèves des écoles de statistique liées à l'Insee [@sspcloud].
+
+## Mettre à jour R
+
+RStudio se met à jour indépendamment de R, et signale lui-même quand une nouvelle version est disponible. R, en revanche, ne se met pas à jour tout seul : il faut télécharger et installer la nouvelle version depuis le CRAN, comme lors de la première installation. *What They Forgot to Teach You About R* consacre un chapitre à cette maintenance [@bryan_wtf].
+
+Retenez un point pratique : après le passage à une nouvelle version intermédiaire (de 4.5 à 4.6, par exemple), les packages doivent être réinstallés. Il n'est donc pas utile de changer de version en plein milieu d'un projet, sauf nécessité. Une mise à jour par an, au moment de commencer un nouveau travail, est un bon rythme.
+
+# Visite de l'interface
+
+Au premier lancement, RStudio affiche trois panneaux ; un quatrième apparaît dès l'ouverture d'un fichier.
+
+**L'éditeur** (en haut à gauche) est l'endroit où l'on écrit et enregistre ses scripts. C'est là que se fait l'essentiel du travail.
+
+**La console** (en bas à gauche) est le lieu d'exécution. Les commandes s'y affichent au moment où elles tournent, suivies de leurs résultats. On peut y taper directement des commandes, mais elles ne seront pas enregistrées.
+
+**L'environnement** (en haut à droite) liste les objets présents en mémoire : les jeux de données importés, les variables créées. C'est le premier endroit à regarder pour vérifier qu'un import a fonctionné. Le même panneau contient un onglet *History*, qui garde la liste des dernières commandes exécutées.
+
+**Les fichiers, graphiques et l'aide** (en bas à droite) regroupent plusieurs onglets : *Files*, l'explorateur du dossier de travail ; *Plots*, où s'affichent les graphiques ; *Packages*, la liste des packages installés ; *Help*, la documentation ; et *Viewer*, qui affiche les contenus web, comme certains tableaux ou aperçus de documents.
+
+<!-- À COMPLÉTER : capture d'écran de l'interface complète de RStudio, avec les quatre panneaux annotés. -->
+
+La disposition des panneaux se modifie dans `Tools > Global Options > Pane Layout`, mais la disposition par défaut est celle qu'utilisent la plupart des tutoriels, y compris celui-ci.
+
+::: callout-note
+## RStudio est en anglais
+
+L'interface de RStudio n'existe qu'en anglais : les menus sont donc désignés en anglais sur tout ce site, par exemple `File > New Project`. Les messages de R, eux, s'affichent généralement dans la langue de votre système d'exploitation, comme on le verra dans la page suivante.
+:::
+
+# Configurer RStudio une fois pour toutes
+
+Quelques réglages, à faire une seule fois après l'installation, évitent bien des problèmes par la suite. Ils se trouvent tous dans le menu `Tools > Global Options`. Cliquez sur **OK** ou **Apply** après chaque modification.
+
+<!-- À COMPLÉTER : capture d'écran de la fenêtre Global Options, onglet General, avec les deux options entourées. -->
+
+## Ne pas sauvegarder la mémoire
+
+Dans l'onglet **General**, décochez **Restore .RData into workspace at startup**, et réglez **Save workspace to .RData on exit** sur **Never**.
+
+Par défaut, RStudio propose à chaque fermeture d'enregistrer tous les objets présents en mémoire dans un fichier `.RData`, puis les recharge à l'ouverture suivante. C'est confortable, mais c'est un piège : on croit que le script produit les objets, alors qu'ils proviennent en réalité d'une session précédente, et le jour où le script est lancé sur un autre ordinateur, il ne fonctionne plus. Ce réglage est recommandé, dans des termes presque identiques, par l'ensemble des guides de référence [@bryan_wtf; @wickham2023r4ds; @barnier_tidyverse; @utilitr]. La page [Travailler de façon reproductible](bonnes_pratiques_r.qmd) en détaille les raisons.
+
+## Utiliser le pipe natif
+
+Dans l'onglet **Code**, sous-onglet **Editing**, cochez **Use native pipe operator, \|\> (requires R 4.1+)**.
+
+Le pipe est un opérateur qu'on découvrira dans la partie [L'import et le recodage des données](import_recodages_r.qmd). RStudio propose un raccourci pour le taper, **Ctrl + Maj + M** (**Cmd + Maj + M** sur macOS). Sans ce réglage, le raccourci insère l'ancienne notation `%>%` ; avec lui, il insère `|>`, la notation intégrée à R et utilisée sur tout ce site.
+
+## Enregistrer les fichiers en UTF-8
+
+Dans l'onglet **Code**, sous-onglet **Saving**, vérifiez que **Default text encoding** est réglé sur **UTF-8**. Si ce n'est pas le cas, cliquez sur **Change** et choisissez UTF-8.
+
+L'encodage est la manière dont un fichier texte stocke les caractères, en particulier les lettres accentuées. Un script enregistré dans un encodage et relu dans un autre affiche des caractères illisibles à la place des accents, par exemple dans les commentaires ou les libellés. UTF-8 permet de représenter n'importe quel caractère, et c'est le choix recommandé en cas de doute [@posit_encoding]. C'est aussi l'encodage utilisé par défaut par R sous Windows depuis la version 4.2 [@kalibera2022]. Ce réglage compte particulièrement si vous travaillez sur plusieurs ordinateurs, par exemple sous Windows au bureau et sous macOS chez vous.
+
+## Quelques réglages de confort
+
+Les autres réglages relèvent du goût personnel. Deux méritent d'être signalés :
+
+-   dans **Appearance**, on peut choisir la taille de police et le thème de couleur de l'éditeur, par exemple un thème sombre ;
+-   dans **Code**, sous-onglet **Display**, l'option **Use rainbow parentheses** colore chaque paire de parenthèses d'une couleur différente, ce qui aide beaucoup à repérer une parenthèse oubliée.
+
+# Organiser son dossier de travail
+
+## Le projet RStudio : une habitude à prendre tout de suite
+
+Avant d'écrire la moindre ligne de code, on crée un **projet RStudio**. Ce n'est pas une formalité : c'est la pratique recommandée par tous les guides cités sur ce site [@bryan_wtf; @wickham2023r4ds; @barnier_tidyverse; @utilitr].
+
+Un projet fixe le **dossier de travail** : le point de référence à partir duquel R interprète tous les chemins de fichiers. Concrètement, cela permet d'écrire :
+
+```{r}
+#| eval: false
+read_sav("01_Data/ESS11e04_2.sav")
+```
+
+plutôt que :
+
+```{r}
+#| eval: false
+read_sav("C:/Users/votre_nom/Documents/un_dossier/un_autre/01_Data/ESS11e04_2.sav")
+```
+
+La première écriture est un **chemin relatif** : il part du dossier du projet. Elle fonctionnera sur n'importe quelle machine où le projet est copié. La seconde est un **chemin absolu** : il part de la racine du disque, et ne fonctionnera que sur votre ordinateur, jusqu'au jour où vous déplacerez le dossier. Pour un site dont l'objectif est justement la reproductibilité, c'est un point non négociable.
+
+Le principe est simple : **un projet, un dossier, une analyse**. Tout ce qui concerne ce travail (données, scripts, graphiques, notes) se trouve dans ce dossier, et nulle part ailleurs [@bryan_wtf].
+
+## Où ranger ses projets ?
+
+Il est commode de réunir tous ses projets R dans un même dossier parent, par exemple `Documents/Projets_R/`. Deux précautions :
+
+-   **évitez les dossiers temporaires**, comme le Bureau ou le dossier des Téléchargements, qu'on a tendance à vider ;
+-   **évitez les espaces et les accents dans le chemin**, pour le nom du projet comme pour les dossiers qui le contiennent. Ils peuvent poser problème avec certains outils, en particulier ceux qui s'utilisent en ligne de commande, comme Git. Sous Windows, vérifiez en particulier le chemin de votre dossier Documents : lorsqu'il est synchronisé avec OneDrive, il passe souvent par un dossier nommé `OneDrive - Nom de l'organisation`, qui contient des espaces.
+
+Ce sont les mêmes règles que pour nommer ses fichiers, présentées dans la page [Travailler de façon reproductible](bonnes_pratiques_r.qmd).
+
+## Créer le projet
+
+Dans RStudio :
+
+1.  ouvrez le menu `File > New Project...` ;
+2.  choisissez **New Directory**, puis **New Project** ;
+3.  dans **Directory name**, donnez un nom au projet, par exemple `kit_ess` ;
+4.  dans **Create project as subdirectory of**, cliquez sur **Browse...** et choisissez le dossier parent, par exemple `Documents/Projets_R/` ;
+5.  laissez décochées les options **Create a git repository** (qui n'apparaît que si Git est installé) et **Use renv with this project** : ces outils sont présentés dans la page [Travailler de façon reproductible](bonnes_pratiques_r.qmd), et ne sont pas nécessaires pour commencer ;
+6.  cliquez sur **Create Project**.
+
+<!-- À COMPLÉTER : capture d'écran de la fenêtre New Project Wizard, étape "Create New Project", avec les champs remplis. -->
+
+RStudio redémarre alors dans le projet. Trois indices permettent de le vérifier : le nom du projet s'affiche en haut à droite de la fenêtre ; l'onglet *Files*, en bas à droite, montre le contenu du nouveau dossier ; et ce dossier contient un fichier `kit_ess.Rproj`. Ce petit fichier est le marqueur du projet : c'est lui qu'on ouvrira pour reprendre le travail. RStudio crée aussi un dossier caché, `.Rproj.user`, dans lequel il range ses réglages internes : il n'y a pas à y toucher.
+
+## Créer les dossiers
+
+On organise ensuite le projet en quelques dossiers, un par type de fichier. Dans l'onglet *Files*, cliquez sur le bouton **New Folder**, et créez successivement les trois dossiers suivants :
+
+```
+kit_ess/
+├── kit_ess.Rproj
+├── 01_Data/          ← les fichiers de données
+├── 02_Scripts/       ← les scripts d'analyse
+└── 03_Sorties/       ← les graphiques et tableaux exportés
+```
+
+Cette organisation suit une recommandation constante des guides de bonnes pratiques : séparer les dossiers selon leur fonction, et en particulier séparer les fichiers d'entrée (les données) des fichiers de sortie (les résultats) [@gentzkow_shapiro2014; @wilson2017]. Les numéros en tête de nom ne sont pas décoratifs : ils garantissent que les dossiers s'affichent dans l'ordre logique du travail, et non par ordre alphabétique.
+
+C'est l'organisation minimale utilisée dans tout ce kit. Pour un projet plus important, la page [Travailler de façon reproductible](bonnes_pratiques_r.qmd) propose une version plus complète.
+
+## Ranger les données de l'ESS
+
+La page [Comprendre l'ESS](ess_pres.qmd) explique comment créer un compte sur le portail de l'ESS et télécharger les données. Pour suivre ce kit, téléchargez le fichier intégré de la vague 11, au format SPSS (`.sav`). Si le téléchargement prend la forme d'une archive compressée (`.zip`), décompressez-la. Placez ensuite le fichier `ESS11e04_2.sav` dans le dossier `01_Data/` de votre projet.
+
+Deux règles, dès maintenant :
+
+-   **ne renommez pas le fichier.** Son nom indique l'édition des données : `e04_2` signifie édition 4.2. C'est une information essentielle pour la reproductibilité, puisque l'ESS publie régulièrement des éditions corrigées de ses fichiers ;
+-   **ne modifiez jamais ce fichier.** Ne l'ouvrez pas dans un tableur pour le corriger ou l'alléger : toutes les transformations se feront dans le code, qui partira toujours de ce fichier d'origine [@wilson2017; @sandve2013].
+
+Le codebook et le questionnaire, disponibles sur le portail, peuvent être rangés dans le même dossier : ils serviront tout au long du travail.
+
+## Rouvrir son projet
+
+Pour reprendre le travail un autre jour, il faut **toujours ouvrir le projet**, et non un script isolé. Trois façons de le faire :
+
+-   double-cliquer sur le fichier `kit_ess.Rproj`, depuis l'explorateur de fichiers ;
+-   dans RStudio, passer par `File > Open Project...` ou `File > Recent Projects` ;
+-   cliquer sur le nom du projet, en haut à droite de RStudio, qui affiche la liste des projets récents.
+
+Si l'on ouvre directement un script par un double-clic, RStudio démarre sans projet, avec un autre dossier de travail : les chemins relatifs ne fonctionnent plus, et R répond qu'il ne trouve pas le fichier de données. En cas de doute, le nom du projet affiché en haut à droite, ou la commande `getwd()` (*get working directory*), indique le dossier de travail en cours :
+
+```{r}
+#| eval: false
+getwd()
+# [1] "C:/Users/votre_nom/Documents/Projets_R/kit_ess"
+```
+
+::: callout-warning
+## Et `setwd()` ?
+
+On rencontre souvent, en tête de scripts, une commande `setwd()` suivie d'un chemin absolu, qui change le dossier de travail. C'est précisément ce que le projet RStudio rend inutile, et c'est l'une des pratiques les plus unanimement déconseillées [@bryan2017workflow; @bryan_wtf] : un tel script ne fonctionne que sur l'ordinateur de son auteur.
+:::
+
+# Console, script ou document Quarto ?
+
+Il existe trois façons d'écrire du code, pour trois usages différents.
+
+**La console** convient aux essais rapides et jetables : vérifier le contenu d'une variable, tester une commande. Rien n'est conservé.
+
+**Le script** (fichier `.R`) est un fichier texte qui contient uniquement du code et des commentaires. C'est le format de travail standard pour une analyse : on y écrit tout ce qui doit être conservé, et on l'enregistre dans le dossier `02_Scripts/`. La page suivante montre comment créer un script et l'exécuter.
+
+**Le document Quarto** (fichier `.qmd`) mélange texte rédigé et blocs de code exécutables, et produit un document final (page web, PDF, document Word) contenant à la fois les explications, le code et les résultats [@allaire_quarto]. Les versions récentes de RStudio intègrent Quarto : il n'y a rien à installer de plus. C'est le format utilisé pour construire ce site, comme de nombreux guides cités ici, et le plus adapté à un usage pédagogique : le lecteur voit le raisonnement, le code et le résultat au même endroit.
+
+# Trouver de l'aide
+
+La documentation de n'importe quelle fonction s'ouvre en tapant un point d'interrogation suivi de son nom :
+
+```{r}
+#| eval: false
+?read.csv
+```
+
+La page s'affiche dans le panneau d'aide, en bas à droite. Elle est souvent aride, mais sa structure est constante : description, liste des arguments, valeur retournée, et, le plus utile pour débuter, des exemples exécutables à la toute fin. La page [Premiers pas](premiers_pas_r.qmd) revient sur la lecture de cette aide.
+
+Au-delà de la documentation intégrée :
+
+-   le menu `Help > Cheat Sheets` donne accès aux **aide-mémoire** de Posit, des fiches de une ou deux pages qui résument les fonctions principales d'un package ;
+-   les manuels en ligne cités sur ce site, en particulier *guide-R* [@larmarange_guider] et l'*Introduction à R et au tidyverse* [@barnier_tidyverse] en français, ou *R for Data Science* [@wickham2023r4ds] en anglais, couvrent l'essentiel des besoins courants ;
+-   face à un message d'erreur, le copier tel quel dans un moteur de recherche donne presque toujours des réponses, en particulier sur le forum de la communauté Posit ou sur Stack Overflow.
+
+# Citer R et ses packages
+
+Utiliser un logiciel dans un travail publié implique de le citer, au même titre qu'un article ou une base de données. C'est une question de reconnaissance envers ceux qui le développent, souvent bénévolement, mais aussi de reproductibilité : la citation précise la version utilisée.
+
+R fournit lui-même la référence à utiliser, grâce à la fonction `citation()` :
+
+```{r}
+citation()
+```
+
+La sortie donne la référence sous forme de texte, mais aussi sous forme d'entrée BibTeX, prête à être copiée dans une bibliographie LaTeX ou dans le fichier de références d'un document Quarto. L'année et la version dépendent de l'installation : la sortie ci-dessus est celle de l'ordinateur qui a généré cette page.
+
+La même fonction donne la référence d'un package, en indiquant son nom entre guillemets :
+
+```{r}
+#| eval: false
+citation("questionr")
+```
+
+Pour RStudio, la commande `RStudio.Version()`, à exécuter dans la console de RStudio, renvoie la version installée et la citation correspondante.
+
+# Avant de passer à la suite
+
+Vérifiez que tout est en place :
+
+-   [ ] R est installé, et `R.version.string` renvoie sa version dans la console.
+-   [ ] RStudio s'ouvre et affiche la console de R.
+-   [ ] Dans `Tools > Global Options`, le fichier `.RData` n'est ni sauvegardé ni rechargé, le pipe natif `|>` est activé, et l'encodage par défaut est UTF-8.
+-   [ ] Un projet `kit_ess` a été créé, et son nom s'affiche en haut à droite de RStudio.
+-   [ ] Le projet contient les dossiers `01_Data/`, `02_Scripts/` et `03_Sorties/`.
+-   [ ] Le fichier `ESS11e04_2.sav` se trouve dans `01_Data/`, sans avoir été renommé ni modifié.
+
+Tout est prêt. La page suivante, [Premiers pas sous RStudio](premiers_pas_r.qmd), commence à écrire du code.
+
+# Pour aller plus loin
+
+-   *What They Forgot to Teach You About R* [@bryan_wtf] consacre plusieurs chapitres à ce qui a été vu ici : l'installation et la maintenance de R, et le travail organisé en projets.
+-   *R for Data Science* [@wickham2023r4ds], dans son chapitre « Workflow: scripts and projects », présente les projets RStudio et les réglages recommandés.
+-   L'*Introduction à R et au tidyverse* [@barnier_tidyverse], dans son chapitre « Organiser ses scripts », couvre les projets RStudio en français.
+-   La documentation *utilitR* [@utilitr] consacre une fiche à l'utilisation des projets RStudio.
+-   La page [Travailler de façon reproductible](bonnes_pratiques_r.qmd) de ce site prolonge ces recommandations.
+
+# Références
+
+::: {#refs}
+:::

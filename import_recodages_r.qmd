@@ -785,7 +785,7 @@ ESS11_FR <- readRDS("01_Data/ESS11_FR_recode.rds")
 ```
 
 ::: callout-note
-### Pourquoi cette manipulation est nécessaire ? 
+### Pourquoi cette manipulation est nécessaire ?
 
 Chaque document Quarto s'exécute dans une session R indépendante. Les objets créés dans cette page n'existent pas dans la suivante : sans cette sauvegarde, il faudrait réimporter le fichier `.sav` et refaire l'intégralité des recodages au début de chaque nouvelle page.
 :::

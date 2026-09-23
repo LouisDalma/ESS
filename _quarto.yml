@@ -28,7 +28,8 @@ website:
         href: espace_enseignant.qmd
       - text: "Espace journalistes"
         href: espace_journaliste.qmd
-        
+      - text: "Guide des bonnes pratiques"
+        href: bonnes_pratiques_r.qmd       
 
 format:
   html:

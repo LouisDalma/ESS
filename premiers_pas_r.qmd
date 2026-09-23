@@ -1,25 +1,26 @@
 ---
 title: "Premiers pas sous RStudio"
 author: "Louis Dalmazzo"
+lang: fr
 ---
 
-Cette partie présentera les bases du langage R : exécuter une commande, écrire un script, créer des objets, manipuler des vecteurs, utiliser des fonction et comprendre les erreurs et messages de R. Ces bases sont essentielles pour comprendre le fonctionnement même du langage R.
+Cette partie présentera les bases du langage R : exécuter une commande, écrire un script, créer des objets, manipuler des vecteurs, utiliser des fonction et comprendre les erreurs et messages renvoyés par R. Ces bases sont essentielles pour comprendre le fonctionnement même du langage que nous utilisons.
 
-On suppose que R et RStudio sont installés, et qu'un projet RStudio a été créé, comme expliqué dans la [page précédente](r_presentation.qmd). Aucun package ni aucun fichier de données ne sont ici nécessaires.
+On suppose que R et RStudio sont installés et configurés, et qu'un projet RStudio a été créé, comme on l'a expliqué dans la [page précédente](r_presentation.qmd). Aucun package ni aucun fichier de données ne sont ici nécessaires.
 
-Les exemples qu'on utilisera prennent comme exemple certaines variables de l'ESS (codes des pays, échelle du bonheur par exemple), mais avec des valeurs pour l'instant factices. On utilisera les vraies données de l'ESS dans la partie suivante.
+Les exemples qu'on utilisera prennent pour exemple certaines variables de l'ESS (codes des pays, échelle du bonheur, entre autre), mais avec des valeurs pour l'instant factices. On utilisera les vraies données de l'ESS dans la partie suivante.
 
 ::: callout-note
-## Lire les blocs de code de ce site
+## Lire les blocs de code
 
-Chaque bloc grisé contient du code R, et est suivi de ce que R affiche en retour. Une icône apparaît en haut à droite du bloc au survol de la souris, et permet de copier le code. Pour débuter, il est toutefois plus formateur de retaper les commandes soi-même : c'est en faisant des fautes de frappe qu'on apprend à lire les messages d'erreur.
+Chaque bloc grisé contient du code R, et est suivi en bas de ce que R affiche en retour. Une icône apparaît en haut à droite du bloc au survol de la souris, et permet de copier le contenu. Pour débuter, il est recommandé de taper les lignes de code soi-même : c'est en pratiquant et en faisant des fautes qu'on apprend à lire les messages d'erreur.
 :::
 
 # Écrire et exécuter du code
 
 ## Le calcul sous R
 
-Une fois RStudio ouvert, on peut cliquer dans la console, c'est-à-dire le panneau dans la partie inférieure gauche. La dernière ligne commence par le symbole `>` : c'est l'**invite de commande**, qui signale que R attend une instruction. On tape une opération simple, suivie de la commande **Entrée** :
+Une fois RStudio ouvert, on peut cliquer dans l'onglet console dans la partie inférieure gauche de l'application. La dernière ligne commence par le symbole `>` : c'est l'**invite de commande**, qui signale que R attend une instruction. On tape une opération simple, suivie de la commande **Entrée** :
 
 ```{r}
 2 + 3
@@ -27,7 +28,7 @@ Une fois RStudio ouvert, on peut cliquer dans la console, c'est-à-dire le panne
 
 R renvoie le résultat, précédé de `[1]`. C'est le numéro de position, qui signale que la valeur affichée est le premier élément de la réponse.
 
-Les opérations arithmétiques habituelles s'écrivent ainsi de cette manière :
+Les opérations arithmétiques que l'on pourra être amené à exécuter s'écrivent ainsi de cette manière :
 
 | Opérateur | Opération      | Exemple | Résultat |
 |-----------|----------------|---------|----------|
@@ -44,7 +45,7 @@ R respecte les priorités de calcul, et les parenthèses permettent d'imposer un
 (2 + 3) * 4
 ```
 
-Sous R, **le séparateur décimal est un point, jamais une virgule.** `3.5` est un nombre, tandis que `3,5` produit une erreur. En effet, sous R, la virgule per ===================================================================================================met entre autre de séparer les éléments d'une liste, ou les arguments d'une fonction.
+Sous R, **le séparateur décimal est un point, jamais une virgule.** `3.5` est un nombre, tandis que `3,5` produit une erreur. On utilisera la virgule pour séparer les éléments d'une liste, ou les arguments d'une fonction.
 
 ```{r}
 #| eval: false
@@ -52,58 +53,64 @@ Sous R, **le séparateur décimal est un point, jamais une virgule.** `3.5` est 
 # Erreur : ',' inattendu(e) dans "3,"
 ```
 
-Les espaces, en revanche, ne changent rien au calcul : `2+3` et `2 + 3` donnent le même résultat. L'usage est généralement de mettre des espaces entre les opérateurs.
+Les espaces, en revanche, ne changent rien au calcul : `2+3` et `2 + 3` donnent le même résultat. Il est plutôt d'usage est de mettre des espaces entre les opérateurs.
 
 ::: callout-tip
 ## Si la console affiche `+` au lieu de `>`
 
-Si on valide une commande incomplète, par exemple `(2 + 3` sans parenthèse à la fin, R ne renvoie ni résultat ni erreur : l'invite `>` est remplacée par un `+`, qui signifie que R attend le reste. Il suffit de taper ce qui manque (ici `)`), ou d'appuyer sur **Échap** pour abandonner.
+Si on valide une commande incomplète, par exemple `(2 + 3` sans parenthèse à la fin, R ne renvoie ni résultat ni erreur : l'invite `>` est remplacée par un `+`, qui signifie que R attend la fin de la commande. Il suffit de taper ce qui manque, ici `)`, ou d'appuyer sur **Échap** pour abandonner.
 :::
 
 ## Écrire dans un script
 
-La console exécute immédiatement ce qu'on y tape, mais ne conserve rien. Pour garder une trace de son travail, on écrit dans un **script**, un simple fichier texte d'extension `.R` qui contient les commandes les unes à la suite des autres. En pratique, on travaille presque toujours dans le script, et on réserve la console aux essais rapides qu'on n'a pas besoin de garder.
+La console exécute immédiatement ce qu'on y tape, mais ne conserve aucune des lignes exécutées. Pour garder une trace de son travail, on écrit dans un **script**, c'est-à-dire un fichier texte d'extension `.R` qui contient les commandes les unes à la suite des autres. En pratique, on travaille presque toujours dans le script, et on réserve la console aux essais rapides qu'on n'a pas besoin de garder.
 
-Pour créer un script : `File > New File > R Script`, ou **Ctrl + Maj + N** (**Cmd + Maj + N** sur macOS). Un onglet vide s'ouvre dans le panneau en haut à gauche : c'est l'éditeur. On l'enregistre tout de suite avec **Ctrl + S** (**Cmd + S**), sous un nom explicite, par exemple `01_premiers_pas.R`, dans le dossier `02_Scripts/` de son projet. Tant que des modifications ne sont pas enregistrées, le nom de l'onglet s'affiche en rouge.
+Pour créer un script, on se dirige dans les icones en haut de l'application : `File > New File > R Script`, ou **Ctrl + Maj + N** (**Cmd + Maj + N** sur macOS). Un onglet vide s'ouvre dans le panneau supérieur gauche : c'est l'éditeur. On l'enregistre immédiatement avec **Ctrl + S** (**Cmd + S**) sous un nom explicite, par exemple `01_premiers_pas.R`, à l'intérieur du dossier `02_Scripts/` que l'on a crée précédemment. Tant que des modifications ne sont pas enregistrées, le nom de l'onglet s'affiche en rouge.
 
-![Exemple d'un script non sauvegardé](images/Capture d'écran 2026-09-22 092733.png)
+![Exemple d'un script non sauvegardé](images/Capture%20d'écran%202026-09-22%20092733.png)
 
-Écrire une commande dans le script ne l'exécute pas : le script n'est que du texte. Pour exécuter une ligne, placez le curseur n'importe où sur celle-ci, puis appuyez sur **Ctrl + Entrée** (**Cmd + Entrée** sur macOS), ou cliquez sur le bouton **Run**, en haut à droite de l'éditeur. La commande est envoyée dans la console, où elle s'affiche avec son résultat, et le curseur descend à la ligne suivante : en répétant Ctrl + Entrée, on exécute le script pas à pas.
+A l'inverse, le script fonctionne un peu de manière opposée à la console : il garde une trace de ses commandes, mais ne les éxécute pas. Pour exécuter une ligne, on positionne son curseur sur la ligne et on appuie simultanément sur **Ctrl + Entrée** (**Cmd + Entrée** sur macOS). On peut également cliquer sur le bouton Run, dans la partie supérieure droite de l'éditeur. La commande est à ce moment envoyée dans la console, où elle s'affiche avec son résultat, et le curseur descend à la ligne suivante : en répétant Ctrl + Entrée, on exécute le script pas à pas.
 
-Pour exécuter plusieurs lignes d'un coup, on les sélectionne, puis Ctrl + Entrée : elles s'exécutent dans l'ordre où elles sont écrites. Une même commande peut aussi s'étendre sur plusieurs lignes, ce qui sera très fréquent dans la suite du site : il suffit alors de placer le curseur sur l'une d'elles, et RStudio exécute la commande en entier. Enfin, **Ctrl + Maj + Entrée** (**Cmd + Maj + Entrée**) exécute tout le script, du début à la fin.
+Pour exécuter plusieurs lignes d'un coup, on les sélectionne, puis on utilise de nouveau Ctrl + Entrée : elles s'exécutent dans l'ordre où elles sont écrites. Une même commande peut aussi s'étendre sur plusieurs lignes, ce qui sera très fréquent dans la suite du site : il suffit alors de placer le curseur sur l'une d'elles, et RStudio exécute la commande en entier. Enfin, **Ctrl + Maj + Entrée** (**Cmd + Maj + Entrée**) exécute tout le script, du début à la fin.
 
 ::: callout-important
-## La règle d'or
+## Faire un script reproductible
 
-Tout ce qui compte pour l'analyse doit être écrit dans le script. Un calcul fait uniquement dans la console ne pourra être ni retrouvé, ni vérifié, ni refait. Le test est simple : si l'on relançait le script en entier, sur un autre ordinateur, obtiendrait-on exactement les mêmes résultats ?
+Une exigence de la recherche empirique est de produire une analyse qui puisse être reproduite afin de tester la robustesse des résultats. Par conséquent, **toute analyse doit pouvoir être réexécutée depuis le script**, sans que les résultats obtenus ne soient altérés. On proscrit donc l'exécution directe depuis la console, sauf pour quelques tests et essais rapides.
+
+Pour aller plus loin, on pourra se référer à la section sur [la reproductibilité et les bonnes pratiques](bonnes_pratiques_r.qmd) à adopter.
 :::
 
 ## Commenter son code
 
-Tout ce qui suit un dièse `#` sur une ligne est ignoré par R : c'est un **commentaire**. Il peut occuper une ligne entière, ou suivre une commande :
+On peut **commenter** son code en utilisant un dièse `#` qui indiquera à R d'ignorer tout ce qui suit. Les commentaires peuvent occuper une ligne entière ou encore suivre une commande :
 
 ```{r}
 # Durée moyenne de deux entretiens, en minutes
 (52 + 64) / 2  # le second entretien a été interrompu puis repris
 ```
 
-Un bon commentaire n'explique pas *ce que fait* le code, qui se lit dans le code lui-même, mais *pourquoi* il le fait : quel choix a été retenu, pourquoi telle valeur a été écartée. C'est exactement l'information qui manque six mois plus tard.
+Le dièse permet également de **désactiver une ligne sans la supprimer**. On pourra utiliser le raccourci **Ctrl + Maj + C** (**Cmd + Maj + C**) qui commente ou décommente automatiquement les lignes sélectionnées.
 
-Le dièse sert aussi à **désactiver une ligne sans la supprimer**. C'est ce qu'on fera dans la partie suivante avec les lignes d'installation des packages : une fois ceux-ci installés, on place un `#` devant ces lignes pour qu'elles ne soient plus exécutées, tout en gardant la trace de ce qui a été installé. Le raccourci **Ctrl + Maj + C** (**Cmd + Maj + C**) commente ou décommente d'un coup les lignes sélectionnées.
+```{r}
+# (52 + 64) / 2
+```
 
-Enfin, un commentaire qui se termine par au moins quatre tirets, comme `# Recodages ----`, crée une **section** : RStudio permet de la replier, et d'y naviguer grâce au menu situé en bas à gauche de l'éditeur. Sur un long script, c'est une aide précieuse.
+Enfin, ajouter quatre tirets à la fin d'un commentaire, par exemple `# Recodages ----` crée une **section** qui permet à RStuddio de la replier et d'y naviguer dans le menu situé dans la partie droite de la fenêtre du script. Cette fonctionalité est particulièrement utile lorsqu'on travaille sur un long script.
+
+![La navigation par section se fait en cliquant sur l'icone représentant des lignes dans la partie supérieure droite de la fenêtre du script. S'ouvre alors un dépliant interactif.](images/Capture%20d'écran%202026-09-23%20101835.png)
 
 # Les objets
 
 ## Créer un objet : l'assignation
 
-Un résultat qui n'est pas conservé disparaît aussitôt affiché. Pour le garder, on le range dans un **objet**, grâce à la flèche d'assignation `<-` :
+Un résultat qui n'est pas conservé disparaît aussitôt affiché. Pour le garder, on le range dans un **objet**, grâce à la flèche d'assignation `<-` , qu'on peut également appeler avec le raccourci **Alt + -** (**Option + -** sur macOS)
 
 ```{r}
 resultat <- 2 + 3
 ```
 
-À l'exécution, rien ne s'affiche. C'est normal : l'assignation range une valeur en mémoire, elle ne l'affiche pas. Pour voir le contenu d'un objet, il suffit d'écrire son nom et de l'exécuter :
+L'assignation range une valeur en mémoire mais ne l'affiche pas. Pour voir le contenu d'un objet, il suffit d'écrire son nom et de l'exécuter :
 
 ```{r}
 resultat
@@ -112,32 +119,26 @@ resultat
 ::: callout-note
 ## Explications de la ligne :
 
-`resultat` est le nom qu'on choisit pour l'objet. Rien d'imposé : on aurait pu écrire `somme` ou `mon_calcul`.
+`resultat` est le nom qu'on choisit pour l'objet. Rien n'est imposé, on aurait également pu écrire `somme` ou `mon_calcul`.
 
-`<-` est la flèche d'assignation. Elle se lit de droite à gauche : R calcule d'abord ce qui se trouve à droite, puis range le résultat dans l'objet dont le nom est à gauche.
+`<-` est la flèche d'assignation. Elle se lit de droite à gauche : R calcule d'abord ce qui se trouve à droite, puis range le résultat dans l'objet à gauche.
 
 `2 + 3` est la valeur à ranger. L'objet ne contient pas l'opération, mais son résultat, `5`.
 :::
 
-L'objet apparaît désormais dans le panneau *Environnement*, en haut à droite de RStudio. Ce panneau liste tout ce qui existe en mémoire : c'est le premier endroit à regarder pour vérifier qu'une commande a bien produit ce qu'on attendait.
+L'objet apparaît enfin dans le panneau *Environnement*, en haut à droite de RStudio.
 
 ![L'objet "résultat" prenant la valeur 5 dans l'environnement](images/Capture%20d'écran%202026-09-21%20151003.png)
 
-::: callout-tip
-## Le raccourci qui fait gagner du temps
-
-La flèche `<-` se tape avec **Alt + -** (**Option + -** sur macOS). On sera amené à souvent l'écrire.
-:::
-
 ## Réutiliser un objet, le modifier
 
-Une fois créé, un objet s'utilise exactement comme la valeur qu'il contient :
+Une fois créé, on utilise un objet s'utilise exactement comme la valeur qu'il contient :
 
 ```{r}
-resultat * 10
+resultat * 10 # ici 5 multiplié par 10
 ```
 
-Attention : cette ligne affiche `50`, mais elle **ne modifie pas** `resultat`, qui contient toujours `5`. Pour modifier un objet, il faut réassigner le résultat au même nom :
+Cette ligne ne modifie pas l'objet pour autant, qui contient toujours 5. Pour modifier un objet, il faut le réassigner. Dans ce cas, on écrase l'ancienne valeur par la nouvelle.
 
 ```{r}
 resultat <- resultat * 10
@@ -146,21 +147,21 @@ resultat
 
 La première ligne se lit, là encore, de droite à gauche : on prend la valeur actuelle de `resultat` (5), on la multiplie par 10, et on range le résultat (50) dans `resultat`, à la place de l'ancienne valeur.
 
-Ce mécanisme est fondamental pour la suite. Lors des recodages, on écrira des lignes de la forme `ESS11_FR <- ESS11_FR |> ...` : on part du tableau, on le transforme, et on range le résultat sous le même nom. Sans cette réassignation, la transformation s'afficherait, mais ne serait conservée nulle part.
+On utilisera très souvent cette syntaxe dans le futur : partir d'un tableau, y faire des modifications, puis le réassigner dans le même objet.
 
 ::: callout-warning
-## R écrase sans prévenir
+## Ecraser ou créer un nouvel objet ?
 
-Assigner une valeur à un nom qui existe déjà remplace l'ancienne valeur, sans message ni confirmation. C'est pourquoi, lors des recodages, on préférera souvent créer une nouvelle variable (avec le suffixe `_r`, pour « recodée ») plutôt qu'écraser l'ancienne : on garde ainsi l'original intact, pour pouvoir vérifier son travail.
+Assigner une valeur à un nom qui existe déjà remplace de facto l'ancienne valeur. C'est pourquoi, lors des recodages, on préférera souvent créer une nouvelle variable (avec le suffixe `_r`, pour "recodée") plutôt qu'écraser l'ancienne : on garde ainsi l'original intact, pour pouvoir vérifier son travail.
 :::
 
 ## Nommer ses objets
 
-Un nom d'objet peut contenir des lettres, des chiffres, le point `.` et le tiret bas `_`. Il ne peut pas commencer par un chiffre, ni contenir d'espace. Surtout, **R distingue les majuscules des minuscules** : `Resultat` et `resultat` sont deux objets différents. C'est une source d'erreurs très fréquente : on crée `ESS11`, on tape `ess11` trois lignes plus bas, et R répond que l'objet n'existe pas.
+Un nom d'objet peut contenir des lettres, des chiffres, le point `.` et le tiret bas `_`. Il ne peut pas commencer par un chiffre, ni contenir d'espace. De plus, **R est "case sensitive" et distingue les majuscules des minuscules** : `Resultat` et `resultat` sont deux objets différents.
 
-Les accents, eux, sont à éviter : R les accepte le plus souvent, mais ils peuvent poser des problèmes d'encodage selon le système, par exemple lorsqu'un script passe de Windows à macOS. Cette précaution ne concerne que les *noms* : le texte placé entre guillemets peut contenir des accents.
+Les accents sont généralement à proscrire des noms d'objets : même si R les accepte, ils peuvent poser des problèmes d'encodage selon le système, par exemple lorsqu'un script passe de Windows à macOS. En revanche, on pourra les utiliser lorsqu'il s'agit de texte placé entre guillemets.
 
-Au-delà de ces règles, un nom doit dire ce que contient l'objet, en séparant les mots par un tiret bas.
+Au-delà de ces règles, un nom doit dire ce que contient l'objet, en séparant les mots par un underscore `_`.
 
 | Nom         | Valide ?    | Commentaire                                    |
 |-------------|-------------|------------------------------------------------|
@@ -172,23 +173,9 @@ Au-delà de ces règles, un nom doit dire ce que contient l'objet, en séparant 
 | `âge`       | déconseillé | contient un accent                             |
 | `x`, `df1`  | oui, mais   | ne disent rien de leur contenu                 |
 
-## Repartir d'une session vierge
-
-Un script bien écrit doit pouvoir recréer tous les objets dont il a besoin, à partir de rien. Pour le vérifier, il faut pouvoir repartir d'une mémoire entièrement vide, ce qui suppose un réglage préalable.
-
-::: callout-important
-## Un réglage à faire une fois pour toutes
-
-Par défaut, RStudio propose à la fermeture d'enregistrer tous les objets en mémoire dans un fichier `.RData`, et les recharge à l'ouverture suivante. C'est un piège : on croit que le script produit les objets, alors qu'ils proviennent en réalité d'une session précédente. Le jour où le script est lancé sur un autre ordinateur, il ne fonctionne plus.
-
-Dans `Tools > Global Options > General`, décochez **Restore .RData into workspace at startup**, et réglez **Save workspace to .RData on exit** sur **Never**. Ce qui doit être conservé, c'est le script, pas le contenu de la mémoire. On verra dans la partie suivante comment sauvegarder *volontairement* un objet précis, comme un tableau de données recodé.
-:::
-
-Une fois ce réglage fait, `Session > Restart R` (**Ctrl + Maj + F10**, **Cmd + Maj + 0** sur macOS) redémarre R avec une mémoire vide. C'est un test à faire régulièrement : redémarrer, puis relancer tout le script. S'il échoue, c'est qu'il dépendait d'un objet créé à un moment dans la console, et jamais écrit dans le script.
-
 # Les types de valeurs
 
-Tous les objets ne contiennent pas la même nature d'information. Trois types de valeurs suffisent pour commencer : les nombres, le texte et les valeurs logiques.
+Tous les objets ne contiennent pas la même nature d'information. On s'intéressera ici à trois types de valeurs en particulier qui couvriront la grande majorité des situations : les nombres, le texte et les valeurs logiques.
 
 ## Les nombres et le texte
 
@@ -199,20 +186,20 @@ age <- 42
 duree_entretien <- 57.5
 ```
 
-Le **texte**, qu'on appelle une *chaîne de caractères*, s'écrit obligatoirement entre guillemets :
+Le **texte**, qu'on appelle "*chaîne de caractères"*, s'écrit obligatoirement entre guillemets :
 
 ```{r}
 pays <- "France"
 ```
 
-Les guillemets ne sont pas décoratifs. Sans eux, R interprète le mot comme le nom d'un objet, le cherche en mémoire, ne le trouve pas, et renvoie une erreur :
+Les guillemets ne sont pas décoratifs. Sans eux, R interprète le mot comme le nom d'un objet. S'il n'existe pas, il va renvoyer une erreur :
 
 ```{r}
 #| error: true
 pays <- France
 ```
 
-La règle à retenir : **un mot entre guillemets est un texte ; un mot sans guillemets est un nom**, celui d'un objet ou d'une fonction.
+On retient qu'**un mot entre guillemets est un texte ; un mot sans guillemets est un nom** (celui d'un objet ou d'une fonction).
 
 Un nombre écrit entre guillemets devient lui aussi du texte, et perd toute valeur numérique :
 
@@ -221,18 +208,18 @@ Un nombre écrit entre guillemets devient lui aussi du texte, et perd toute vale
 "42" + 1
 ```
 
-R refuse d'additionner un texte et un nombre, même lorsque ce texte ressemble à un nombre. Ce cas n'a rien de théorique : lors de l'import d'un fichier, une colonne de chiffres peut être lue comme du texte, par exemple si une seule de ses cellules contient « NSP ».
+On voit que R refuse d'additionner un texte et un nombre, même lorsque ce texte ressemble à un nombre. Il faut donc être vigilant : lors d'un import de données, une colonne entière de chiffre pourrait être interprêtée comme du texte si une seule de ses cellules contient du texte, par exemple "NSP" pour "Ne se prononce pas".
 
 ## Les valeurs logiques et les comparaisons
 
-Le troisième type ne prend que deux valeurs : `TRUE` (vrai) et `FALSE` (faux), en majuscules et sans guillemets. On les écrit rarement à la main ; en revanche, R en produit dès qu'on pose une **comparaison** :
+Le troisième type ne prend que deux valeurs : `TRUE` (vrai) et `FALSE` (faux), en majuscules et sans guillemets. On dit que ce sont des valeurs booléennes, ou logiques. Elles vont surtout être mobilisées pour répondre à une question. R en produit dès qu'on pose **comparaison** :
 
 ```{r}
 age > 18
 age == 30
 ```
 
-`age` vaut 42 : il est bien supérieur à 18, et il n'est pas égal à 30. Chaque comparaison est une question posée à R, qui répond par vrai ou faux.
+Ici, `age` vaut 42 : il est effectivement **supérieur** à 18 (`TRUE`), et il n'est **pas égal** à 30 (`FALSE`). Chaque comparaison est une question posée à R, qui répond par vrai ou faux.
 
 | Opérateur | Signification           |
 |-----------|-------------------------|
@@ -243,7 +230,7 @@ age == 30
 | `<`       | strictement inférieur à |
 | `<=`      | inférieur ou égal à     |
 
-Le test d'égalité s'écrit avec un **double** signe égal. Il ne faut pas le confondre avec la flèche `<-` : `age == 30` pose une question (« `age` vaut-il 30 ? »), tandis que `age <- 30` remplacerait la valeur de `age` par 30.
+Le test d'égalité s'écrit avec un **double** signe égal. Il ne faut pas le confondre avec la flèche `<-` : `age == 30` pose une question ("Est-ce que `age` vaut 30 ?"), tandis que `age <- 30` assigne une valeur de 30 à l'objet `age`.
 
 Les comparaisons fonctionnent aussi sur du texte, et tiennent compte des majuscules :
 
@@ -635,7 +622,7 @@ moyenne(ages)
 1.  **Lire le message en entier.** Il indique généralement la fonction en cause, et parfois l'objet ou le caractère qui pose problème.
 2.  **Vérifier l'orthographe exacte** des noms d'objets, de fonctions et de colonnes, majuscules comprises.
 3.  **Vérifier que les lignes précédentes ont bien été exécutées**, dans l'ordre : un objet doit avoir été créé avant d'être utilisé.
-4.  **Redémarrer R et relancer le script depuis le début.** Si l'erreur disparaît, elle venait d'un état particulier de la mémoire, et non du script lui-même.
+4.  **Redémarrer R et relancer le script depuis le début.** Le menu `Session > Restart R` (**Ctrl + Maj + F10**, **Cmd + Maj + 0** sur macOS) redémarre R avec une mémoire vide ; **Ctrl + Maj + Entrée** relance ensuite tout le script. Si l'erreur disparaît, elle venait d'un état particulier de la mémoire, et non du script lui-même.
 5.  **Chercher le message sur internet**, en le copiant tel quel. Les réponses sont bien plus nombreuses en anglais : pour obtenir les messages dans cette langue le temps d'une session, on peut exécuter `Sys.setLanguage("en")` dans la console.
 
 # Où en sommes-nous ?

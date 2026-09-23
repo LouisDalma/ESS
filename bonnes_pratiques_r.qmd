@@ -1,0 +1,405 @@
+---
+title: "Travailler de façon reproductible"
+subtitle: "Un guide des bonnes pratiques sous R"
+author: "Louis Dalmazzo"
+bibliography: references.bib
+lang: fr
+---
+
+Les pages précédentes ont posé quelques règles au passage : travailler dans un projet RStudio, écrire dans un script plutôt que dans la console, ne pas écraser la variable d'origine lors d'un recodage. Cette page les rassemble, explique pourquoi elles existent, et les complète.
+
+Elle ne s'inscrit pas dans l'ordre du parcours. On peut la lire dès le début, mais elle gagne à être relue à mesure que les projets grossissent : certaines pratiques s'imposent dès la première ligne de code, d'autres ne prennent leur sens qu'au moment où un script de cinquante lignes devient un projet de plusieurs fichiers.
+
+# D'où viennent ces recommandations ?
+
+Rien de ce qui suit n'a été inventé pour ce kit. Les pratiques présentées ici ont été formulées, discutées et éprouvées par d'autres, dans des guides, des manuels et des articles de méthode. Cette page en fait une sélection, les traduit, et les applique au cas d'un débutant qui travaille sur les données de l'ESS. Pour tout approfondissement, il faut revenir aux sources, présentées ci-dessous et référencées en fin de page.
+
+**Les guides de la communauté R.** L'inspiration la plus directe de cette page est *What They Forgot to Teach You About R* [@bryan_wtf], de Jennifer Bryan, Jim Hester, Shannon Pileggi et E. David Aja. Comme son titre l'indique, ce livre ne porte pas sur l'analyse de données elle-même, mais sur tout ce qui l'entoure et qu'on apprend rarement : l'organisation du travail, l'administration de son installation de R, la résolution des erreurs. Il s'adresse explicitement aux utilisateurs en grande partie autodidactes, qui soupçonnent d'avoir pris en chemin des habitudes personnelles qui rendent leur travail plus fragile. Trois de ses chapitres structurent cette page : l'enregistrement du code et la session vierge, le travail organisé en projets, et le nommage des fichiers. Le chapitre consacré aux scripts et aux projets de *R for Data Science* [@wickham2023r4ds], manuel de référence du tidyverse, défend les mêmes principes. Pour le contrôle de version, la référence reste *Happy Git and GitHub for the useR* [@bryan_happygit].
+
+**Les ressources francophones.** Plusieurs ressources en français couvrent le même terrain. La documentation collaborative *utilitR* [@utilitr], rédigée par des agents de l'Insee et du service statistique public, s'accompagne d'un guide des bonnes pratiques explicitement consacré à la reproductibilité des traitements [@utilitr_pratiques]. L'*Introduction à R et au tidyverse* de Julien Barnier [@barnier_tidyverse] consacre un chapitre à l'organisation des scripts, et *guide-R* de Joseph Larmarange [@larmarange_guider] est la référence francophone pour l'analyse de données d'enquête sous R. Ces deux auteurs sont aussi, avec François Briatte, à l'origine du package `questionr`, et Joseph Larmarange a développé le package `labelled`, tous deux utilisés dans ce kit. Enfin, le cours de Romain Avouac et Lino Galiana à l'ENSAE [@avouac_galiana_mep] prolonge ces questions jusqu'à la mise en production de projets de data science.
+
+**La littérature méthodologique.** Au-delà de R, la reproductibilité fait l'objet d'une littérature propre, dans laquelle ces guides s'inscrivent : l'article fondateur de Roger Peng [@peng2011], les « dix règles simples » de Sandve et ses coauteurs [@sandve2013], les pratiques « suffisamment bonnes » de Wilson et ses coauteurs [@wilson2017], le rapport des Académies nationales américaines des sciences [@nasem2019], ou encore, pour les sciences sociales, le manuel de Christensen, Freese et Miguel [@christensen2019] et le guide pratique des économistes Gentzkow et Shapiro [@gentzkow_shapiro2014]. *The Turing Way* [@turingway], manuel collaboratif de l'Institut Alan Turing, en propose une synthèse très complète.
+
+::: callout-note
+## Un format partagé
+
+*What They Forgot to Teach You About R*, *R for Data Science*, *utilitR*, *guide-R* et l'introduction de Julien Barnier ont un point commun avec ce site : ils sont écrits avec Quarto ou son prédécesseur R Markdown, leurs fichiers sources sont publiés sur GitHub, et la version en ligne est entièrement régénérée à partir de ces sources. Ce format hybride, à mi-chemin entre le livre et le site web, est lui-même une pratique de reproductibilité : n'importe qui peut consulter le code qui produit chaque page, signaler une erreur, ou proposer une correction.
+:::
+
+# Reproduire, répliquer : de quoi parle-t-on ?
+
+## Deux notions à distinguer
+
+Les deux termes ne sont pas employés de la même manière selon les disciplines, et sont parfois utilisés l'un pour l'autre. On retient ici les définitions du rapport des Académies nationales américaines [@nasem2019], qui font aujourd'hui référence :
+
+-   la **reproductibilité** consiste à obtenir des résultats de calcul cohérents en utilisant les mêmes données, les mêmes étapes de calcul, les mêmes méthodes, le même code et les mêmes conditions d'analyse ;
+-   la **réplicabilité** consiste à obtenir des résultats cohérents entre plusieurs études qui cherchent à répondre à la même question scientifique, chacune avec ses propres données[^1].
+
+[^1]: @nasem2019, résumé (*Summary*). Reproductibilité : « obtaining consistent computational results using the same input data, computational steps, methods, code, and conditions of analysis » ; réplicabilité : « obtaining consistent results across studies aimed at answering the same scientific question, each of which has obtained its own data ».
+
+Appliqué à ce kit : reprendre le fichier de la vague 11 de l'ESS, dans son édition 4.2, relancer le script de la page [L'import et le recodage des données](import_recodages_r.qmd), et retrouver une moyenne de 5,03 sur l'échelle gauche-droite, c'est **reproduire** le résultat. Vérifier qu'on retrouve un résultat comparable avec d'autres données, par exemple une autre vague de l'ESS ou une autre enquête, c'est chercher à le **répliquer**.
+
+Cette page ne traite que de la première notion. Elle en est le préalable : on ne peut discuter sérieusement de la réplication d'un résultat que si l'on sait d'abord exactement comment il a été produit.
+
+## Pourquoi c'est important
+
+Roger Peng [@peng2011] propose de voir la reproductibilité comme un **standard minimal** pour évaluer une affirmation scientifique, lorsque la réplication indépendante complète n'est pas possible. C'est très souvent le cas en sciences sociales : personne ne peut retourner sur le terrain de l'ESS en 2023 pour réinterroger les mêmes personnes. Peng décrit un spectre, qui va de la simple publication, non reproductible, à la réplication complète, idéal rarement atteint. Entre les deux, chaque étape rend le travail plus vérifiable : publier le code, puis le code et les données, puis un ensemble qui s'exécute directement.
+
+Il faut toutefois être précis sur ce que la reproductibilité garantit. Une analyse parfaitement reproductible peut être fausse : un mauvais recodage, relancé mille fois, donnera mille fois le même mauvais résultat. Leek et Peng [@leek_peng2015] insistent sur ce point : la reproductibilité ne dit rien de la justesse d'une analyse. Ce qu'elle apporte, c'est la possibilité de **trouver l'erreur**. Une analyse reproductible peut être relue, vérifiée, contestée et corrigée ; une analyse non reproductible ne peut qu'être crue ou non. C'est exactement le principe évoqué à propos de la traduction du questionnaire de l'ESS, dans la page [Comprendre l'ESS](ess_pres.qmd) : ce qui compte est que les problèmes soient détectables, documentés et corrigés.
+
+Cette exigence n'est plus seulement une bonne intention. En économie, l'American Economic Association demande depuis juillet 2019 aux auteurs de ses revues de déposer leur code et leurs données **avant** l'acceptation de l'article, et l'équipe de son *Data Editor* exécute ce code, dans la mesure du possible, pour vérifier qu'il produit bien les résultats publiés [@aea_dcap].
+
+::: callout-tip
+## La première personne qui relira votre script, c'est vous
+
+On pense spontanément à la reproductibilité comme à un service rendu aux autres : un relecteur, un collègue, un lecteur sceptique. En pratique, la personne qui aura le plus souvent besoin de relancer votre script, c'est vous, quelques mois plus tard, quand vous aurez oublié pourquoi telle modalité a été écartée ou dans quel ordre les fichiers doivent être exécutés.
+:::
+
+## Un continuum, pas une case à cocher
+
+Les bonnes pratiques ont un coût : du temps d'apprentissage, des outils supplémentaires, un peu de rigueur au quotidien. Avouac et Galiana [@avouac_galiana_mep] insistent sur ce point : il ne s'agit pas de tout adopter d'un coup, mais de proportionner l'effort à l'ambition du projet. C'est aussi l'esprit du titre choisi par Wilson et ses coauteurs [@wilson2017] : des pratiques « suffisamment bonnes », à la portée de tout chercheur, plutôt qu'un idéal hors d'atteinte.
+
+La suite de la page est donc organisée en trois niveaux :
+
+1.  **Dès la première ligne** : des gestes qui ne coûtent presque rien et qui évitent les erreurs les plus fréquentes. Ils valent pour tout le monde, y compris pour un exercice de lycée.
+2.  **Quand le projet grandit** : organiser ses dossiers, nommer ses fichiers, découper son analyse. Ils deviennent utiles dès qu'un travail dépasse un seul script.
+3.  **Pour aller plus loin** : documenter son environnement, figer les versions des packages, versionner son travail. Ils s'imposent pour un mémoire, une thèse ou un article.
+
+# Niveau 1 : dès la première ligne
+
+## Le script est la source, la mémoire est jetable
+
+Le principe fondamental est formulé très simplement dans *What They Forgot to Teach You About R* : tout ce qui compte vraiment doit être obtenu par du code que l'on enregistre[^2]. Les auteurs empruntent une métaphore à l'informatique : il faut traiter la session R comme du bétail, pas comme un animal de compagnie. On ne s'y attache pas, on ne la soigne pas, on la remplace sans regret, puisque le script permet de la reconstruire à l'identique.
+
+[^2]: @bryan_wtf, chapitre « Saving source and blank slates » : « Everything that really matters should be achieved through code that you save. »
+
+Jenny Bryan propose une distinction utile pour savoir ce qui doit figurer dans le script [@bryan2017workflow]. D'un côté, le **flux de travail** (*workflow*) : les habitudes personnelles, comme le choix de l'éditeur, le nom de son dossier personnel, ou les commandes qu'on tape dans la console pour vérifier quelque chose. De l'autre, le **produit** : les données brutes, le code nécessaire pour passer de ces données aux résultats, et les appels explicites aux packages utilisés. Le produit ne doit contenir aucun élément propre au flux de travail de son auteur : il doit fonctionner chez n'importe qui.
+
+C'est la règle posée dans les [Premiers pas](premiers_pas_r.qmd) : la console sert à explorer, le script à conserver.
+
+## Repartir d'une session vierge
+
+Un script bien écrit doit pouvoir recréer, à partir de rien, tous les objets dont il a besoin. Pour le vérifier, il faut pouvoir repartir d'une mémoire entièrement vide : c'est ce qu'on appelle une **session vierge** (*blank slate*). Deux obstacles s'y opposent, l'un lié à un réglage de RStudio, l'autre à une commande très répandue.
+
+### Ne pas sauvegarder l'espace de travail
+
+Pendant une session, R garde en mémoire tous les objets créés : les tableaux importés, les variables recodées, les résultats intermédiaires. Cet ensemble s'appelle l'**espace de travail** (*workspace*), et c'est lui que liste le panneau *Environment* de RStudio. Par défaut, à la fermeture, RStudio propose d'enregistrer tout cet espace de travail dans un fichier `.RData`, placé dans le dossier du projet, et le recharge automatiquement à l'ouverture suivante.
+
+C'est confortable : on retrouve ses objets là où on les avait laissés. C'est aussi un piège. Un exemple suffit à le comprendre. Lundi, on crée dans la console un tableau `ESS11_FR` en filtrant les répondants français, puis on écrit son script d'analyse, en oubliant d'y reporter la ligne du filtre. Mardi, RStudio recharge `ESS11_FR` depuis le fichier `.RData` : le script fonctionne, et rien n'indique qu'il est incomplet. Le jour où un collègue le lance sur son ordinateur, ou le jour où l'on supprime le fichier `.RData`, R répond que l'objet `ESS11_FR` est introuvable. Plus insidieux encore : si la ligne du filtre figure bien dans le script, mais qu'on l'a modifiée sans la relancer, c'est l'ancien tableau, rechargé depuis la mémoire, qui sert à l'analyse, sans qu'aucun message ne le signale.
+
+La solution consiste à désactiver ce mécanisme. Dans `Tools > Global Options > General`, décochez **Restore .RData into workspace at startup**, et réglez **Save workspace to .RData on exit** sur **Never**. Si vous avez suivi la page [Découvrir R et RStudio](r_presentation.qmd), ce réglage est déjà fait.
+
+Ce réglage est recommandé, dans des termes presque identiques, par *What They Forgot to Teach You About R* [@bryan_wtf], *R for Data Science* [@wickham2023r4ds], la documentation *utilitR* [@utilitr] et l'introduction de Julien Barnier [@barnier_tidyverse]. Leur argument commun : recharger une mémoire sauvegardée crée une dépendance invisible entre le script et des objets dont personne ne sait plus comment ils ont été produits. Ce qui doit être conservé, c'est le script, pas le contenu de la mémoire. Lorsqu'un objet précis mérite d'être sauvegardé, parce qu'il est long à produire, on l'enregistre *volontairement*, dans un fichier dédié, comme on le fait avec `saveRDS()` dans la page [L'import et le recodage des données](import_recodages_r.qmd).
+
+Le package `usethis` propose une fonction qui effectue le même réglage en une ligne, sans passer par les menus :
+
+```{r}
+#| eval: false
+# install.packages("usethis")
+usethis::use_blank_slate()
+```
+
+L'écriture `usethis::use_blank_slate()` permet d'appeler une fonction d'un package sans le charger avec `library()` : on écrit le nom du package, deux fois deux-points, puis le nom de la fonction. C'est pratique pour une fonction qu'on n'utilise qu'une fois.
+
+### Redémarrer R régulièrement
+
+Une fois ce réglage fait, le menu `Session > Restart R` (**Ctrl + Maj + F10**, ou **Cmd + Maj + 0** sur macOS) redémarre R avec une mémoire réellement vide. On relance ensuite tout le script, du début à la fin, avec **Ctrl + Maj + Entrée** (**Cmd + Maj + Entrée**).
+
+C'est l'habitude à prendre, avant de considérer un résultat comme acquis : redémarrer, puis relancer. Si le script s'exécute sans erreur et produit les mêmes résultats, il se suffit à lui-même. S'il échoue, c'est qu'il dépendait d'un objet créé à un moment dans la console, et jamais écrit dans le script. *What They Forgot to Teach You About R* recommande de redémarrer R fréquemment, tout au long du travail [@bryan_wtf].
+
+### Pourquoi `rm(list = ls())` ne suffit pas
+
+On rencontre souvent, en tête de script, la ligne `rm(list = ls())`. Elle supprime tous les objets présents en mémoire, et semble donc produire une session vierge. Ce n'est pas le cas : elle ne supprime que les objets créés par l'utilisateur, et laisse en place tout le reste. Les packages chargés restent chargés, les options modifiées restent modifiées [@bryan_wtf]. La démonstration est rapide :
+
+```{r}
+options(digits = 3)   # on modifie une option : n'afficher que 3 chiffres
+x <- 42               # on crée un objet
+
+rm(list = ls())       # on "nettoie" la mémoire
+ls()                  # plus aucun objet...
+pi                    # ...mais l'option modifiée est toujours active
+```
+
+`ls()` renvoie `character(0)`, c'est-à-dire une liste vide : les objets ont bien disparu. Mais `pi` ne s'affiche plus qu'avec trois chiffres, au lieu des sept habituels : l'option modifiée a survécu au nettoyage. Un script qui dépendrait, sans le savoir, d'une option ou d'un package chargé plus tôt dans la session continuerait de fonctionner chez son auteur, et échouerait chez n'importe qui d'autre.
+
+```{r}
+options(digits = 7)   # on rétablit la valeur par défaut
+```
+
+Seul le redémarrage de R garantit une session réellement vierge. Jenny Bryan l'a formulé de façon délibérément provocatrice, en promettant de venir mettre le feu à l'ordinateur de quiconque commencerait son script par `rm(list = ls())`[^3].
+
+[^3]: @bryan2017workflow : « If the first line of your R script is `rm(list = ls())` I will come into your office and SET YOUR COMPUTER ON FIRE 🔥. » La même promesse vaut pour `setwd()` avec un chemin absolu (voir plus bas).
+
+::: callout-tip
+## Quarto, un test de reproductibilité intégré
+
+Rendre un document Quarto est, en soi, un test de reproductibilité : chaque document est exécuté dans une nouvelle session R, indépendante de celle ouverte dans RStudio. Un document qui s'affiche sans erreur ne dépend donc d'aucun objet créé à la main dans la console. C'est la raison pour laquelle, dans la page [L'import et le recodage des données](import_recodages_r.qmd), il faut sauvegarder explicitement le tableau recodé pour pouvoir le réutiliser dans la page suivante.
+:::
+
+## Travailler en projet, avec des chemins relatifs
+
+### Le problème des chemins absolus
+
+Pour lire un fichier, R a besoin de savoir où il se trouve. Un **chemin absolu** donne l'adresse complète du fichier sur l'ordinateur, depuis la racine du disque :
+
+```{r}
+#| eval: false
+setwd("C:/Users/louis/Documents/these/kit_ess")
+ESS11 <- read_sav("C:/Users/louis/Documents/these/kit_ess/01_Data/ESS11e04_2.sav")
+```
+
+Ce script fonctionne sur un seul ordinateur au monde. Il échoue dès qu'on le lance sur une autre machine, sous un autre nom d'utilisateur, ou simplement après avoir déplacé le dossier. *What They Forgot to Teach You About R* estime à 0 % la probabilité qu'une telle commande `setwd()` produise l'effet voulu pour quelqu'un d'autre que son auteur [@bryan_wtf].
+
+### La solution : le projet RStudio
+
+La page [Présentation de R et RStudio](r_presentation.qmd) montre comment créer un projet RStudio. Son intérêt principal est de fixer automatiquement le **dossier de travail** : à l'ouverture du projet, R considère que le dossier qui contient le fichier `.Rproj` est son point de départ. On peut alors écrire des **chemins relatifs**, qui partent de ce dossier :
+
+```{r}
+#| eval: false
+ESS11 <- read_sav("01_Data/ESS11e04_2.sav")
+```
+
+Ce chemin fonctionne sur n'importe quel ordinateur où le projet a été copié, quel que soit l'endroit où il est rangé. C'est la pratique recommandée par l'ensemble des guides cités plus haut [@bryan_wtf; @wickham2023r4ds; @utilitr; @barnier_tidyverse], et c'est celle suivie dans tout ce kit.
+
+::: callout-warning
+## La barre oblique, dans le bon sens
+
+Sous Windows, l'explorateur de fichiers affiche les chemins avec des barres obliques inversées : `C:\Users\louis`. Copié tel quel dans R, un tel chemin produit une erreur :
+
+```{r}
+#| error: true
+chemin <- "C:\Users\louis\Documents"
+```
+
+Dans une chaîne de caractères, R interprète la barre oblique inversée `\` comme le début d'un caractère spécial : `\n` signifie par exemple « retour à la ligne ». Ici, `\U` n'a pas de sens, d'où l'erreur. La solution est simple : **utiliser la barre oblique `/` dans tous les chemins**, y compris sous Windows, où R la comprend parfaitement. Un script écrit ainsi fonctionne à l'identique sous Windows, macOS et Linux.
+:::
+
+## Ne jamais modifier les données brutes
+
+Les données brutes, ici le fichier `.sav` téléchargé sur le portail de l'ESS, ne doivent jamais être modifiées. Ni à la main, ni par un script qui les écraserait. Toutes les transformations (sélection, filtres, recodages) se font dans le code, qui part toujours du fichier d'origine. C'est l'une des premières recommandations de Wilson et ses coauteurs [@wilson2017], et l'une des dix règles de Sandve et ses coauteurs : éviter toute manipulation manuelle des données [@sandve2013].
+
+Deux raisons à cela. D'abord, une modification faite à la main, par exemple en ouvrant le fichier dans un tableur pour corriger une valeur, ne laisse aucune trace : personne ne pourra la refaire, ni même savoir qu'elle a eu lieu. Ensuite, un tableur peut modifier un fichier sans qu'on le lui demande, en convertissant par exemple certaines valeurs en dates, ou en supprimant les zéros en tête d'un identifiant.
+
+On distingue donc les **données brutes**, qu'on ne touche jamais, des **données dérivées**, produites par les scripts. Le fichier `.rds` sauvegardé à la fin de la page [L'import et le recodage des données](import_recodages_r.qmd) est une donnée dérivée : il peut être supprimé sans risque, puisque le script permet de le régénérer à tout moment à partir du fichier d'origine.
+
+# Niveau 2 : quand le projet grandit
+
+## Organiser son dossier
+
+La page [Présentation de R et RStudio](r_presentation.qmd) propose une organisation simple en trois dossiers, suffisante pour suivre ce kit. Pour un projet plus important, Gentzkow et Shapiro [@gentzkow_shapiro2014] formulent trois règles : séparer les dossiers selon leur fonction, séparer les fichiers d'entrée des fichiers de sortie, et rendre les dossiers portables, c'est-à-dire utilisables tels quels sur une autre machine. Wilson et ses coauteurs [@wilson2017] recommandent en outre de placer chaque projet dans son propre dossier, portant le nom du projet, et d'y ajouter un fichier `README` qui explique ce qu'il contient.
+
+Une organisation possible, à adapter :
+
+```
+mon_projet/
+├── mon_projet.Rproj
+├── README.md            ← ce que contient le projet, comment le relancer
+├── 00_main.R            ← exécute tous les scripts, dans l'ordre
+├── 01_Data/
+│   ├── brutes/          ← fichiers téléchargés, jamais modifiés
+│   └── derivees/        ← fichiers produits par les scripts (.rds)
+├── 02_Scripts/
+│   ├── 01_import.R
+│   ├── 02_recodages.R
+│   └── 03_analyses.R
+└── 03_Sorties/          ← graphiques et tableaux exportés
+```
+
+Le fichier `README` n'a pas besoin d'être long. Quelques lignes suffisent : l'objet du projet, la source des données (vague, édition, lien de téléchargement), les packages nécessaires, et l'ordre dans lequel exécuter les scripts.
+
+## Nommer ses fichiers
+
+Jenny Bryan propose trois principes pour nommer ses fichiers, repris dans *What They Forgot to Teach You About R* [@bryan_wtf] et *R for Data Science* [@wickham2023r4ds]. Un nom de fichier doit être :
+
+1.  **lisible par une machine** : pas d'espace, pas d'accent, pas de ponctuation ni de caractère spécial, et une casse cohérente ;
+2.  **lisible par un humain** : le nom décrit ce que contient le fichier ;
+3.  **compatible avec l'ordre de tri par défaut** : les fichiers doivent apparaître dans l'ordre logique quand le système les trie par ordre alphabétique.
+
+Le troisième principe repose sur deux conventions. Les **numéros** placés en tête de nom sont complétés par des zéros (`01`, `02`... `10`), sans quoi `10_analyses.R` s'afficherait avant `2_recodages.R`. Les **dates** s'écrivent au format international ISO 8601, `AAAA-MM-JJ` : c'est le seul format dont l'ordre alphabétique correspond à l'ordre chronologique. Enfin, on réserve le tiret bas `_` pour séparer les différentes informations contenues dans le nom, et le tiret `-` pour séparer les mots à l'intérieur d'une même information.
+
+| À éviter                           | Préférer                      |
+|------------------------------------|-------------------------------|
+| `script final VERSION 2.R`         | `02_recodages.R`              |
+| `recodage diplôme (Louis).R`       | `02_recodage-diplome.R`       |
+| `graphique.png`                    | `03_age-par-diplome_fr.png`   |
+| `notes réunion 23 septembre.docx`  | `2026-09-23_notes-reunion.docx` |
+| `1_import.R`, `2_...`, `10_...`    | `01_import.R`, `02_...`, `10_...` |
+
+On retrouve ici les règles déjà vues pour les noms d'objets dans les [Premiers pas](premiers_pas_r.qmd), pour les mêmes raisons : les espaces et les accents posent des problèmes, en particulier quand un projet circule entre Windows et macOS.
+
+## Découper l'analyse et l'enchaîner
+
+Un script unique de mille lignes devient vite difficile à relire. On le découpe en plusieurs scripts numérotés, chacun consacré à une étape : l'import, les recodages, les analyses. Mais il faut alors pouvoir les exécuter dans le bon ordre, sans intervention manuelle. Gentzkow et Shapiro [@gentzkow_shapiro2014] en font leurs deux premières règles : automatiser tout ce qui peut l'être, et écrire un script unique qui exécute l'ensemble du code, du début à la fin.
+
+La fonction `source()` exécute l'intégralité d'un fichier de script, comme si on l'avait ouvert et lancé en entier [@barnier_tidyverse]. Un script principal se contente donc d'appeler les autres, dans l'ordre :
+
+```{r}
+#| eval: false
+# 00_main.R : relance l'ensemble de l'analyse, des données brutes aux résultats
+
+source("02_Scripts/01_import.R")
+source("02_Scripts/02_recodages.R")
+source("02_Scripts/03_analyses.R")
+```
+
+Pour vérifier que tout le projet est reproductible, il suffit alors de redémarrer R et d'exécuter ce seul fichier. Si une étape est longue, comme l'import d'un gros fichier, on peut en sauvegarder le résultat avec `saveRDS()` et le recharger avec `readRDS()` dans l'étape suivante [@bryan_wtf], comme on l'a fait dans la page [L'import et le recodage des données](import_recodages_r.qmd).
+
+## Des chemins robustes avec `here`
+
+Les chemins relatifs posent une difficulté dès qu'on travaille avec des documents Quarto rangés dans des sous-dossiers. Quand on exécute un script dans RStudio, le dossier de travail est la racine du projet. Mais quand Quarto rend un document, le dossier de travail est, par défaut, **celui du document**. Un document rangé dans `02_Scripts/` chercherait donc `02_Scripts/01_Data/ESS11e04_2.sav`, qui n'existe pas.
+
+Les pages de ce site sont toutes placées à la racine du projet, ce qui explique que des chemins simples y fonctionnent. Dès qu'on range ses documents dans des sous-dossiers, le package `here` résout le problème [@bryan_wtf]. Sa fonction `here()` repère la racine du projet, grâce au fichier `.Rproj`, et construit le chemin complet à partir d'elle, quel que soit l'endroit d'où le code est exécuté :
+
+```{r}
+#| eval: false
+library(here)
+
+here("01_Data", "ESS11e04_2.sav")
+# [1] "C:/Users/louis/Documents/kit_ess/01_Data/ESS11e04_2.sav"
+
+ESS11 <- read_sav(here("01_Data", "ESS11e04_2.sav"))
+```
+
+On donne à `here()` les dossiers et le nom du fichier comme des éléments séparés, sans se soucier des barres obliques. Le chemin complet affiché ci-dessus est propre à l'ordinateur sur lequel le code est exécuté : sur une autre machine, il serait différent, mais le script, lui, reste identique.
+
+## Écrire un code lisible
+
+Un code reproductible doit aussi pouvoir être relu. Le guide de style du tidyverse [@tidyverse_style] le résume d'une formule : un bon style de code est comme une ponctuation correcte, on peut s'en passer, mais tout devient plus facile à lire[^4]. Il insiste surtout sur la cohérence : peu importe la convention retenue, pourvu qu'elle soit appliquée partout.
+
+[^4]: @tidyverse_style : « Good coding style is like correct punctuation: you can manage without it, but it sure makes things easier to read. »
+
+Le guide de bonnes pratiques d'*utilitR* consacre lui aussi des chapitres au nommage des objets et à la rédaction des scripts [@utilitr_pratiques]. Les conventions suivies dans ce kit sont celles du guide du tidyverse :
+
+-   des noms d'objets en minuscules, les mots séparés par un tiret bas : `age_tranche`, `diplome_r` ;
+-   la flèche `<-` pour l'assignation, le signe `=` pour les arguments ;
+-   des espaces autour des opérateurs (`age >= 65`) et après les virgules ;
+-   des lignes courtes, idéalement moins de 80 caractères, quitte à passer à la ligne après une virgule ou un pipe ;
+-   une étape par ligne dans un enchaînement de pipes.
+
+Pour les commentaires, on renvoie à la règle des [Premiers pas](premiers_pas_r.qmd) : expliquer *pourquoi*, pas *ce que fait* le code. Gentzkow et Shapiro vont plus loin : le code doit se documenter lui-même, par des noms explicites, et on ne doit pas écrire de documentation qu'on ne maintiendra pas [@gentzkow_shapiro2014]. Un commentaire qui décrit une version ancienne du code est pire que pas de commentaire du tout.
+
+RStudio peut reformater automatiquement une sélection de code avec `Code > Reformat Code` (**Ctrl + Maj + A**, **Cmd + Maj + A** sur macOS). Les packages `styler` et `lintr` permettent respectivement de reformater un script entier selon le guide du tidyverse, et de signaler les écarts à ses règles.
+
+# Niveau 3 : pour aller plus loin
+
+## Documenter son environnement
+
+Un même script peut produire des résultats différents selon la version de R ou des packages utilisés : une fonction peut changer de comportement, une valeur par défaut peut être modifiée. Sandve et ses coauteurs recommandent donc d'archiver les versions exactes des programmes utilisés [@sandve2013]. La fonction `sessionInfo()` en donne un résumé :
+
+```{r}
+sessionInfo()
+```
+
+La sortie ci-dessus décrit l'ordinateur sur lequel cette page a été générée : la version de R, le système d'exploitation, les paramètres régionaux (la langue, l'encodage), et les packages chargés avec leur version. Sur votre machine, elle sera différente, et c'est précisément ce qu'elle permet de documenter. L'usage est de l'afficher à la fin de tout document d'analyse : *What They Forgot to Teach You About R* se termine d'ailleurs lui-même par une page qui reproduit les informations de session utilisées pour le générer.
+
+Pour les données, l'équivalent est l'**édition** du fichier. Le nom `ESS11e04_2.sav` l'indique directement : il s'agit du fichier intégré de la vague 11, édition 4.2. L'ESS publie régulièrement des éditions corrigées de ses fichiers, qui peuvent modifier certaines valeurs. Il faut donc toujours noter l'édition utilisée, et citer les données avec leur identifiant DOI [@ess11], comme indiqué dans la page [Comprendre l'ESS](ess_pres.qmd).
+
+::: callout-note
+## Et l'aléatoire ?
+
+Certaines analyses comportent une part de hasard : tirer un sous-échantillon, ou estimer une incertitude par rééchantillonnage. Relancées deux fois, elles donnent deux résultats différents. Pour les rendre reproductibles, on fixe le point de départ du générateur de nombres aléatoires avec `set.seed()`, et on le conserve dans le script [@sandve2013] :
+
+```{r}
+set.seed(2023)
+sample(1:100, 5)   # tire 5 nombres au hasard entre 1 et 100
+
+set.seed(2023)
+sample(1:100, 5)   # même graine, même tirage
+```
+
+Le nombre donné à `set.seed()` n'a aucune importance en soi ; ce qui compte, c'est qu'il soit écrit dans le script.
+:::
+
+## Figer les versions des packages avec `renv`
+
+`sessionInfo()` documente l'environnement, mais ne permet pas de le reconstruire. Le package `renv` va plus loin : il enregistre, dans un fichier `renv.lock` placé à la racine du projet, la version exacte de chaque package utilisé. Une autre personne, ou vous-même sur un autre ordinateur, peut ensuite réinstaller exactement ces versions [@bryan_wtf; @avouac_galiana_mep].
+
+```{r}
+#| eval: false
+renv::init()      # une fois, au début du projet : crée l'environnement
+renv::snapshot()  # après chaque installation ou mise à jour : enregistre les versions
+renv::restore()   # sur une autre machine : réinstalle les versions enregistrées
+```
+
+C'est un outil plus lourd que les précédents, et il n'est pas nécessaire pour suivre ce kit. Il devient en revanche précieux pour un projet qui doit pouvoir être relancé dans plusieurs années, comme une thèse ou un article accompagné d'un dossier de réplication.
+
+## Versionner son travail avec Git
+
+Git est un logiciel de **contrôle de version** : il enregistre l'historique complet des modifications de chaque fichier d'un projet, permet de revenir à n'importe quelle version antérieure, et facilite le travail à plusieurs. GitHub est une plateforme qui héberge ces projets en ligne. Gentzkow et Shapiro recommandent de placer le code et les données sous contrôle de version [@gentzkow_shapiro2014], et le versionnement des scripts figure parmi les dix règles de Sandve et ses coauteurs [@sandve2013].
+
+L'apprentissage de Git dépasse le cadre de cette page. La référence pour les utilisateurs de R est *Happy Git and GitHub for the useR* [@bryan_happygit], qui explique pas à pas l'installation et l'intégration de Git dans RStudio ; la documentation *utilitR* y consacre également une fiche en français [@utilitr]. Ce site est lui-même versionné avec Git.
+
+<!-- À COMPLÉTER : lien vers le dépôt GitHub du kit. -->
+
+::: callout-warning
+## Versionner le code, pas les données de l'ESS
+
+Pour les données de l'ESS, on fait une exception à la règle de Gentzkow et Shapiro. Les fichiers sont volumineux : celui de la vague 11 dépasse 80 Mo, et GitHub refuse les fichiers de plus de 100 Mo. Surtout, ils sont déjà archivés, versionnés par éditions et identifiés par un DOI sur le portail officiel : mieux vaut que chacun les télécharge à la source, ce qui garantit l'édition utilisée et une citation correcte. On les exclut donc du suivi en ajoutant le dossier de données dans un fichier `.gitignore`, et on indique dans le `README` comment les télécharger, avec leur édition exacte.
+:::
+
+## Demander de l'aide : l'exemple reproductible
+
+La reproductibilité sert aussi quand on est bloqué. Pour obtenir de l'aide, d'un collègue ou sur un forum, il faut fournir un **exemple reproductible minimal** : le plus petit morceau de code, accompagné de données, qui reproduit le problème dans une session vierge. *What They Forgot to Teach You About R* consacre un chapitre entier à cette démarche [@bryan_wtf]. Construire cet exemple suffit d'ailleurs souvent à trouver soi-même la solution.
+
+Le package `reprex` automatise la vérification. On copie le code dans le presse-papiers, puis :
+
+```{r}
+#| eval: false
+reprex::reprex()
+```
+
+La fonction exécute le code dans une session entièrement vierge, et produit un texte prêt à être collé dans un message, avec le code et ses résultats. Si le code ne fonctionne pas dans cette session vierge, c'est qu'il dépend d'un objet ou d'un package qui n'y figure pas : exactement le type de problème que cette page cherche à éviter.
+
+# Liste de contrôle
+
+**Dès la première ligne**
+
+-   [ ] Tout ce qui compte est écrit dans un script enregistré, pas seulement tapé dans la console.
+-   [ ] RStudio ne sauvegarde ni ne recharge le fichier `.RData`.
+-   [ ] Le script s'exécute sans erreur après un redémarrage de R.
+-   [ ] Le travail se fait dans un projet RStudio, avec des chemins relatifs et des barres obliques `/`.
+-   [ ] Les données brutes ne sont jamais modifiées.
+
+**Quand le projet grandit**
+
+-   [ ] Les dossiers séparent données, scripts et sorties, et un `README` explique le projet.
+-   [ ] Les fichiers sont nommés sans espace ni accent, avec des numéros complétés par des zéros et des dates au format `AAAA-MM-JJ`.
+-   [ ] Un script principal relance toute l'analyse, dans l'ordre.
+-   [ ] Le code suit une convention de style cohérente.
+
+**Pour aller plus loin**
+
+-   [ ] Les informations de session et l'édition des données sont documentées.
+-   [ ] La graine aléatoire est fixée avec `set.seed()` si l'analyse comporte du hasard.
+-   [ ] Les versions des packages sont figées avec `renv`.
+-   [ ] Le code est versionné avec Git, sans les fichiers de données.
+
+# Pour aller plus loin
+
+Chacune de ces ressources est gratuite et accessible en ligne, à l'exception du manuel de Christensen, Freese et Miguel.
+
+**Pour commencer**
+
+-   *What They Forgot to Teach You About R* [@bryan_wtf], en anglais : la source principale de cette page. Les chapitres « Saving source and blank slates », « Project-oriented workflow » et « How to name files » se lisent en quelques minutes chacun.
+-   *Introduction à R et au tidyverse* [@barnier_tidyverse], en français : le chapitre « Organiser ses scripts » couvre les projets, les sections et la sauvegarde de l'espace de travail.
+-   *R for Data Science* [@wickham2023r4ds], en anglais : le chapitre « Workflow: scripts and projects » est une excellente introduction.
+
+**Pour approfondir**
+
+-   *utilitR* [@utilitr] et son guide des bonnes pratiques [@utilitr_pratiques], en français : des fiches pratiques sur les projets RStudio, Git et la gestion des dépendances, pensées pour la statistique publique.
+-   *Happy Git and GitHub for the useR* [@bryan_happygit], en anglais : pour apprendre Git depuis RStudio.
+-   *guide-R* [@larmarange_guider], en français : la référence pour l'analyse d'enquêtes sous R, qui prolonge l'ensemble de ce kit.
+-   Le cours *Mise en production des projets de data science* [@avouac_galiana_mep], en français : pour aller jusqu'aux environnements, à l'architecture de projet et au déploiement.
+
+**Pour une réflexion méthodologique**
+
+-   Peng [@peng2011] et Leek et Peng [@leek_peng2015] : deux textes courts sur ce qu'est, et ce que n'est pas, la reproductibilité.
+-   Sandve et ses coauteurs [@sandve2013] et Wilson et ses coauteurs [@wilson2017] : deux articles très concrets, qui se lisent comme des listes de recommandations.
+-   Gentzkow et Shapiro [@gentzkow_shapiro2014] : un guide écrit par deux économistes à partir de leur propre pratique de recherche, particulièrement adapté aux sciences sociales quantitatives.
+-   Christensen, Freese et Miguel [@christensen2019] : un manuel complet sur la transparence et la reproductibilité en sciences sociales, au-delà des seules questions de code.
+-   *The Turing Way* [@turingway] : un manuel collaboratif qui couvre l'ensemble du sujet, de la gestion des données à la collaboration.
+
+# Références
+
+::: {#refs}
+:::
