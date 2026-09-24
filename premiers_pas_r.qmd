@@ -239,7 +239,7 @@ pays == "France"
 pays == "france"
 ```
 
-Dans l'ESS, les codes pays sont écrits en majuscules (`"FR"`, `"DE"`...) : une condition écrite avec `"fr"` ne retiendrait aucun répondant.
+Nota Bene : dans l'ESS, les codes pays sont écrits en majuscules (`"FR"`, `"DE"`...) : R étant sensibles une condition écrite avec `"fr"` ne retiendrait aucun répondant.
 
 ## Connaître et convertir le type d'un objet
 
