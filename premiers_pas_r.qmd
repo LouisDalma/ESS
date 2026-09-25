@@ -221,6 +221,9 @@ age == 30
 
 Ici, `age` vaut 42 : il est effectivement **supérieur** à 18 (`TRUE`), et il n'est **pas égal** à 30 (`FALSE`). Chaque comparaison est une question posée à R, qui répond par vrai ou faux.
 
+::: callout-important
+### Les différents opérateurs
+
 | Opérateur | Signification           |
 |-----------|-------------------------|
 | `==`      | égal à                  |
@@ -229,6 +232,7 @@ Ici, `age` vaut 42 : il est effectivement **supérieur** à 18 (`TRUE`), et il n
 | `>=`      | supérieur ou égal à     |
 | `<`       | strictement inférieur à |
 | `<=`      | inférieur ou égal à     |
+:::
 
 Le test d'égalité s'écrit avec un **double** signe égal. Il ne faut pas le confondre avec la flèche `<-` : `age == 30` pose une question ("Est-ce que `age` vaut 30 ?"), tandis que `age <- 30` assigne une valeur de 30 à l'objet `age`.
 
@@ -238,8 +242,6 @@ Les comparaisons fonctionnent aussi sur du texte, et tiennent compte des majuscu
 pays == "France"
 pays == "france"
 ```
-
-Nota Bene : dans l'ESS, les codes pays sont écrits en majuscules (`"FR"`, `"DE"`...) : R étant sensibles une condition écrite avec `"fr"` ne retiendrait aucun répondant.
 
 ## Connaître et convertir le type d'un objet
 
@@ -251,29 +253,27 @@ class(pays)
 class(TRUE)
 ```
 
-C'est le premier réflexe à avoir quand une commande se comporte bizarrement : une variable qu'on croyait numérique, et qui contient en fait du texte, explique à elle seule une bonne partie des erreurs rencontrées sur des données réelles.
+Contrôler le type d'un objet ou d'une variable peut-être utile, par exemple lorsqu'une variable qu'on pense numérique contient en réalité du texte.
 
-Les fonctions `as.numeric()` et `as.character()` convertissent une valeur d'un type à l'autre. La conversion n'est possible que si elle a un sens : un texte qui ne représente pas un nombre devient une valeur manquante, notée `NA`, et R émet un avertissement.
+Les fonctions `as.numeric()` et `as.character()` convertissent une valeur d'un type à l'autre, dans la mesure où le contenu peut effectivement être converti, auquel cas la conversion sera notée `NA`, suivie d'un avertissement. On reviendra plus bas sur cet avertissement.
 
 ```{r}
 as.numeric("42") + 1
 as.numeric("quinze")
 ```
 
-On reviendra plus bas sur les valeurs manquantes, et sur cet avertissement. `as.numeric()` resservira dans la partie suivante, pour convertir l'âge des répondants de l'ESS en variable numérique.
-
 # Les vecteurs
 
 ## Rassembler plusieurs valeurs avec `c()`
 
-Jusqu'à présent, chacun de nos objets crée ne contenait qu'une seule valeur. Or, une base de données quantitatives en contient des centaines, des milliers, voire des centaine de milliers. On prend pour exemple ici l'âge des répondants et leur pays d'origine. Pour rassembler plusieurs valeurs dans un même objet, on utilise la fonction `c()` (pour *combine*), en séparant les éléments par des virgules :
+On souhaite à présent créer un objet avec plusieurs valeurs. On prend pour exemple ici l'âge des répondants et leur pays d'origine. Pour rassembler plusieurs valeurs dans un même objet, on utilise la fonction `c()` (pour *combine*), en séparant les éléments par des virgules :
 
 ```{r}
 ages <- c(25, 42, 38, 61, 19, 72)
 pays <- c("FR", "DE", "FR", "ES", "DE", "FR")
 ```
 
-On obtient deux **vecteurs** : des suites ordonnées de valeurs. Imaginons qu'il s'agisse de l'âge et du pays de résidence des six répondants d'une petite enquête. Les deux vecteurs sont alignés, position par position : le premier répondant a 25 ans et vit en France, le quatrième a 61 ans et vit en Espagne.
+Les résultats obtenus sont des **vecteurs**, c'est-à-dire des suites ordonnées de valeurs. Les deux vecteurs sont alignés, position par position : le premier répondant a 25 ans et vit en France, le quatrième a 61 ans et vit en Espagne.
 
 On remarque par ailleurs que `pays` contenait jusqu'ici `"France"` : il vient d'être écrasé, sans avertissement.
 
@@ -284,15 +284,15 @@ length(ages)
 1:6
 ```
 
-C'est aussi l'occasion de comprendre enfin le `[1]`. Sur un vecteur trop long pour tenir sur une ligne, R revient à la ligne, et indique entre crochets la position du premier élément de chaque nouvelle ligne :
+Cela permet de comprendre ce que signifie le `[1]` qu'on a vu au début. Lorsqu'un vecteur est trop long, R revient à la ligne, et indique entre crochets la position du premier élément de chaque nouvelle ligne :
 
 ```{r}
 1:40
 ```
 
-## Un vecteur, un seul type
+## Un type unique de valeurs
 
-**Un vecteur ne peut contenir qu'un seul type de valeur.** Si l'on mélange des nombres et du texte, R ne renvoie pas d'erreur : il convertit silencieusement l'ensemble en texte.
+**Un vecteur ne peut contenir qu'un seul type de valeur.** Dans le cas où on mélange des chiffres avec du texte, R convertit silencieusement l'ensemble des modalités en texte, en attestent les guillemets autour de `"12"`, `"15"` et `"9"` .
 
 ```{r}
 reponses <- c(12, 15, "NSP", 9)
@@ -300,11 +300,9 @@ reponses
 class(reponses)
 ```
 
-Les guillemets autour de `"12"`, `"15"` et `"9"` le montrent : ce ne sont plus des nombres. Il a suffi d'une seule valeur textuelle pour contaminer tout le vecteur, sur lequel plus aucun calcul n'est possible. C'est exactement le mécanisme évoqué plus haut à propos de l'import d'un fichier.
-
 ## Calculer sur tout un vecteur à la fois
 
-La plupart des opérations s'appliquent automatiquement à **chacun** des éléments d'un vecteur. On parle d'opérations **vectorisées**. Si l'enquête a eu lieu en 2023, on retrouve ainsi l'année de naissance approximative de chaque répondant, en une seule ligne :
+La plupart des opérations s'appliquent automatiquement à **chacun** des éléments d'un vecteur. On parle d'opérations **vectorisées**. On suppose que notre enquête fictive a eu lieu en 2023 ; on retrouve ainsi l'année de naissance approximative de chaque répondant, en une seule ligne :
 
 ```{r}
 2023 - ages
