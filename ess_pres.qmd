@@ -93,7 +93,7 @@ Chaque module comporte **30 questions**. Pour un module répété, au moins 20 d
 [^14]: ESS ERIC, *ESS Round 13 Survey Specification*, section 7.1 : « Each rotating module will include 30 questions (or equivalent if some questions are asked to sub-samples). For repeat modules, at least 20 of these questions need to be repeated from (one of) the previous ESS round(s) when the modules were fielded. » Cette règle est énoncée pour la vague 13 ; l'ordre de grandeur vaut pour les vagues récentes.
 
 | Vague | Modules tournants |
-|------------------------------------|------------------------------------|
+|----|----|
 | 1 (2002) | Citoyenneté, engagement et démocratie / Immigration |
 | 2 (2004) | Famille, travail et bien-être / Santé et recours aux soins · Moralité économique |
 | 3 (2006) | Bien-être personnel et social / Le calendrier de la vie |

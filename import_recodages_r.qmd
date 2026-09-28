@@ -780,9 +780,7 @@ Le format `.rds` est propre à R. Il conserve tout ce qu'on vient de construire 
 
 Pour recharger ces données dans un autre script, ou dans la page suivante :
 
-```{r} eval: false}
-ESS11_FR <- readRDS("01_Data/ESS11_FR_recode.rds")
-```
+`{r} eval: false} ESS11_FR <- readRDS("01_Data/ESS11_FR_recode.rds")`
 
 ::: callout-note
 ### Pourquoi cette manipulation est nécessaire ?
@@ -823,7 +821,7 @@ Les deux premiers écarts se corrigent à l'intérieur d'un pays. Le troisième 
 Pour corriger ces biais, la documentation de l'ESS fournit quatre variables de pondération
 
 | Variable | Rôle |
-|------------------------------------|------------------------------------|
+|----|----|
 | `dweight` | Poids de sondage : corrige les probabilités de sélection inégales |
 | `pspwght` | Poids post-stratifié : corrige en plus la non-réponse |
 | `pweight` | Poids de population : rend les pays proportionnels à leur population |

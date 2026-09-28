@@ -4,7 +4,7 @@ author: "Louis Dalmazzo"
 lang: fr
 ---
 
-Cette partie présentera les bases du langage R : exécuter une commande, écrire un script, créer des objets, manipuler des vecteurs, utiliser des fonction et comprendre les erreurs et messages renvoyés par R. Ces bases sont essentielles pour comprendre le fonctionnement même du langage que nous utilisons.
+Cette partie présente les bases du langage R : exécuter une commande, écrire un script, créer des objets, manipuler des vecteurs, utiliser des fonction et comprendre les erreurs et messages renvoyés par R. Ces bases sont essentielles pour comprendre le fonctionnement même du langage que nous utilisons.
 
 On suppose que R et RStudio sont installés et configurés, et qu'un projet RStudio a été créé, comme on l'a expliqué dans la [page précédente](r_presentation.qmd). Aucun package ni aucun fichier de données ne sont ici nécessaires.
 
@@ -287,7 +287,7 @@ length(ages)
 Cela permet de comprendre ce que signifie le `[1]` qu'on a vu au début. Lorsqu'un vecteur est trop long, R revient à la ligne, et indique entre crochets la position du premier élément de chaque nouvelle ligne :
 
 ```{r}
-1:40
+1:100
 ```
 
 ## Un type unique de valeurs
@@ -300,22 +300,20 @@ reponses
 class(reponses)
 ```
 
-## Calculer sur tout un vecteur à la fois
+## Calculer sur l'ensemble du vecteur
 
-La plupart des opérations s'appliquent automatiquement à **chacun** des éléments d'un vecteur. On parle d'opérations **vectorisées**. On suppose que notre enquête fictive a eu lieu en 2023 ; on retrouve ainsi l'année de naissance approximative de chaque répondant, en une seule ligne :
+La plupart des opérations s'appliquent automatiquement à **chacun** des éléments d'un vecteur. On parle d'opérations **vectorisées**. On suppose ici que notre enquête fictive a eu lieu en 2023 ; on retrouve dès lors l'année de naissance approximative de chaque répondant, en une seule ligne :
 
 ```{r}
 2023 - ages
 ```
 
-Les comparaisons sont elles aussi vectorisées. Elles renvoient un vecteur de `TRUE` et de `FALSE`, un par élément :
+De la même manière, les comparaisons sont elles aussi vectorisées et renvoient un vecteur `TRUE` et `FALSE` pour chaque élément. Est-ce que cette valeur est vraie, ou non ? Est-ce que le premier répondant a 40 ans ou plus ? Non. Le deuxième ? Oui. Ce mécanisme nous permettra dans la partie suivante de sélectionner des répondants, ou de construire des tranches d'âge.
 
 ```{r}
 ages >= 40
 pays == "FR"
 ```
-
-Chaque valeur répond à la question pour un répondant : le premier a-t-il 40 ans ou plus ? Non. Le deuxième ? Oui. C'est ce mécanisme, appliqué à des dizaines de milliers de lignes, qui permettra dans la partie suivante de sélectionner les répondants français, ou de construire des tranches d'âge.
 
 ## Sélectionner des éléments avec les crochets
 
@@ -327,13 +325,13 @@ ages[c(1, 3)]   # le premier et le troisième
 ages[2:4]       # du deuxième au quatrième
 ```
 
-On peut aussi placer entre crochets un vecteur de `TRUE` et de `FALSE` : R ne conserve alors que les éléments pour lesquels la valeur est `TRUE`.
+On peut aussi placer entre crochets un vecteur `TRUE` ou `FALSE` : R ne conserve alors que les éléments pour lesquels la valeur est `TRUE`.
 
 ```{r}
 ages[ages >= 40]
 ```
 
-Lisons cette ligne de l'intérieur vers l'extérieur. `ages >= 40` produit `FALSE TRUE FALSE TRUE FALSE TRUE`. Placé entre crochets, ce vecteur sert de filtre : seuls les deuxième, quatrième et sixième âges sont conservés.
+Dans l'exemple ci dessus, `ages >= 40` produit un vecteur : `FALSE TRUE FALSE TRUE FALSE TRUE`. Placé entre crochets, il sert de filtre : seuls les deuxième, quatrième et sixième âges sont conservés (c'est-à-dire les individus pour laquelle la condition est vraie.
 
 Et puisque `ages` et `pays` sont alignés, une condition posée sur l'un peut servir à sélectionner dans l'autre :
 
@@ -341,13 +339,13 @@ Et puisque `ages` et `pays` sont alignés, une condition posée sur l'un peut se
 pays[ages >= 40]
 ```
 
-On obtient le pays des répondants de 40 ans ou plus. C'est, en miniature, ce que fera la fonction `filter()` sur un tableau entier : garder les lignes pour lesquelles une condition est vraie.
+On obtient le pays des répondants de 40 ans ou plus. On détaillera dans la section suivante ce mécanisme pour filtrer une population, avec la fonction `filter()`.
 
 # Les fonctions
 
 ## Qu'est-ce qu'une fonction ?
 
-On a déjà croisé plusieurs fonctions : `class()`, `as.numeric()`, `c()`, `length()`. Une fonction est une commande qui effectue une opération précise. Elle s'écrit toujours de la même manière : son nom, suivi de parenthèses qui contiennent les éléments sur lesquels elle doit travailler.
+On a déjà croisé plusieurs fonctions : `class()`, `as.numeric()`, `c()` ou encore `length()`. On peut définir une fonction comme une commande ayant un but et une opération précise. On l'écrit toujours de la même manière : son nom, suivi de parenthèses qui contiennent les éléments sur lesquels elle s'applique.
 
 ```{r}
 mean(ages)
@@ -358,20 +356,20 @@ mean(ages)
 
 `mean` est le nom de la fonction. Elle calcule une moyenne (*mean* en anglais).
 
-`( )` : les parenthèses sont obligatoires. Sans elles, R n'exécute pas la fonction : taper `mean` seul affiche son code interne.
+`( )` : les parenthèses sont obligatoires. Sans elles, R n'exécute pas la fonction
 
-`ages` est l'**argument** : ce qu'on donne à la fonction pour qu'elle travaille, ici le vecteur dont on veut la moyenne.
+`ages` est l'**argument** : sur quoi la fonction s'applique, en l'occurence le vecteur `ages` dont on veut la moyenne.
 
-`[1] 42.83333` est la **valeur renvoyée**. Comme tout résultat, elle s'affiche puis disparaît, à moins d'être rangée dans un objet : `age_moyen <- mean(ages)`.
+`[1] 42.83333` est la **valeur renvoyée** par R. Pour la sauvegarder, elle doit être rangée dans un objet : `age_moyen <- mean(ages)`.
 :::
 
-D'autres fonctions reviennent en permanence : `sum()`, `min()` et `max()` sur des nombres, et `table()`, qui compte le nombre d'occurrences de chaque valeur :
+D'autres fonctions vont souvent revenir, généralement issue d'extensions, que nous aborderons dans la section suivante. Pour le moment, on peut évoquer entre autre `sum()`, `min()` et `max()` sur des nombres, ainsi que `table()`, qui compte le nombre d'occurrences de chaque valeur :
 
 ```{r}
 table(pays)
 ```
 
-Trois répondants résident en France, deux en Allemagne, un en Espagne. Remarquez l'ordre d'affichage : R range les valeurs textuelles par **ordre alphabétique**, qui n'est pas toujours l'ordre souhaité. On verra dans la partie suivante comment imposer l'ordre de son choix, et comment obtenir des pourcentages en plus des effectifs.
+On voit que trois répondants résident en France, deux en Allemagne, et un en Espagne. On voit également que R range les valeurs textuelles par **ordre alphabétique**, qui n'est pas toujours l'ordre souhaité. On verra dans la partie suivante comment imposer l'ordre de son choix, et comment obtenir des pourcentages en plus des effectifs.
 
 ## Compter avec `TRUE` et `FALSE`
 
@@ -382,51 +380,40 @@ sum(ages >= 40)
 mean(ages >= 40)
 ```
 
-`sum()` additionne les 1 et les 0 : elle **compte** donc le nombre d'éléments pour lesquels la condition est vraie. Trois répondants ont 40 ans ou plus.
+`sum()` additionne ici les 1 et les 0 : elle **compte** donc le nombre d'éléments pour lesquels la condition est vraie. Dans notre exemple, trois répondants ont 40 ans ou plus.
 
-`mean()` divise ce compte par le nombre total d'éléments : elle donne donc la **proportion** d'éléments pour lesquels la condition est vraie, ici 0,5.
-
-On retrouvera cette écriture dans la partie suivante, par exemple pour compter combien de répondants portent un code de diplôme donné.
+`mean()` divise ce compte par le nombre total d'éléments : dans notre cas, elle donne donc la **proportion** d'éléments pour lesquels la condition est vraie, ici 0,5. Une personne sur deux a 40 ans ou plus.
 
 ## Les arguments
 
-Une fonction peut prendre plusieurs arguments, séparés par des virgules. Certains sont obligatoires ; d'autres sont optionnels, et possèdent une **valeur par défaut**, utilisée quand on ne précise rien. Prenons `round()`, qui arrondit un nombre. Par défaut, elle arrondit à l'unité ; l'argument `digits` fixe le nombre de décimales :
+Une fonction peut prendre plusieurs arguments, séparés par des virgules. Certains sont obligatoires ; d'autres sont optionnels, et possèdent une **valeur par défaut**, utilisée quand on ne précise rien. On prend par exemple `round()`, qui arrondit un nombre. Par défaut, elle arrondit à l'unité ; l'argument `digits` fixe le nombre de décimales :
 
 ```{r}
 round(42.83333)
 round(42.83333, digits = 1)
 ```
 
-Les arguments peuvent être donnés **par position**, R les attribuant dans l'ordre prévu par la fonction, ou **par nom**, en écrivant `nom_argument = valeur`, auquel cas l'ordre n'a plus d'importance :
-
-```{r}
-round(42.83333, 1)               # par position
-round(digits = 1, x = 42.83333)  # par nom : l'ordre est indifférent
-```
-
-L'usage le plus courant, qu'on suivra sur ce site, consiste à laisser le premier argument sans nom (c'est presque toujours la donnée sur laquelle on travaille) et à nommer les suivants. `round(42.83333, digits = 1)` se comprend sans connaître la fonction ; `round(42.83333, 1)` oblige à savoir ce que représente le `1`.
-
 ::: callout-important
-## Trois signes à ne pas confondre
+## Des signes à connaître.
 
 `<-` **range** une valeur dans un objet : `age <- 42`.
 
 `=` **donne une valeur à un argument**, à l'intérieur des parenthèses d'une fonction : `round(x, digits = 1)`. On le retrouvera pour nommer les colonnes qu'on crée.
 
-`==` **teste** une égalité, et renvoie `TRUE` ou `FALSE` : `age == 42`.
+`==` est un **opérateur** comme vu précédemment et **teste** une égalité.
 
-Techniquement, `=` fonctionne aussi pour créer un objet (`age = 42`). L'usage est pourtant de réserver `<-` à l'assignation, pour que chaque signe n'ait qu'un seul rôle à la lecture.
+D'un point de vue technique, `=` fonctionne aussi pour créer un objet (`age = 42`). L'usageva néanmoins consister à réserver `<-` à l'assignation, pour que chaque signe n'ait qu'un seul rôle à la lecture.
 :::
 
 ## Emboîter des fonctions
 
-Le résultat d'une fonction peut servir directement d'argument à une autre :
+Il est possible d'emboîter des fonctions les unes à l'intérieur des autres. Ainsi, le résultat d'une première fonction peut servir directement d'argument à une seconde :
 
 ```{r}
 round(mean(ages), digits = 1)
 ```
 
-Une telle ligne se lit **de l'intérieur vers l'extérieur** : R calcule d'abord `mean(ages)`, qui vaut 42,83333, puis passe ce résultat à `round()`, qui l'arrondit à une décimale. Avec deux fonctions, cela reste lisible. Au-delà, les parenthèses s'accumulent, et la lecture se fait à rebours de l'ordre des opérations. La partie suivante présentera le **pipe**, qui permet d'écrire les opérations dans l'ordre où elles s'exécutent.
+Ici, on lit une ligne **de l'intérieur vers l'extérieur** : R calcule d'abord `mean(ages)`, qui vaut 42,83333, puis passe ce résultat à `round()`, qui l'arrondit à une décimale. Au-delà de deux fonction, la lecture devient vite illisible. Dans la section suivante, on présentera l'utilisation du **pipe** `|>`, qui permettra d'écrire les opérations dans l'ordre où elles s'exécutent.
 
 ## Consulter l'aide d'une fonction
 
@@ -437,28 +424,38 @@ La documentation d'une fonction s'ouvre avec un point d'interrogation, ou en pla
 ?round
 ```
 
-La page s'affiche alors dans le panneau de la partie inférieure droite de RStudio. On distingue trois rubriques : **Usage** donne la liste des arguments, dans l'ordre, avec leurs valeurs par défaut : pour `round()`, on y lit que `digits` vaut `0` par défaut, ce qui explique l'arrondi à l'unité. **Arguments** décrit chacun d'eux. **Examples**, tout en bas, propose des exemples prêts à être exécutés, souvent la rubrique la plus utile pour débuter.
+La page s'affiche alors dans le panneau "*Help*" de la partie inférieure droite de RStudio :
 
-RStudio aide aussi pendant la frappe : en tapant les premières lettres d'une fonction, puis la touche **Tab**, on obtient la liste des fonctions correspondantes ; à l'intérieur des parenthèses, la même touche affiche les arguments disponibles.
+![La page d'aide de la fonction round()](images/Capture d'écran 2026-09-28 111318.png)
+
+On s'intéresse principalement à trois rubriques : **Usage** donne la liste des arguments, dans l'ordre, avec leurs valeurs par défaut : on voit que pour `round()`, `digits` vaut `0` par défaut, ce qui explique l'arrondi à l'unité. **Arguments** décrit chacun d'eux. **Examples**, tout en bas, propose des exemples prêts à être exécutés, souvent la rubrique la plus utile pour débuter.
+
+RStudio aide aussi durant la notation du code : en tapant les premières lettres d'une fonction, puis la touche **Tab**, on obtient la liste des fonctions correspondantes :
+
+![R affiche l'ensemble des fonctions commençant ici par "rou"](images/Capture d'écran 2026-09-28 112302.png)
+
+De plus, à l'intérieur des parenthèses d'une fonction, la même manipulation affiche les arguments disponibles :
+
+![R affiche l'ensemble des arguments de la fonction round()](images/Capture d'écran 2026-09-28 112527.png)
 
 ## Les valeurs manquantes
 
-Les données réelles comportent presque toujours des valeurs manquantes, notées `NA` dans R (pour *Not Available*). Ajoutons à notre petite enquête le niveau de bonheur déclaré par chaque répondant, sur une échelle de 0 à 10. Le troisième répondant n'a pas répondu :
+Travailler sur de vraies données implique souvent de tomber sur des valeurs manquantes, notées `NA` dans R (pour *Not Available*). Elles peuvent être présentes pour différentes raisons : parce que la personne enquêtée n'a pas répondue ou parce qu'elle a été filtrée, entre autres. On ajoute à notre enquête factice un niveau de bonheur déclaré par chaque répondant, sur une échelle de 0 à 10. Dans notre exemple, le troisième répondant n'a pas répondu :
 
 ```{r}
 bonheur <- c(7, 8, NA, 6, 9, 5)
 mean(bonheur)
 ```
 
-`NA` s'écrit en majuscules et sans guillemets : c'est une valeur spéciale, qui signifie « inconnu ». La moyenne vaut donc `NA`, et ce comportement est voulu : la valeur manquante pourrait être 0 comme 10, et la moyenne des six répondants est réellement inconnue. Pour calculer la moyenne sur les seules valeurs connues, il faut le demander explicitement, avec l'argument `na.rm` (pour *NA remove*) :
+`NA` s'écrit en majuscules et sans guillemets : c'est une valeur spéciale, qui signifie "inconnu". Lorsqu'on souhaite calculer la moyenne de l'objet "bonheur", R renvoie `NA` . En effet, on ne connait pas la valeur de la donnée manquante. Par conséquent, pour calculer une moyenne sur un objet contenant des données manquantes, il faut les exclure de notre analyse. Pour cela, on utilise l'argument `na.rm` (pour *NA remove*) :
 
 ```{r}
 mean(bonheur, na.rm = TRUE)
 ```
 
-Ce choix n'est pas anodin. La moyenne porte désormais sur cinq personnes, et suppose implicitement que celle qui n'a pas répondu ressemble, en moyenne, aux autres. Si les personnes les moins heureuses sont aussi les plus réticentes à répondre, la moyenne calculée surestime le bonheur réel. C'est tout l'enjeu des corrections de non-réponse dans les grandes enquêtes, sur lesquelles on reviendra avec la pondération.
+Le choix de retirer les données manquantes est purement discrétionnaire. Il suppose implicitement que la personne qui n'a pas répondu n'existe pas. On pourrait très bien faire l'hypothèse qu'une personne peu heureuse réponde moins souvent à la question que les autres. Ne pas les inclure est donc un choix qu'il conviendra d'expliciter.
 
-Pour repérer les valeurs manquantes, on utilise `is.na()`, qui renvoie `TRUE` pour chaque `NA`. Combinée à `sum()`, elle les compte :
+Pour repérer les valeurs manquantes, on utilise la fonction `is.na()`, qui renvoie `TRUE` pour chaque non réponse. Combinée à `sum()`, elle les compte :
 
 ```{r}
 is.na(bonheur)
@@ -466,7 +463,7 @@ sum(is.na(bonheur))
 ```
 
 ::: callout-warning
-## Deux pièges fréquents
+## Deux points de vigilance
 
 **On ne teste pas un `NA` avec `==`.**
 
@@ -474,24 +471,24 @@ sum(is.na(bonheur))
 bonheur == NA
 ```
 
-Toutes les réponses valent `NA`, y compris pour les valeurs connues : comparer une valeur à une valeur inconnue donne un résultat inconnu. Pour savoir si une valeur est manquante, on passe toujours par `is.na()`.
+Dans ce cas présenté, toutes les valeurs renvoient `NA`, y compris pour des valeurs connues : comparer une valeur à une valeur inconnue donne un résultat inconnu. Pour savoir si une valeur est manquante, on passe toujours par `is.na()`.
 
-**Une faute de frappe dans un argument ne produit pas toujours d'erreur.**
+**Une faute de frappe ne produit pas toujours d'erreur.**
 
 ```{r}
 mean(bonheur, narm = TRUE)
 ```
 
-Le résultat est `NA`, sans aucun message. `narm` n'est pas `na.rm` : `mean()` accepte des arguments supplémentaires sans les vérifier, et ignore silencieusement celui-ci. Une commande qui s'exécute sans erreur n'est donc pas forcément une commande correcte : c'est une idée qui reviendra souvent sur ce site.
+Malgré la mauvaise écriture de `na.rm`, R ne renvoie pas d'erreur et accepte la ligne de code. Il s'agira donc de vérifier scrupuleusement si l'écriture de notre code est correcte.
 :::
 
-Dans les fichiers d'enquête, enfin, les non-réponses ne sont pas toujours codées `NA`. On verra dans la partie suivante ce que cela implique, et pourquoi c'est l'un des points les plus importants de tout le travail sur données.
+Enfin, dans certains **jeux de données**, les non-réponses ne sont pas toujours codées `NA`. Ce qui impliquera un travail important de **recodages**.
 
 # Un premier tableau : le data frame
 
 ## Construire un tableau à partir de vecteurs
 
-Nous disposons maintenant de trois vecteurs de même longueur, alignés position par position : `ages`, `pays` et `bonheur`. Il est naturel de les réunir dans un **tableau**, où chaque répondant occupe une ligne, et chaque information une colonne. Dans R, ce tableau s'appelle un **data frame**, et se crée avec la fonction `data.frame()` :
+On dispose de trois vecteurs de même longueur, alignés position par position : `ages`, `pays` et `bonheur`. On souhaite donc les réunir dans un **tableau**, où chaque répondant occupe une ligne, et chaque information une colonne. Dans R, ce tableau s'appelle un **data frame**, et se crée avec la fonction `data.frame()` :
 
 ```{r}
 enquete <- data.frame(
@@ -505,31 +502,34 @@ enquete
 ```
 
 ::: callout-note
-## Explications du bloc :
+## Explication du code:
 
-`data.frame( )` assemble les vecteurs en tableau. La commande s'étend sur plusieurs lignes pour rester lisible, mais il s'agit d'une seule et même commande, qui ne se termine qu'à la parenthèse fermante. Depuis un script, il suffit de placer le curseur sur l'une de ses lignes et d'appuyer sur Ctrl + Entrée.
+`data.frame( )` assemble nos vecteurs en tableau. On a fait en sorte d'étendre notre commande sur plusieurs lignes pour rester lisible, mais il s'agit de la même chose qu'on a montré précédemment avec plusieurs virgules qui sépare les arguments dans la parenthèse. Chaque argument crée une colonne. Ce qu'il y a à gauche du signe égal = est le nom des colonnes. On aura donc ici quatre colonnes.
 
-`id = 1:6` : chaque argument crée une colonne. À gauche du `=`, le nom de la colonne ; à droite, son contenu. On crée ici un identifiant, qui numérote les répondants de 1 à 6.
+`id = 1:6` : Ici on crée un identifiant (`id`) qui numérote les répondants de 1 à 6.
 
 `age = ages` : la colonne s'appellera `age`, et contiendra les valeurs du vecteur `ages`.
 
 `pays = pays` : les deux noms sont identiques, mais ne désignent pas la même chose. Celui de gauche est le nom de la nouvelle colonne, celui de droite le vecteur qui existe déjà en mémoire.
+
+`bonheur = bonheur` : idem.
 :::
-
-Ce qu'on vient de construire à la main est exactement la structure des données d'enquête : le fichier de la vague 11 de l'ESS n'est rien d'autre qu'un data frame de 50 116 lignes (les répondants) et 691 colonnes (les variables). D'où une contrainte : toutes les colonnes doivent avoir la même longueur, puisque chaque ligne correspond à un répondant.
-
-```{r}
-#| error: true
-data.frame(age = c(25, 42, 38), pays = c("FR", "DE"))
-```
-
-Avec trois âges pour deux pays, R ne sait pas à qui attribuer quoi.
 
 ## Inspecter un tableau
 
-Dans le panneau *Environnement*, `enquete` apparaît dans la rubrique *Data*, avec la mention « 6 obs. of 4 variables » : six observations (les lignes) et quatre variables (les colonnes). Un clic sur son nom l'ouvre dans le **Data viewer**, une vue comparable à celle d'un tableur ; la commande `View(enquete)`, avec un V majuscule, fait la même chose.
+On a donc un dataframe, que l'on peut inspecter soit en renseignant son nom dans la console ou le script, soit en cliquant sur son entrée dans l'Environnement R, que l'on trouve dans la fenêtre située dans la partie supérieure droite du logiciel.
 
-Le clic ne laisse cependant aucune trace dans le script. Plusieurs fonctions permettent d'interroger un tableau par écrit :
+On peut voir à droite la dimension que prend notre data frame : "6 obs. of 4 variables" veut dire qu'il contient 6 lignes (nos individus factices) pour 4 colonnes (`id`, `age`, `pays`, `bonheur`).
+
+![L'onglet Environment de RStudio. On a tous les objets que l'on a crée, ainsi qu'une nouvelle section, intitulée "Data" pour données.](images/Capture d'écran 2026-09-28 135440.png)
+
+On clique à présent sur cette ligne pour ouvrir un onglet dans la partie supérieure gauche de notre écran : le **Data viewer**. C'est une vue tabulaire qu'on peut faire défiler par ligne et par colonne. On peut également utiliser la commande `View(enquete)` qui nous ouvre le même panneau.
+
+![Le Data viewer de RStudio](images/Capture d'écran 2026-09-28 135806.png)
+
+En pratique, on crée rarement un jeu de données soi même : on utilise toujours des données mises à disposition. C'est le cas du fichier de la vague 11 de l'ESS qu'on utilisera dans la section suivante et qui prendra la même forme : un data frame, mais cette fois ci de 50 116 lignes et de 691 colonnes.
+
+Si on souhaite laisser une trace dans son script, plusieurs commandes sont utilisables pour inspecter un data frame :
 
 ```{r}
 dim(enquete)       # nombre de lignes, puis de colonnes
@@ -537,95 +537,71 @@ names(enquete)     # noms des colonnes
 head(enquete, 3)   # premières lignes
 ```
 
-`head()` affiche six lignes par défaut, ou le nombre qu'on précise en second argument. Sur six lignes, elle n'a pas grand intérêt ; sur 50 000, elle évite de déverser tout le fichier dans la console.
-
 ```{r}
 str(enquete)
 ```
 
-`str()` (pour *structure*) rappelle les dimensions du tableau, puis décrit chaque colonne sur une ligne : son nom, son type et ses premières valeurs. Les types sont abrégés : `chr` pour le texte (*character*), `num` pour les nombres (*numeric*), `int` pour les nombres entiers (*integer*). On reviendra sur la distinction entre `num` et `int` dans la partie suivante ; en pratique, les deux variables sont de même nature.
+`str()` (pour *structure*) rappelle les dimensions du tableau, puis décrit chaque colonne sur une ligne : son nom, son type et ses premières valeurs. On voit que les types sont abrégés : sont donc notés `chr` pour le texte (*character*), `num` pour les nombres (*numeric*), `int` pour les nombres entiers (*integer*). On reviendra sur la distinction entre `num` et `int` dans la partie suivante ; en pratique, les deux variables sont de même nature.
 
 ## Extraire une colonne avec `$`
 
-Pour travailler sur une colonne, on l'extrait avec le symbole `$`, placé entre le nom du tableau et celui de la colonne :
+Une manipulation particulièrement fréquente que l'on utilisera sera d'extraire des variables spécifiques de notre jeu de données. Pour cela, on utilise le symbole `$`, placé entre le nom du tableau et celui de la variable :
 
 ```{r}
 enquete$age
 ```
 
-L'écriture `tableau$colonne` se lit de gauche à droite : « dans `enquete`, prends la colonne `age` ». Le résultat n'est plus un tableau, mais un vecteur. Tout ce qu'on a vu sur les vecteurs s'y applique donc directement :
+L'écriture `tableau$colonne` se lit de gauche à droite : on prend la variable âge du data frame enquête. R renvoie donc un vecteur, qu'on peut analyser de la même manière que les vecteurs qu'on a vu précédemment :
 
 ```{r}
 mean(enquete$age)
 table(enquete$pays)
 ```
 
-Et puisque les colonnes sont alignées ligne par ligne, une condition posée sur l'une peut servir à sélectionner dans l'autre. Voici le niveau de bonheur moyen des répondants résidant en France :
+Enfin, puisque les colonnes sont alignées ligne par ligne, une condition posée sur l'une peut servir à sélectionner dans l'autre. Voici le niveau de bonheur moyen des répondants résidant en France :
 
 ```{r}
 mean(enquete$bonheur[enquete$pays == "FR"], na.rm = TRUE)
 ```
 
-Lisons cette ligne de l'intérieur vers l'extérieur. `enquete$pays == "FR"` repère les lignes des répondants français. `enquete$bonheur[ ]` ne garde que leurs niveaux de bonheur : 7, `NA` et 5. `mean( , na.rm = TRUE)` en calcule la moyenne en écartant la valeur manquante. Le résultat est juste, mais la ligne est déjà difficile à lire : les fonctions présentées dans la partie suivante, à commencer par `filter()`, permettront d'écrire la même opération de façon bien plus lisible.
+On lit ce code de l'intérieur vers l'extérieur :
+
+`enquete$pays == "FR"` repère les lignes des répondants français.
+
+`enquete$bonheur[ ]` ne garde que leurs niveaux de bonheur : 7, `NA` et 5.
+
+`mean( , na.rm = TRUE)` calcule la moyenne en écartant la valeur manquante.
+
+Le résultat est cohérent, mais la ligne est particulièrement difficile à lire et, de fait, à reproduire? Les fonctions qu'on présentera dans la partie suivante, notamment `filter()`, permettront d'écrire la même opération d'une manière beaucoup plus aisée.
 
 ::: callout-tip
-## Laisser RStudio compléter les noms
+## L'autocomplétion des variables
 
-Après avoir tapé `enquete$`, RStudio propose la liste des colonnes du tableau (la touche **Tab** la fait apparaître si elle ne s'affiche pas d'elle-même). Un réflexe précieux pour éviter les fautes de frappe, sur un fichier de 691 colonnes aux noms aussi peu mémorables que `edlvdfr` ou `hinctnta`.
+Après avoir renseigné`enquete$`, RStudio propose la liste des colonnes du tableau, qu'on fait apparaître avec la touche **Tab**. C'est une méthode utile pour éviter les fautes de frappe, en particulier sur des variables par moment illisibles.
 :::
 
 # Les messages renvoyés par R
 
 ## Erreur, avertissement, message
 
-R affiche trois catégories de messages, qui n'ont pas la même gravité.
+R affiche trois catégories de messages avec des degré de gravité différents.
 
-**Une erreur** (« Erreur », ou *Error* dans une installation en anglais) interrompt l'exécution : la commande n'a pas abouti, et rien n'a été créé ni modifié. C'est désagréable, mais sans danger : on sait qu'il y a un problème.
+**Une erreur** ("Erreur", ou *Error* dans une installation en anglais) interrompt l'exécution : la commande n'a pas abouti, et rien n'a été créé ni modifié. C'est un message qui permet d'identifier un problème dans la commande.
 
-**Un avertissement** (« Message d'avis », ou *Warning*) signale un comportement suspect, mais l'opération a bien eu lieu. C'est le cas le plus dangereux, parce qu'il est facile de ne pas le voir, surtout quand on exécute plusieurs lignes à la fois :
+**Un avertissement** ("Message d'avis", ou *Warning*) signale une opération suspecte mais qui a bien abouti. Ici par exemple, on converti une variable catégorielle en numérique, alors qu'une de nos modalités est une chaîne de caractères (quinze). La conversion a bien eu lieu, mais a crée une variable manquante.
 
 ```{r}
 reponses_num <- as.numeric(c("12", "quinze", "18"))
 reponses_num
 ```
 
-L'objet a bien été créé, mais il contient un `NA` là où l'on attendait 15. Sans lire l'avertissement, on poursuivrait l'analyse avec une valeur manquante de plus, sans le savoir.
+Enfin, **un message** est essentiellement informatif. Le chargement de certains packages, par exemple, affiche des messages qui ne demandent aucune action particulière.
 
-**Un message** est purement informatif. Le chargement de certains packages, par exemple, affiche des messages qui n'appellent aucune action.
+# Conclusion
 
-## Les erreurs les plus fréquentes
+Pour résumer, nous avons appris à exécuter une commande depuis la console ou un script, le commenter, ranger des valeurs dans des objets et les modifier, distinguer les nombres, le texte et les valeurs logiques, rassembler des valeurs dans des vecteurs et en sélectionner une partie, utiliser des fonctions et leurs arguments, traiter les valeurs manquantes, construire et inspecter un petit tableau, et lire les messages que R renvoie.
 
-Quelques erreurs concentrent l'essentiel des blocages en début d'apprentissage.
-
-```{r}
-#| error: true
-mean(Ages)
-```
-
-**L'objet introuvable** : aucun objet ne porte ce nom. C'est presque toujours une faute de frappe, ou une majuscule en trop : nous avions créé `ages`, pas `Ages`. L'autre cause fréquente est une ligne de création qui n'a pas été exécutée : l'objet existe dans le script, mais pas encore en mémoire. Le panneau *Environnement* permet de trancher.
-
-```{r}
-#| error: true
-moyenne(ages)
-```
-
-**La fonction introuvable** : la fonction n'existe pas sous ce nom, ou bien elle appartient à un package qui n'a pas été chargé. Ce second cas est très fréquent, et sera traité dès le début de la partie suivante.
-
-**Le texte mal placé**, déjà rencontré plus haut : un texte sans guillemets (« objet 'France' introuvable »), ou un texte à la place d'un nombre (« argument non numérique pour un opérateur binaire »).
-
-**La ponctuation** : une virgule décimale, une virgule oubliée entre deux arguments, une parenthèse ou un guillemet non refermé. Les premiers cas produisent une erreur du type « symbole inattendu » ; les derniers laissent la console en attente, avec l'invite `+`. Dans le script, RStudio signale d'ailleurs une ligne dont la syntaxe est incorrecte par une croix rouge dans la marge, avant même qu'on l'exécute.
-
-## Une démarche face à une erreur
-
-1.  **Lire le message en entier.** Il indique généralement la fonction en cause, et parfois l'objet ou le caractère qui pose problème.
-2.  **Vérifier l'orthographe exacte** des noms d'objets, de fonctions et de colonnes, majuscules comprises.
-3.  **Vérifier que les lignes précédentes ont bien été exécutées**, dans l'ordre : un objet doit avoir été créé avant d'être utilisé.
-4.  **Redémarrer R et relancer le script depuis le début.** Le menu `Session > Restart R` (**Ctrl + Maj + F10**, **Cmd + Maj + 0** sur macOS) redémarre R avec une mémoire vide ; **Ctrl + Maj + Entrée** relance ensuite tout le script. Si l'erreur disparaît, elle venait d'un état particulier de la mémoire, et non du script lui-même.
-5.  **Chercher le message sur internet**, en le copiant tel quel. Les réponses sont bien plus nombreuses en anglais : pour obtenir les messages dans cette langue le temps d'une session, on peut exécuter `Sys.setLanguage("en")` dans la console.
-
-# Où en sommes-nous ?
-
-Pour résumer, nous avons appris à exécuter une commande puis la console ou un script, le commenter, ranger des valeurs dans des objets et les modifier, distinguer les nombres, le texte et les valeurs logiques, rassembler des valeurs dans des vecteurs et en sélectionner une partie, utiliser des fonctions et leurs arguments, traiter les valeurs manquantes, construire et inspecter un petit tableau, et lire les messages que R renvoie.
+Voici un tableau récapitulant les informations essentielles.
 
 | Écriture | Rôle |
 |------------------------------------|------------------------------------|
@@ -643,4 +619,4 @@ Pour résumer, nous avons appris à exécuter une commande puis la console ou un
 | `tableau$colonne` | extraire une colonne |
 | `?fonction` | ouvrir l'aide d'une fonction |
 
-Tout ce qui précède reste valable sur de vraies données, simplement à une autre échelle. La [partie suivante](import_recodages_r.qmd) équipe R des packages nécessaires, importe le fichier de l'ESS, et applique ces mêmes gestes à un tableau de 50 116 lignes : sélectionner, filtrer, recoder.
+La [partie suivante](#0) nous permettra d'appliquer ces méthodes sur les données réelles de la dernière vague disponible de l'ESS.
