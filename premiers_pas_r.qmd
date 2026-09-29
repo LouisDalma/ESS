@@ -426,17 +426,17 @@ La documentation d'une fonction s'ouvre avec un point d'interrogation, ou en pla
 
 La page s'affiche alors dans le panneau "*Help*" de la partie inférieure droite de RStudio :
 
-![La page d'aide de la fonction round()](images/Capture d'écran 2026-09-28 111318.png)
+![La page d'aide de la fonction round()](images/Capture%20d'écran%202026-09-28%20111318.png)
 
 On s'intéresse principalement à trois rubriques : **Usage** donne la liste des arguments, dans l'ordre, avec leurs valeurs par défaut : on voit que pour `round()`, `digits` vaut `0` par défaut, ce qui explique l'arrondi à l'unité. **Arguments** décrit chacun d'eux. **Examples**, tout en bas, propose des exemples prêts à être exécutés, souvent la rubrique la plus utile pour débuter.
 
 RStudio aide aussi durant la notation du code : en tapant les premières lettres d'une fonction, puis la touche **Tab**, on obtient la liste des fonctions correspondantes :
 
-![R affiche l'ensemble des fonctions commençant ici par "rou"](images/Capture d'écran 2026-09-28 112302.png)
+![R affiche l'ensemble des fonctions commençant ici par "rou"](images/Capture%20d'écran%202026-09-28%20112302.png)
 
 De plus, à l'intérieur des parenthèses d'une fonction, la même manipulation affiche les arguments disponibles :
 
-![R affiche l'ensemble des arguments de la fonction round()](images/Capture d'écran 2026-09-28 112527.png)
+![R affiche l'ensemble des arguments de la fonction round()](images/Capture%20d'écran%202026-09-28%20112527.png)
 
 ## Les valeurs manquantes
 
@@ -521,11 +521,11 @@ On a donc un dataframe, que l'on peut inspecter soit en renseignant son nom dans
 
 On peut voir à droite la dimension que prend notre data frame : "6 obs. of 4 variables" veut dire qu'il contient 6 lignes (nos individus factices) pour 4 colonnes (`id`, `age`, `pays`, `bonheur`).
 
-![L'onglet Environment de RStudio. On a tous les objets que l'on a crée, ainsi qu'une nouvelle section, intitulée "Data" pour données.](images/Capture d'écran 2026-09-28 135440.png)
+![L'onglet Environment de RStudio. On a tous les objets que l'on a crée, ainsi qu'une nouvelle section, intitulée "Data" pour données.](images/Capture%20d'écran%202026-09-28%20135440.png)
 
 On clique à présent sur cette ligne pour ouvrir un onglet dans la partie supérieure gauche de notre écran : le **Data viewer**. C'est une vue tabulaire qu'on peut faire défiler par ligne et par colonne. On peut également utiliser la commande `View(enquete)` qui nous ouvre le même panneau.
 
-![Le Data viewer de RStudio](images/Capture d'écran 2026-09-28 135806.png)
+![Le Data viewer de RStudio](images/Capture%20d'écran%202026-09-28%20135806.png)
 
 En pratique, on crée rarement un jeu de données soi même : on utilise toujours des données mises à disposition. C'est le cas du fichier de la vague 11 de l'ESS qu'on utilisera dans la section suivante et qui prendra la même forme : un data frame, mais cette fois ci de 50 116 lignes et de 691 colonnes.
 
@@ -604,7 +604,7 @@ Pour résumer, nous avons appris à exécuter une commande depuis la console ou 
 Voici un tableau récapitulant les informations essentielles.
 
 | Écriture | Rôle |
-|------------------------------------|------------------------------------|
+|----|----|
 | Ctrl + Entrée (Cmd + Entrée) | exécuter la ligne ou la sélection |
 | `#` | commenter une ligne |
 | `<-` | ranger une valeur dans un objet |

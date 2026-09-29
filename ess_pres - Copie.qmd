@@ -1,29 +1,28 @@
 ---
 title: "Comprendre l'Enquête Sociale Européenne"
 author: "Louis Dalmazzo"
+lang: fr
 ---
 
 ## Qu'est-ce que l'ESS ?
 
-L'*European Social Survey* (ESS) est un dispositif d'enquêtes par questionnaire bi annuel fondé en 2001[^1]. Il a pour but principal de produire des données fiables pour mesurer le changement, ou à l'inverse la stabilité dans le temps, au sein des pays européens. Il porte, entre autres, sur les conditions de vie, l'opinion politique ou encore les valeurs des enquêtés[^2].
+L'*European Social Survey* (ESS) est un **dispositif d'enquêtes** par questionnaire bi annuel fondé en 2001[^1]. Il a pour but principal de **produire des données fiables** pour mesurer le changement, ou à l'inverse la stabilité dans le temps, au sein des pays européens. Il porte, entre autres, sur les conditions de vie, l'opinion politique ou encore les valeurs des populations enquêtées[^2].
 
 [^1]: ESS ERIC, *ESS Round 13 Survey Specification*, v1, 11 novembre 2025, section 3 : « The European Social Survey (ESS) is an academically driven cross-national survey, founded in 2001. » <https://europeansocialsurvey.org/sites/default/files/2025-11/ESS013_survey_specification_v1.pdf>
 
 [^2]: *Ibid.*, section 1, reprenant les statuts de l'ESS ERIC. Les cinq objectifs statutaires sont également repris sur la page « About ESS » : <https://www.europeansocialsurvey.org/about-ess>
 
-Les enquêtes sont conçues par et pour la recherche : ses données sont pensées pour être exploitées de manière durable et rigoureuse. Cette finalité explique l'essentiel de ses caractéristiques : sa lenteur, son coût, mais aussi sa rigueur méthodologique et la gratuité de ses données, disponibles pour toutes et tous. En 2005, le dispositif a reçu le prix Descartes de la Commission Européenne, plus haute récompense scientifique de l'Union Européenne et première équipe de sciences sociales à la recevoir[^3].
+Les enquêtes sont conçues **par et pour la recherche** : ses données sont pensées pour être exploitées de manière durable et rigoureuse. Cette finalité explique l'essentiel de ses caractéristiques : sa lenteur, son coût, mais aussi sa rigueur méthodologique ainsi que la gratuité de ses données, disponibles pour toutes et tous. En 2005, le dispositif a reçu le prix Descartes de la Commission Européenne, plus haute récompense scientifique de l'Union Européenne et première équipe de sciences sociales à la recevoir[^3].
 
 [^3]: Commission européenne, CORDIS, « Social sciences among the winners of 2005 Descartes Prize », 2005 : le prix a été remis le 2 décembre 2005 à la Royal Society de Londres, à l'équipe dirigée par le professeur Roger Jowell (City University London). <https://cordis.europa.eu/article/id/24874-social-sciences-among-the-winners-of-2005-descartes-prize>
 
-Le dispositif dispose d'un suivi bibliographique annuel, réalisé par l'Université de Ljubljana. Sur la période couvrant 2003 à 2024, le recensement compte **7 546** publications académiques sur Google Scholar et qui est en constante progression : le recensement comptait ainsi 5 429 publication jusqu'en 2020, 5 966 publication jusqu'en 2021, 6 585 publication jusqu'en 2022 et 7 060 publication jusqu'en 2023[^4].
+Le dispositif dispose d'un suivi bibliographique annuel, réalisé par l'Université de Ljubljana. Sur la période couvrant 2003 à 2024, le recensement compte **7 546** publications académiques sur Google Scholar, un comptage en constante progression : le recensement comptait ainsi 5 429 publication jusqu'en 2020, 5 966 publication jusqu'en 2021, 6 585 publication jusqu'en 2022 et 7 060 publication jusqu'en 2023[^4].
 
 [^4]: Chiffres issus des rapports bibliographiques annuels de l'ESS : 5 429 (<https://www.europeansocialsurvey.org/news/article/5429-academic-publications-based-ess-data>), 5 966 (<https://www.europeansocialsurvey.org/news/article/latest-academic-monitoring-report-published>), 6 585 (<https://www.europeansocialsurvey.org/news/article/latest-research-academic-impact-published>), 7 060 (<https://www.europeansocialsurvey.org/news/article/ess-data-analysed-more-7000-papers>), 7 546 (<https://www.europeansocialsurvey.org/findings/ess-impact>). Ces décomptes ne portent que sur les publications en langue anglaise.
 
-AAAA
-
 ### Une infrastructure européenne
 
-Depuis 2013, l'ESS est juridiquement établie comme **ERIC** (*European Research Infrastructure Consortium*), avec le Royaume-Uni pour pays hôte. Son siège est à City St George's, University of London, où siège le directeur, actuellement le professeur Rory Fitzgerald[^5].
+Depuis 2013, l'ESS a le statut juridique d'**ERIC** (*European Research Infrastructure Consortium*), avec comme pays hôte le Royaume-Uni. Son siège se situe à City St George's, University of London, où siège le directeur, actuellement le professeur Rory Fitzgerald[^5].
 
 [^5]: ESS ERIC, *ESS Round 13 Survey Specification*, section 3. Le statut ERIC a été accordé le 30 novembre 2013 : ESS, « About ESS », <https://www.europeansocialsurvey.org/about-ess>
 

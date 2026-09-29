@@ -32,8 +32,8 @@ Rien de ce qui suit n'a été inventé pour ce kit. Les pratiques présentées i
 
 Les deux termes ne sont pas employés de la même manière selon les disciplines, et sont parfois utilisés l'un pour l'autre. On retient ici les définitions du rapport des Académies nationales américaines [@nasem2019], qui font aujourd'hui référence :
 
--   la **reproductibilité** consiste à obtenir des résultats de calcul cohérents en utilisant les mêmes données, les mêmes étapes de calcul, les mêmes méthodes, le même code et les mêmes conditions d'analyse ;
--   la **réplicabilité** consiste à obtenir des résultats cohérents entre plusieurs études qui cherchent à répondre à la même question scientifique, chacune avec ses propres données[^1].
+- la **reproductibilité** consiste à obtenir des résultats de calcul cohérents en utilisant les mêmes données, les mêmes étapes de calcul, les mêmes méthodes, le même code et les mêmes conditions d'analyse ;
+- la **réplicabilité** consiste à obtenir des résultats cohérents entre plusieurs études qui cherchent à répondre à la même question scientifique, chacune avec ses propres données[^1].
 
 [^1]: @nasem2019, résumé (*Summary*). Reproductibilité : « obtaining consistent computational results using the same input data, computational steps, methods, code, and conditions of analysis » ; réplicabilité : « obtaining consistent results across studies aimed at answering the same scientific question, each of which has obtained its own data ».
 
@@ -190,7 +190,7 @@ La page [Présentation de R et RStudio](r_presentation.qmd) propose une organisa
 
 Une organisation possible, à adapter :
 
-```
+```         
 mon_projet/
 ├── mon_projet.Rproj
 ├── README.md            ← ce que contient le projet, comment le relancer
@@ -217,13 +217,13 @@ Jenny Bryan propose trois principes pour nommer ses fichiers, repris dans *What 
 
 Le troisième principe repose sur deux conventions. Les **numéros** placés en tête de nom sont complétés par des zéros (`01`, `02`... `10`), sans quoi `10_analyses.R` s'afficherait avant `2_recodages.R`. Les **dates** s'écrivent au format international ISO 8601, `AAAA-MM-JJ` : c'est le seul format dont l'ordre alphabétique correspond à l'ordre chronologique. Enfin, on réserve le tiret bas `_` pour séparer les différentes informations contenues dans le nom, et le tiret `-` pour séparer les mots à l'intérieur d'une même information.
 
-| À éviter                           | Préférer                      |
-|------------------------------------|-------------------------------|
-| `script final VERSION 2.R`         | `02_recodages.R`              |
-| `recodage diplôme (Louis).R`       | `02_recodage-diplome.R`       |
-| `graphique.png`                    | `03_age-par-diplome_fr.png`   |
-| `notes réunion 23 septembre.docx`  | `2026-09-23_notes-reunion.docx` |
-| `1_import.R`, `2_...`, `10_...`    | `01_import.R`, `02_...`, `10_...` |
+| À éviter                          | Préférer                          |
+|-----------------------------------|-----------------------------------|
+| `script final VERSION 2.R`        | `02_recodages.R`                  |
+| `recodage diplôme (Louis).R`      | `02_recodage-diplome.R`           |
+| `graphique.png`                   | `03_age-par-diplome_fr.png`       |
+| `notes réunion 23 septembre.docx` | `2026-09-23_notes-reunion.docx`   |
+| `1_import.R`, `2_...`, `10_...`   | `01_import.R`, `02_...`, `10_...` |
 
 On retrouve ici les règles déjà vues pour les noms d'objets dans les [Premiers pas](premiers_pas_r.qmd), pour les mêmes raisons : les espaces et les accents posent des problèmes, en particulier quand un projet circule entre Windows et macOS.
 
@@ -270,11 +270,11 @@ Un code reproductible doit aussi pouvoir être relu. Le guide de style du tidyve
 
 Le guide de bonnes pratiques d'*utilitR* consacre lui aussi des chapitres au nommage des objets et à la rédaction des scripts [@utilitr_pratiques]. Les conventions suivies dans ce kit sont celles du guide du tidyverse :
 
--   des noms d'objets en minuscules, les mots séparés par un tiret bas : `age_tranche`, `diplome_r` ;
--   la flèche `<-` pour l'assignation, le signe `=` pour les arguments ;
--   des espaces autour des opérateurs (`age >= 65`) et après les virgules ;
--   des lignes courtes, idéalement moins de 80 caractères, quitte à passer à la ligne après une virgule ou un pipe ;
--   une étape par ligne dans un enchaînement de pipes.
+- des noms d'objets en minuscules, les mots séparés par un tiret bas : `age_tranche`, `diplome_r` ;
+- la flèche `<-` pour l'assignation, le signe `=` pour les arguments ;
+- des espaces autour des opérateurs (`age >= 65`) et après les virgules ;
+- des lignes courtes, idéalement moins de 80 caractères, quitte à passer à la ligne après une virgule ou un pipe ;
+- une étape par ligne dans un enchaînement de pipes.
 
 Pour les commentaires, on renvoie à la règle des [Premiers pas](premiers_pas_r.qmd) : expliquer *pourquoi*, pas *ce que fait* le code. Gentzkow et Shapiro vont plus loin : le code doit se documenter lui-même, par des noms explicites, et on ne doit pas écrire de documentation qu'on ne maintiendra pas [@gentzkow_shapiro2014]. Un commentaire qui décrit une version ancienne du code est pire que pas de commentaire du tout.
 
@@ -354,25 +354,25 @@ La fonction exécute le code dans une session entièrement vierge, et produit un
 
 **Dès la première ligne**
 
--   [ ] Tout ce qui compte est écrit dans un script enregistré, pas seulement tapé dans la console.
--   [ ] RStudio ne sauvegarde ni ne recharge le fichier `.RData`.
--   [ ] Le script s'exécute sans erreur après un redémarrage de R.
--   [ ] Le travail se fait dans un projet RStudio, avec des chemins relatifs et des barres obliques `/`.
--   [ ] Les données brutes ne sont jamais modifiées.
+- [ ] Tout ce qui compte est écrit dans un script enregistré, pas seulement tapé dans la console.
+- [ ] RStudio ne sauvegarde ni ne recharge le fichier `.RData`.
+- [ ] Le script s'exécute sans erreur après un redémarrage de R.
+- [ ] Le travail se fait dans un projet RStudio, avec des chemins relatifs et des barres obliques `/`.
+- [ ] Les données brutes ne sont jamais modifiées.
 
 **Quand le projet grandit**
 
--   [ ] Les dossiers séparent données, scripts et sorties, et un `README` explique le projet.
--   [ ] Les fichiers sont nommés sans espace ni accent, avec des numéros complétés par des zéros et des dates au format `AAAA-MM-JJ`.
--   [ ] Un script principal relance toute l'analyse, dans l'ordre.
--   [ ] Le code suit une convention de style cohérente.
+- [ ] Les dossiers séparent données, scripts et sorties, et un `README` explique le projet.
+- [ ] Les fichiers sont nommés sans espace ni accent, avec des numéros complétés par des zéros et des dates au format `AAAA-MM-JJ`.
+- [ ] Un script principal relance toute l'analyse, dans l'ordre.
+- [ ] Le code suit une convention de style cohérente.
 
 **Pour aller plus loin**
 
--   [ ] Les informations de session et l'édition des données sont documentées.
--   [ ] La graine aléatoire est fixée avec `set.seed()` si l'analyse comporte du hasard.
--   [ ] Les versions des packages sont figées avec `renv`.
--   [ ] Le code est versionné avec Git, sans les fichiers de données.
+- [ ] Les informations de session et l'édition des données sont documentées.
+- [ ] La graine aléatoire est fixée avec `set.seed()` si l'analyse comporte du hasard.
+- [ ] Les versions des packages sont figées avec `renv`.
+- [ ] Le code est versionné avec Git, sans les fichiers de données.
 
 # Pour aller plus loin
 
@@ -380,24 +380,24 @@ Chacune de ces ressources est gratuite et accessible en ligne, à l'exception du
 
 **Pour commencer**
 
--   *What They Forgot to Teach You About R* [@bryan_wtf], en anglais : la source principale de cette page. Les chapitres « Saving source and blank slates », « Project-oriented workflow » et « How to name files » se lisent en quelques minutes chacun.
--   *Introduction à R et au tidyverse* [@barnier_tidyverse], en français : le chapitre « Organiser ses scripts » couvre les projets, les sections et la sauvegarde de l'espace de travail.
--   *R for Data Science* [@wickham2023r4ds], en anglais : le chapitre « Workflow: scripts and projects » est une excellente introduction.
+- *What They Forgot to Teach You About R* [@bryan_wtf], en anglais : la source principale de cette page. Les chapitres « Saving source and blank slates », « Project-oriented workflow » et « How to name files » se lisent en quelques minutes chacun.
+- *Introduction à R et au tidyverse* [@barnier_tidyverse], en français : le chapitre « Organiser ses scripts » couvre les projets, les sections et la sauvegarde de l'espace de travail.
+- *R for Data Science* [@wickham2023r4ds], en anglais : le chapitre « Workflow: scripts and projects » est une excellente introduction.
 
 **Pour approfondir**
 
--   *utilitR* [@utilitr] et son guide des bonnes pratiques [@utilitr_pratiques], en français : des fiches pratiques sur les projets RStudio, Git et la gestion des dépendances, pensées pour la statistique publique.
--   *Happy Git and GitHub for the useR* [@bryan_happygit], en anglais : pour apprendre Git depuis RStudio.
--   *guide-R* [@larmarange_guider], en français : la référence pour l'analyse d'enquêtes sous R, qui prolonge l'ensemble de ce kit.
--   Le cours *Mise en production des projets de data science* [@avouac_galiana_mep], en français : pour aller jusqu'aux environnements, à l'architecture de projet et au déploiement.
+- *utilitR* [@utilitr] et son guide des bonnes pratiques [@utilitr_pratiques], en français : des fiches pratiques sur les projets RStudio, Git et la gestion des dépendances, pensées pour la statistique publique.
+- *Happy Git and GitHub for the useR* [@bryan_happygit], en anglais : pour apprendre Git depuis RStudio.
+- *guide-R* [@larmarange_guider], en français : la référence pour l'analyse d'enquêtes sous R, qui prolonge l'ensemble de ce kit.
+- Le cours *Mise en production des projets de data science* [@avouac_galiana_mep], en français : pour aller jusqu'aux environnements, à l'architecture de projet et au déploiement.
 
 **Pour une réflexion méthodologique**
 
--   Peng [@peng2011] et Leek et Peng [@leek_peng2015] : deux textes courts sur ce qu'est, et ce que n'est pas, la reproductibilité.
--   Sandve et ses coauteurs [@sandve2013] et Wilson et ses coauteurs [@wilson2017] : deux articles très concrets, qui se lisent comme des listes de recommandations.
--   Gentzkow et Shapiro [@gentzkow_shapiro2014] : un guide écrit par deux économistes à partir de leur propre pratique de recherche, particulièrement adapté aux sciences sociales quantitatives.
--   Christensen, Freese et Miguel [@christensen2019] : un manuel complet sur la transparence et la reproductibilité en sciences sociales, au-delà des seules questions de code.
--   *The Turing Way* [@turingway] : un manuel collaboratif qui couvre l'ensemble du sujet, de la gestion des données à la collaboration.
+- Peng [@peng2011] et Leek et Peng [@leek_peng2015] : deux textes courts sur ce qu'est, et ce que n'est pas, la reproductibilité.
+- Sandve et ses coauteurs [@sandve2013] et Wilson et ses coauteurs [@wilson2017] : deux articles très concrets, qui se lisent comme des listes de recommandations.
+- Gentzkow et Shapiro [@gentzkow_shapiro2014] : un guide écrit par deux économistes à partir de leur propre pratique de recherche, particulièrement adapté aux sciences sociales quantitatives.
+- Christensen, Freese et Miguel [@christensen2019] : un manuel complet sur la transparence et la reproductibilité en sciences sociales, au-delà des seules questions de code.
+- *The Turing Way* [@turingway] : un manuel collaboratif qui couvre l'ensemble du sujet, de la gestion des données à la collaboration.
 
 # Références
 

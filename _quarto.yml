@@ -2,20 +2,20 @@ project:
   type: website
 
 website:
-  title: "Kits pédagogiques avec l'ESS"
+  title: "Guide des méthodes quantitatives avec l'ESS"
   navbar:
     left:
       - href: index.qmd
         text: Accueil
       - about.qmd
-      - text: "L'ESS"
-        href: ess_pres.qmd
-      - text: "Présentation de R et RStudio"
-        href: r_presentation.qmd
-      - text: "Premiers pas sous RStudio"
-        href: premiers_pas_r.qmd
-      - text: "La manipulation des données"
+      - text: "Les données"
+        href: ess_pres - Copie.qmd
+      - text: "Apprendre R"
         menu:
+          - text: "Présentation de R et RStudio"
+            href: r_presentation.qmd
+          - text: "Premiers pas sous RStudio"
+            href: premiers_pas_r.qmd
           - text: "L'import et le recodage des données"
             href: import_recodages_r.qmd
           - text: "La visualisation des données"

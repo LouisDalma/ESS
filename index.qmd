@@ -1,36 +1,62 @@
 ---
-title: "Introduction aux méthodes quantitatives en utilisant l'European Social Survey"
+title: "Apprendre les méthodes quantitatives en sciences sociales"
+subtitle: "Une collection de ressources pédagogiques sous R à partir des données de l'European Social Survey et du panel CRONOS"
 author: "Louis Dalmazzo"
+bibliography: references.bib
+lang: fr
 ---
 
-## Découvrir l'ESS
+Ce site rassemble un ensemble de **ressources pédagogiques** qui a vocation de permettre un apprentissage progressif et graduel des méthodes quantitatives en sciences sociales. Il s'adresse tout autant aux novices, comme à celles et ceux ayant déjà de bonne connaissances en statistiques ; aux enseignants comme aux journalistes souhaitant travailler sur des données de qualité.
 
-Depuis 2001, l'*European Social Survey* (ESS) interroge plusieurs dizaines de milliers de personnes dans plus de trente pays européens sur leurs valeurs, leurs opinions, leurs comportements. Par sa méthodologie, l'ESS est l'une des sources les plus fiables et les plus accessibles pour comprendre les sociétés européennes dans sa durée. Surtout, son fonctionnement en fait un point d'entrée particulièrement accessible pour toutes les personnes souhaitant s'initier aux méthodes quantitatives en sciences humaines et sociales.
+L'intégralité du contenu se fait en utilisant le langage R, via RStudio et s'appuie sur des données de grande qualité : l'European Social Survey (ESS) et de son panel en ligne, CRONOS.
 
-## Ce que vous trouverez ici
+## Pourquoi ces données ?
 
-Ce site propose des outils pour explorer ces données soi-même : des guides thématiques, des tutoriels pour apprendre à manipuler les données sous R, et des ressources pensées spécifiquement dans un contexte académique, professionnel, ou personnel. L'objectif n'est pas seulement de présenter des résultats, mais de donner les moyens pour les reproduire et les vérifier soi-même. Il est organisé en quatre (corr) grands ensembles, du plus général au plus spécialisé.
+Ces kits pédagogiques utiliseront extensivement l'**ESS** et **CRONOS**, des dispositifs d'enquête dont la fiabilité et la qualité sont documentées. Leur accès est extrêmement facile, ce qui en fait d'excellentes bases de données pour s'initier aux méthodes quantitatives.
 
-[**Comprendre l'ESS**](ess_presentation.qmd) revient sur l'origine du dispositif : la gouvernance, la construction des enquêtes, l'échantillonnage, les modes de passation, ou encore la modalités de traduction.
+L'**European Social Survey** est un dispositif d'enquête bi-annuel, c'est-à-dire mené tous les deux ans depuis 2001 qui interroge les comportements et les attitudes des citoyens et pays membres et non-membres de l'Union Européenne. Ses échantillons, tirés de manière aléatoire, en font une enquête particulièrement robuste méthodologiquement. L'ESS contient, à date de la rédaction de ce site, onze vagues [@ess_faq].
 
-**Apprendre R** propose une initiation progressive, en quatre temps :
+**CRONOS** (*CROss-National Online Survey*) prolonge l'ESS sous la forme sur des données de panel : un même échantillon plus réduit d'enquêtés sont interrogés de manière répétée dans le temps. Là où l'ESS permet une analyse de coupe, le panel CRONOS permet de regarder l'évolution de même personnes dans le temps. Sur la deuxième itération du panel, CRONOS-2 et que nous utiliserons, le panel couvre douze pays, dont la France, sur six vagues de novembre 2021 à mars 2023 [@cronos_ess].
 
-1.  On commence par [découvrir R et RStudio](r_presentation.qmd) et installer son environnement de travail.
+En France, la coordination de l'ESS est assurée par le Centre de données socio-politiques (CDSP), une unité d'appui à la recherche associée à Sciences Po et au CNRS [@cdsp_ess], où ce site a été conçu.
 
-2.  Vient ensuite les [premiers pas](premiers_pas_r.qmd) dans le langage lui-même, où on apprendra les bases du code sous R : manipulation de données, import, inspection des données, recodages.
+## Ce qu'on trouvera sur ce site
 
-3.  On poursuivra avec la visualisation des données : diagrammes, box plot, nuages de points, etc (def à faire)
+L'objectif principal de ce site est de donner les moyens de produire soi même des résultats à partir des données mises à disposition, de les visualiser, de les interpréter et de vérifier leur robustesse. Le site est organisé en trois ensembles.
 
-4.  Après cela, on pourra commencer nos [traitements statistiques simples](manipuler_donnees_r.qmd) : pondération, tris à plats, tris croisés, interprêtation d'un khi-deux...
+La partie [**Données**](ess_presentation.qmd) présente l'ESS et CRONOS : la construction des données, les modes de passation, les questionnaires et les modules. Surtout, cette partie détaille les étapes pour télécharger les données qu'on utilisera. Si on souhaite reproduire soi même ces ressources, regarder cette section est donc un **impératif**.
 
-5.  Pour ensuite entrer en détail dans des traitements statistiques avancés : analyses factorielles, classifications, régressions multiples.
+**Apprendre R** propose une initiation progressive au langage R via RStudio :
 
-Les **espaces dédiés** rassemblent des ressources spécifiques. L'[espace enseignants](espace_enseignant.qmd) propose des séquences prêtes à l'emploi et des jeux de données allégés. L'[espace journalistes](espace_journaliste.qmd) se concentre sur la lecture critique et la vérification d'un chiffre, sans nécessairement passer par le code.
+1.  [Découvrir R et RStudio](r_presentation.qmd) : installer et découvrir son environnement de travail.
+2.  [Premiers pas sous RStudio](premiers_pas_r.qmd) : écrire ses premières lignes de code, manipuler des objets, lire les messages de R.
+3.  [L'import et le recodage des données](import_recodages_r.qmd) : ouvrir un fichier de l'ESS, l'inspecter, préparer les variables.
+4.  [La visualisation des données](visualisation_donnees.qmd) : représenter des variables aux travers de différents types de graphiques.
+5.  [Les traitements statistiques simples](manipuler_donnees_r.qmd) : apprendre à travailler sur données pondérées, à faire des tris à plat et tris croisés et à interpréter un test du khi-deux.
+6.  [Les traitements statistiques avancés](traitement_avance_r.qmd) : apprendre à faire des analyses factorielles, classifications, et régressions multiples.
+7.  Econométrie de panel : travailler sur des données longitudinales à partir du panel CRONOS, faire des analyses de séquences, faire des effets fixes et modèles dynamiques.
+
+En marge de ce parcours, la section [Guide des bonnes pratiques](bonnes_pratiques_r.qmd) rassemble des conseils pour organiser son travail et faire une analyse reproductible et validable par ses pairs.
+
+Enfin, les **espaces dédiés** rassemblent des ressources pour deux publics : un [espace enseignants](espace_enseignant.qmd) propose des séquences de travail prêtes à l'emploi avec des jeux de données allégés. Un [espace journalistes](espace_journaliste.qmd) se concentre sur les possibilités qu'offre l'utilisation de l'ESS et du panel CRONOS.
 
 ## Par où commencer ?
 
-Vous n'avez jamais ouvert R et vous ne savez pas ce qu'est l'ESS : suivez le site dans l'ordre du menu, page après page.
+**Partir de zéro.** On pourra suivre l'ordre proposé par le site : [Comprendre les données](ess_presentation.qmd), puis le parcours *Apprendre R*, page après page avant de terminer sur le [guide des bonnes pratiques](bonnes_pratiques_r.qmd)..
 
-Vous connaissez déjà R mais pas l'ESS : lisez [Comprendre l'ESS](ess_presentation.qmd), puis rendez-vous directement à la section sur la [manipulation des données](manipuler_donnees_r.qmd), où sont traités les points propres à cette enquête (codes de non-réponse, pondération).
+**Des connaissances déjà acquises sous R.** Dans ce cas, tout va dépendre de votre niveau de connaissances. On commencera par [Comprendre les données](ess_presentation.qmd), puis à la section qui nous intéresse dans *Apprendre R*
 
-Vous cherchez un chiffre fiable sans vouloir programmer : l'[espace journalistes](espace_journaliste.qmd) est fait pour cela.
+- Une personne qui connaît les bases du langage de manière sommaire pourra vouloir apprendre à [recoder ses données](import_recodages_r.qmd). Elle pourra dans ce cas s'orienter vers le chapitre correspondant, puis suivre les sections suivantes.
+
+- A l'inverse, une personne déjà familière avec le langage R et souhaitant apprendre des [méthodes statistiques avancées](traitement_avance_r.qmd) pourra directement passer à la section correspondante. En fonction de la nature de ses données, elle pourra également vouloir travailler sur des données longitudinales.
+
+**Pour les enseignants et les journalistes.** On pourra dans ce cas se référer à la section correspondante ([Espace enseignant](espace_enseignant.qmd) ou [Espace journaliste](espace_journaliste.qmd)).
+
+## Un kit parmi d'autres
+
+Ce site s'inscrit dans le sillage de guides libres d'accès et reconnus, dont il reprend les recommandations et auxquels il renvoie tout au long du parcours : en français, on citera ainsi la documentation *utilitR* [@utilitr], le *guide-R* de Joseph Larmarange [@larmarange_guider] ainsi que l'*Introduction à R et au tidyverse* de Julien Barnier [@barnier_tidyverse] ; en anglais, on s'inspirera du manuel *R for Data Science* [@wickham2023r4ds] ainsi que du guide de bonnes pratiques *What They Forgot to Teach You About R* de Jennifer Bryan et consorts [@bryan_wtf].
+
+## Références
+
+::: {#refs}
+:::
