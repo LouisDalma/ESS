@@ -14,11 +14,20 @@ L'intégralité du contenu se fait en utilisant le langage R, via RStudio et s'a
 
 Ces kits pédagogiques utiliseront extensivement l'**ESS** et **CRONOS**, des dispositifs d'enquête dont la fiabilité et la qualité sont documentées. Leur accès est extrêmement facile, ce qui en fait d'excellentes bases de données pour s'initier aux méthodes quantitatives.
 
-L'**European Social Survey** est un dispositif d'enquête bi-annuel, c'est-à-dire mené tous les deux ans depuis 2001 qui interroge les comportements et les attitudes des citoyens et pays membres et non-membres de l'Union Européenne. Ses échantillons, tirés de manière aléatoire, en font une enquête particulièrement robuste méthodologiquement. L'ESS contient, à date de la rédaction de ce site, onze vagues [@ess_faq].
+L'**European Social Survey** est un dispositif d'enquête biennal, c'est-à-dire mené tous les deux ans depuis 2001 qui interroge les comportements et les attitudes des citoyens et pays membres et non-membres de l'Union Européenne. Ses échantillons, tirés de manière aléatoire, en font une enquête particulièrement robuste méthodologiquement. L'ESS contient, à date de la rédaction de ce site, onze vagues [@ess_faq].
 
 **CRONOS** (*CROss-National Online Survey*) prolonge l'ESS sous la forme sur des données de panel : un même échantillon plus réduit d'enquêtés sont interrogés de manière répétée dans le temps. Là où l'ESS permet une analyse de coupe, le panel CRONOS permet de regarder l'évolution de même personnes dans le temps. Sur la deuxième itération du panel, CRONOS-2 et que nous utiliserons, le panel couvre douze pays, dont la France, sur six vagues de novembre 2021 à mars 2023 [@cronos_ess].
 
 En France, la coordination de l'ESS est assurée par le Centre de données socio-politiques (CDSP), une unité d'appui à la recherche associée à Sciences Po et au CNRS [@cdsp_ess], où ce site a été conçu.
+
+::: column-page
+```{ojs}
+//| echo: false
+import { carteConfiance } from "./carte_confiance.js"
+donneesCarte = FileAttachment("data/acm_confiance.json").json()
+carteConfiance(donneesCarte, { d3, invalidation })
+```
+:::
 
 ## Ce qu'on trouvera sur ce site
 

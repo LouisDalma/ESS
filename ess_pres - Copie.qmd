@@ -6,7 +6,7 @@ lang: fr
 
 ## Qu'est-ce que l'ESS ?
 
-L'*European Social Survey* (ESS) est un **dispositif d'enquêtes** par questionnaire bi annuel fondé en 2001[^1]. Il a pour but principal de **produire des données fiables** pour mesurer le changement, ou à l'inverse la stabilité dans le temps, au sein des pays européens. Il porte, entre autres, sur les conditions de vie, l'opinion politique ou encore les valeurs des populations enquêtées[^2].
+L'*European Social Survey* (ESS) est un **dispositif d'enquêtes** par questionnaire biennal fondé en 2001[^1]. Il a pour but principal de **produire des données fiables** pour mesurer le changement, ou à l'inverse la stabilité dans le temps, au sein des pays européens. Il porte, entre autres, sur les conditions de vie, l'opinion politique ou encore les valeurs des populations enquêtées[^2].
 
 [^1]: ESS ERIC, *ESS Round 13 Survey Specification*, v1, 11 novembre 2025, section 3 : « The European Social Survey (ESS) is an academically driven cross-national survey, founded in 2001. » <https://europeansocialsurvey.org/sites/default/files/2025-11/ESS013_survey_specification_v1.pdf>
 
@@ -22,16 +22,16 @@ Le dispositif dispose d'un suivi bibliographique annuel, réalisé par l'Univers
 
 ### Une infrastructure européenne
 
-Depuis 2013, l'ESS a le statut juridique d'**ERIC** (*European Research Infrastructure Consortium*), avec comme pays hôte le Royaume-Uni. Son siège se situe à City St George's, University of London, où siège le directeur, actuellement le professeur Rory Fitzgerald[^5].
+Depuis 2013, l'ESS a le statut juridique d'**ERIC** (*European Research Infrastructure Consortium*). Hébergé au Royaume-uni, son siège se situe à City St George's, University of London[^5].
 
 [^5]: ESS ERIC, *ESS Round 13 Survey Specification*, section 3. Le statut ERIC a été accordé le 30 novembre 2013 : ESS, « About ESS », <https://www.europeansocialsurvey.org/about-ess>
 
-L'organisation combine plusieurs niveaux[^6] :
+Son organisation est divisée en plusieurs niveaux[^6] :
 
 [^6]: ESS ERIC, *ESS Round 13 Survey Specification*, sections 1, 4, 5 et 9 ; ESS, « FAQ » : « The ESS is directed by a Core Scientific Team (CST) \[…\] Assisting the CST are National Coordinators (NCs) appointed for each country. NCs act as the principal contact with the CST and are responsible for ensuring that the appointed survey agencies conduct fieldwork to the rigorous standard specified. » <https://www.europeansocialsurvey.org/about/faq> ; composition détaillée du CST : <https://www.europeansocialsurvey.org/about/structure-and-governance>
 
 - Une **assemblée générale**, composée des représentants des États membres, gouverne l'ESS ERIC et nomme le directeur. Le financement du terrain national est une condition d'adhésion.
-- L'**équipe scientifique centrale** (*Core Scientific Team*, CST) réunit le siège et plusieurs institutions européennes, parmi lesquelles GESIS en Allemagne, Sikt en Norvège, l'Universitat Pompeu Fabra en Espagne, l'université d'Essex au Royaume-Uni, Centerdata aux Pays-Bas. Elle conçoit le questionnaire source et fixe les spécifications.
+- L'**équipe scientifique centrale** (*Core Scientific Team*, CST) réunit le siège et plusieurs institutions européennes, parmi lesquelles GESIS en Allemagne, Sikt en Norvège, l'Universitat Pompeu Fabra en Espagne, l'université d'Essex au Royaume-Uni, Centerdata aux Pays-Bas. C'est elle qui conçoit le questionnaire.
 - Un **coordinateur national** (*National Coordinator*, NC) est nommé et financé par chaque pays membre. Il est le point de contact avec l'équipe centrale et reste responsable de l'ensemble des tâches nationales.
 - Une **agence d'enquête** conduit généralement la collecte, sous la supervision du coordinateur national, qui peut aussi la réaliser en interne. C'est une distinction importante : le coordinateur supervise, l'agence exécute.
 - Des **panels d'experts** interviennent sur des points spécifiques, notamment le panel échantillonnage et pondération (SWEP), qui doit valider le plan de sondage de chaque pays avant tout tirage.
@@ -59,13 +59,15 @@ L'organisation combine plusieurs niveaux[^6] :
 
 ## Le questionnaire
 
-Le questionnaire se divise en deux parties de statut très différent[^8].
+Le questionnaire se divise en deux parties, ayant chacune un statut spécifique[^8].
 
 [^8]: ESS, « Source Questionnaire » : « The ESS source questionnaire consists of a collection of questions that can be classified into two main parts – a core section and a rotating section. » <https://www.europeansocialsurvey.org/methodology/source-questionnaire>
 
 ### Le module central
 
-Le **module central** (*core module*) est reposé à chaque vague. C'est lui qui fonde la valeur de série temporelle de l'ESS : on ne peut affirmer qu'une attitude a évolué entre 2002 et 2023 que si la question n'a pas bougé. L'ESS décrit ce module comme contenant les items d'intérêt durable pour les sciences sociales, ainsi que l'ensemble de variables socio-structurelles le plus complet de toutes les enquêtes comparatives internationales[^9].
+Le **module central** (*core module*) est composé de questions répétées dans le temps. Il permet ainsi de faire des comparaisons de coupes dans le temps. Les questions sont réfléchies pour être pertinentes sur le temps long. L'ESS décrit cette partie comme
+
+chaque vague. C'est lui qui fonde la valeur de série temporelle de l'ESS : on ne peut affirmer qu'une attitude a évolué entre 2002 et 2023 que si la question n'a pas bougé. L'ESS décrit ce module comme contenant les items d'intérêt durable pour les sciences sociales, ainsi que l'ensemble de variables socio-structurelles le plus complet de toutes les enquêtes comparatives internationales[^9].
 
 [^9]: ESS, « Source Questionnaire » : « its questionnaire comprises a core module, containing items measuring a range of topics of enduring interest to the social sciences as well as the most comprehensive set of socio-structural ('background') variables of any cross-national survey. The exact number of items can change from round to round, but each question has a unique variable name to assist users working with data over time. »
 
@@ -92,7 +94,7 @@ Chaque module comporte **30 questions**. Pour un module répété, au moins 20 d
 [^14]: ESS ERIC, *ESS Round 13 Survey Specification*, section 7.1 : « Each rotating module will include 30 questions (or equivalent if some questions are asked to sub-samples). For repeat modules, at least 20 of these questions need to be repeated from (one of) the previous ESS round(s) when the modules were fielded. » Cette règle est énoncée pour la vague 13 ; l'ordre de grandeur vaut pour les vagues récentes.
 
 | Vague | Modules tournants |
-|------------------------------------|------------------------------------|
+|----|----|
 | 1 (2002) | Citoyenneté, engagement et démocratie / Immigration |
 | 2 (2004) | Famille, travail et bien-être / Santé et recours aux soins · Moralité économique |
 | 3 (2006) | Bien-être personnel et social / Le calendrier de la vie |

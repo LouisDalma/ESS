@@ -1,0 +1,1560 @@
+{
+  "meta": {
+    "source": "European Social Survey, 11e vague (2023), édition 4.2",
+    "n": 50116,
+    "n_pays": 30,
+    "ponderation": "anweight (axes, profil européen), pspwght (profils nationaux)",
+    "inertie": {
+      "axe1": 83,
+      "axe2": 16.7,
+      "brut1": 27.6,
+      "brut2": 16.3
+    },
+    "date_calcul": "2026-09-30"
+  },
+  "institutions": [
+    {
+      "id": "trstprl",
+      "label": "Le Parlement national",
+      "court": "Parlement"
+    },
+    {
+      "id": "trstlgl",
+      "label": "La justice",
+      "court": "Justice"
+    },
+    {
+      "id": "trstplc",
+      "label": "La police",
+      "court": "Police"
+    },
+    {
+      "id": "trstplt",
+      "label": "Les responsables politiques",
+      "court": "Politiques"
+    },
+    {
+      "id": "trstprt",
+      "label": "Les partis politiques",
+      "court": "Partis"
+    },
+    {
+      "id": "trstep",
+      "label": "Le Parlement européen",
+      "court": "Parlement européen"
+    },
+    {
+      "id": "trstun",
+      "label": "Les Nations unies",
+      "court": "ONU"
+    }
+  ],
+  "modalites": [
+    {
+      "inst": "trstprl",
+      "niveau": "faible",
+      "x": -0.9193,
+      "y": 0.3068,
+      "pct_europe": 39.3
+    },
+    {
+      "inst": "trstprl",
+      "niveau": "moyenne",
+      "x": 0.2668,
+      "y": -0.7569,
+      "pct_europe": 38.8
+    },
+    {
+      "inst": "trstprl",
+      "niveau": "forte",
+      "x": 1.1705,
+      "y": 0.7936,
+      "pct_europe": 22
+    },
+    {
+      "inst": "trstlgl",
+      "niveau": "faible",
+      "x": -1.0506,
+      "y": 0.4348,
+      "pct_europe": 26.6
+    },
+    {
+      "inst": "trstlgl",
+      "niveau": "moyenne",
+      "x": -0.0806,
+      "y": -0.6499,
+      "pct_europe": 35.6
+    },
+    {
+      "inst": "trstlgl",
+      "niveau": "forte",
+      "x": 0.8186,
+      "y": 0.3023,
+      "pct_europe": 37.8
+    },
+    {
+      "inst": "trstplc",
+      "niveau": "faible",
+      "x": -1.1575,
+      "y": 0.5622,
+      "pct_europe": 15.5
+    },
+    {
+      "inst": "trstplc",
+      "niveau": "moyenne",
+      "x": -0.3281,
+      "y": -0.4587,
+      "pct_europe": 30.6
+    },
+    {
+      "inst": "trstplc",
+      "niveau": "forte",
+      "x": 0.5235,
+      "y": 0.0971,
+      "pct_europe": 53.8
+    },
+    {
+      "inst": "trstplt",
+      "niveau": "faible",
+      "x": -0.7701,
+      "y": 0.1769,
+      "pct_europe": 51.4
+    },
+    {
+      "inst": "trstplt",
+      "niveau": "moyenne",
+      "x": 0.6263,
+      "y": -0.6922,
+      "pct_europe": 37.7
+    },
+    {
+      "inst": "trstplt",
+      "niveau": "forte",
+      "x": 1.4382,
+      "y": 1.5543,
+      "pct_europe": 10.9
+    },
+    {
+      "inst": "trstprt",
+      "niveau": "faible",
+      "x": -0.7586,
+      "y": 0.1683,
+      "pct_europe": 51.8
+    },
+    {
+      "inst": "trstprt",
+      "niveau": "moyenne",
+      "x": 0.6378,
+      "y": -0.6668,
+      "pct_europe": 38.2
+    },
+    {
+      "inst": "trstprt",
+      "niveau": "forte",
+      "x": 1.4695,
+      "y": 1.669,
+      "pct_europe": 10
+    },
+    {
+      "inst": "trstep",
+      "niveau": "faible",
+      "x": -0.9437,
+      "y": 0.3474,
+      "pct_europe": 35.2
+    },
+    {
+      "inst": "trstep",
+      "niveau": "moyenne",
+      "x": 0.2323,
+      "y": -0.7333,
+      "pct_europe": 41.8
+    },
+    {
+      "inst": "trstep",
+      "niveau": "forte",
+      "x": 1.0462,
+      "y": 0.8075,
+      "pct_europe": 22.9
+    },
+    {
+      "inst": "trstun",
+      "niveau": "faible",
+      "x": -1.0161,
+      "y": 0.4494,
+      "pct_europe": 28.2
+    },
+    {
+      "inst": "trstun",
+      "niveau": "moyenne",
+      "x": 0.0594,
+      "y": -0.6666,
+      "pct_europe": 41.1
+    },
+    {
+      "inst": "trstun",
+      "niveau": "forte",
+      "x": 0.8942,
+      "y": 0.4771,
+      "pct_europe": 30.7
+    }
+  ],
+  "pays": [
+    {
+      "code": "AT",
+      "x": 0.3024,
+      "y": 0.143,
+      "n": 2354,
+      "nom": "Autriche",
+      "profil": {
+        "trstprl": {
+          "faible": 25,
+          "moyenne": 40.9,
+          "forte": 34.2
+        },
+        "trstlgl": {
+          "faible": 11.3,
+          "moyenne": 25.2,
+          "forte": 63.4
+        },
+        "trstplc": {
+          "faible": 8.9,
+          "moyenne": 21.2,
+          "forte": 69.9
+        },
+        "trstplt": {
+          "faible": 43.8,
+          "moyenne": 40.3,
+          "forte": 15.9
+        },
+        "trstprt": {
+          "faible": 45.2,
+          "moyenne": 38.7,
+          "forte": 16.1
+        },
+        "trstep": {
+          "faible": 34.8,
+          "moyenne": 38.3,
+          "forte": 26.9
+        },
+        "trstun": {
+          "faible": 27.2,
+          "moyenne": 40.3,
+          "forte": 32.6
+        }
+      }
+    },
+    {
+      "code": "BE",
+      "x": 0.1975,
+      "y": -0.0575,
+      "n": 1594,
+      "nom": "Belgique",
+      "profil": {
+        "trstprl": {
+          "faible": 32,
+          "moyenne": 43.6,
+          "forte": 24.5
+        },
+        "trstlgl": {
+          "faible": 23.7,
+          "moyenne": 37.3,
+          "forte": 38.9
+        },
+        "trstplc": {
+          "faible": 9.2,
+          "moyenne": 31.1,
+          "forte": 59.7
+        },
+        "trstplt": {
+          "faible": 38.9,
+          "moyenne": 45.9,
+          "forte": 15.1
+        },
+        "trstprt": {
+          "faible": 42,
+          "moyenne": 46.4,
+          "forte": 11.6
+        },
+        "trstep": {
+          "faible": 30.7,
+          "moyenne": 41.9,
+          "forte": 27.5
+        },
+        "trstun": {
+          "faible": 22.8,
+          "moyenne": 41.7,
+          "forte": 35.5
+        }
+      }
+    },
+    {
+      "code": "BG",
+      "x": -0.4739,
+      "y": 0.0552,
+      "n": 2239,
+      "nom": "Bulgarie",
+      "profil": {
+        "trstprl": {
+          "faible": 67.5,
+          "moyenne": 28.9,
+          "forte": 3.6
+        },
+        "trstlgl": {
+          "faible": 46.4,
+          "moyenne": 30.3,
+          "forte": 23.2
+        },
+        "trstplc": {
+          "faible": 28.4,
+          "moyenne": 36.2,
+          "forte": 35.5
+        },
+        "trstplt": {
+          "faible": 73.7,
+          "moyenne": 23.3,
+          "forte": 3
+        },
+        "trstprt": {
+          "faible": 73.7,
+          "moyenne": 23.4,
+          "forte": 2.9
+        },
+        "trstep": {
+          "faible": 35.3,
+          "moyenne": 42.2,
+          "forte": 22.5
+        },
+        "trstun": {
+          "faible": 30.6,
+          "moyenne": 42.8,
+          "forte": 26.6
+        }
+      }
+    },
+    {
+      "code": "CH",
+      "x": 0.7202,
+      "y": 0.2089,
+      "n": 1384,
+      "nom": "Suisse",
+      "profil": {
+        "trstprl": {
+          "faible": 8.7,
+          "moyenne": 35.5,
+          "forte": 55.8
+        },
+        "trstlgl": {
+          "faible": 6.9,
+          "moyenne": 28.6,
+          "forte": 64.6
+        },
+        "trstplc": {
+          "faible": 4.9,
+          "moyenne": 20.7,
+          "forte": 74.4
+        },
+        "trstplt": {
+          "faible": 15,
+          "moyenne": 51.3,
+          "forte": 33.7
+        },
+        "trstprt": {
+          "faible": 17.3,
+          "moyenne": 53.9,
+          "forte": 28.7
+        },
+        "trstep": {
+          "faible": 24.4,
+          "moyenne": 48.8,
+          "forte": 26.8
+        },
+        "trstun": {
+          "faible": 21.3,
+          "moyenne": 44,
+          "forte": 34.6
+        }
+      }
+    },
+    {
+      "code": "CY",
+      "x": -0.3088,
+      "y": -0.118,
+      "n": 685,
+      "nom": "Chypre",
+      "profil": {
+        "trstprl": {
+          "faible": 40.4,
+          "moyenne": 46.8,
+          "forte": 12.8
+        },
+        "trstlgl": {
+          "faible": 35.9,
+          "moyenne": 41.5,
+          "forte": 22.6
+        },
+        "trstplc": {
+          "faible": 27.2,
+          "moyenne": 40.1,
+          "forte": 32.7
+        },
+        "trstplt": {
+          "faible": 63.5,
+          "moyenne": 31.3,
+          "forte": 5.2
+        },
+        "trstprt": {
+          "faible": 65.7,
+          "moyenne": 30.7,
+          "forte": 3.7
+        },
+        "trstep": {
+          "faible": 32.5,
+          "moyenne": 43.8,
+          "forte": 23.8
+        },
+        "trstun": {
+          "faible": 38,
+          "moyenne": 43.9,
+          "forte": 18.1
+        }
+      }
+    },
+    {
+      "code": "DE",
+      "x": 0.186,
+      "y": 0.0699,
+      "n": 2420,
+      "nom": "Allemagne",
+      "profil": {
+        "trstprl": {
+          "faible": 32.6,
+          "moyenne": 37.4,
+          "forte": 30
+        },
+        "trstlgl": {
+          "faible": 17.9,
+          "moyenne": 29.2,
+          "forte": 52.9
+        },
+        "trstplc": {
+          "faible": 8.3,
+          "moyenne": 25.3,
+          "forte": 66.4
+        },
+        "trstplt": {
+          "faible": 45.6,
+          "moyenne": 40.4,
+          "forte": 14
+        },
+        "trstprt": {
+          "faible": 44.1,
+          "moyenne": 43.3,
+          "forte": 12.7
+        },
+        "trstep": {
+          "faible": 38,
+          "moyenne": 37.7,
+          "forte": 24.2
+        },
+        "trstun": {
+          "faible": 29,
+          "moyenne": 41,
+          "forte": 30
+        }
+      }
+    },
+    {
+      "code": "EE",
+      "x": 0.156,
+      "y": 0.0518,
+      "n": 1293,
+      "nom": "Estonie",
+      "profil": {
+        "trstprl": {
+          "faible": 35.5,
+          "moyenne": 38.8,
+          "forte": 25.7
+        },
+        "trstlgl": {
+          "faible": 16.6,
+          "moyenne": 30.7,
+          "forte": 52.8
+        },
+        "trstplc": {
+          "faible": 7,
+          "moyenne": 18.3,
+          "forte": 74.7
+        },
+        "trstplt": {
+          "faible": 51.5,
+          "moyenne": 38.7,
+          "forte": 9.8
+        },
+        "trstprt": {
+          "faible": 48.3,
+          "moyenne": 42.7,
+          "forte": 9.1
+        },
+        "trstep": {
+          "faible": 31.9,
+          "moyenne": 38.8,
+          "forte": 29.3
+        },
+        "trstun": {
+          "faible": 33.5,
+          "moyenne": 35.4,
+          "forte": 31.1
+        }
+      }
+    },
+    {
+      "code": "ES",
+      "x": -0.0187,
+      "y": -0.0833,
+      "n": 1844,
+      "nom": "Espagne",
+      "profil": {
+        "trstprl": {
+          "faible": 34.9,
+          "moyenne": 44.2,
+          "forte": 20.9
+        },
+        "trstlgl": {
+          "faible": 25.7,
+          "moyenne": 39.9,
+          "forte": 34.4
+        },
+        "trstplc": {
+          "faible": 9.2,
+          "moyenne": 26,
+          "forte": 64.8
+        },
+        "trstplt": {
+          "faible": 60.9,
+          "moyenne": 33.3,
+          "forte": 5.8
+        },
+        "trstprt": {
+          "faible": 61.4,
+          "moyenne": 32.8,
+          "forte": 5.8
+        },
+        "trstep": {
+          "faible": 28.6,
+          "moyenne": 45.4,
+          "forte": 26
+        },
+        "trstun": {
+          "faible": 27.3,
+          "moyenne": 42.4,
+          "forte": 30.3
+        }
+      }
+    },
+    {
+      "code": "FI",
+      "x": 0.9309,
+      "y": 0.4693,
+      "n": 1563,
+      "nom": "Finlande",
+      "profil": {
+        "trstprl": {
+          "faible": 11.3,
+          "moyenne": 31.9,
+          "forte": 56.8
+        },
+        "trstlgl": {
+          "faible": 6.1,
+          "moyenne": 19.2,
+          "forte": 74.7
+        },
+        "trstplc": {
+          "faible": 2.3,
+          "moyenne": 8.9,
+          "forte": 88.8
+        },
+        "trstplt": {
+          "faible": 19.7,
+          "moyenne": 47.4,
+          "forte": 33
+        },
+        "trstprt": {
+          "faible": 17.8,
+          "moyenne": 49.7,
+          "forte": 32.5
+        },
+        "trstep": {
+          "faible": 14.5,
+          "moyenne": 41.1,
+          "forte": 44.4
+        },
+        "trstun": {
+          "faible": 10.1,
+          "moyenne": 32.9,
+          "forte": 57.1
+        }
+      }
+    },
+    {
+      "code": "FR",
+      "x": 0.0069,
+      "y": -0.1781,
+      "n": 1771,
+      "nom": "France",
+      "profil": {
+        "trstprl": {
+          "faible": 38.8,
+          "moyenne": 44,
+          "forte": 17.1
+        },
+        "trstlgl": {
+          "faible": 27.5,
+          "moyenne": 39.5,
+          "forte": 33
+        },
+        "trstplc": {
+          "faible": 11.9,
+          "moyenne": 32.7,
+          "forte": 55.4
+        },
+        "trstplt": {
+          "faible": 43.3,
+          "moyenne": 46.7,
+          "forte": 10.1
+        },
+        "trstprt": {
+          "faible": 50.7,
+          "moyenne": 42.6,
+          "forte": 6.7
+        },
+        "trstep": {
+          "faible": 36.9,
+          "moyenne": 44.6,
+          "forte": 18.5
+        },
+        "trstun": {
+          "faible": 24.1,
+          "moyenne": 45.9,
+          "forte": 30
+        }
+      }
+    },
+    {
+      "code": "GB",
+      "x": -0.063,
+      "y": -0.0632,
+      "n": 1684,
+      "nom": "Royaume-Uni",
+      "profil": {
+        "trstprl": {
+          "faible": 45.8,
+          "moyenne": 39.1,
+          "forte": 15.1
+        },
+        "trstlgl": {
+          "faible": 19.5,
+          "moyenne": 37.6,
+          "forte": 42.9
+        },
+        "trstplc": {
+          "faible": 17.8,
+          "moyenne": 34.5,
+          "forte": 47.7
+        },
+        "trstplt": {
+          "faible": 56.9,
+          "moyenne": 35.1,
+          "forte": 8.1
+        },
+        "trstprt": {
+          "faible": 53.9,
+          "moyenne": 37.9,
+          "forte": 8.2
+        },
+        "trstep": {
+          "faible": 39.2,
+          "moyenne": 42.5,
+          "forte": 18.3
+        },
+        "trstun": {
+          "faible": 24.2,
+          "moyenne": 41.7,
+          "forte": 34.1
+        }
+      }
+    },
+    {
+      "code": "GR",
+      "x": -0.3446,
+      "y": 0.0958,
+      "n": 2757,
+      "nom": "Grèce",
+      "profil": {
+        "trstprl": {
+          "faible": 61,
+          "moyenne": 31,
+          "forte": 7.9
+        },
+        "trstlgl": {
+          "faible": 25,
+          "moyenne": 35.5,
+          "forte": 39.5
+        },
+        "trstplc": {
+          "faible": 18,
+          "moyenne": 31.7,
+          "forte": 50.3
+        },
+        "trstplt": {
+          "faible": 71,
+          "moyenne": 23,
+          "forte": 6
+        },
+        "trstprt": {
+          "faible": 69.6,
+          "moyenne": 24,
+          "forte": 6.4
+        },
+        "trstep": {
+          "faible": 45,
+          "moyenne": 36.9,
+          "forte": 18.1
+        },
+        "trstun": {
+          "faible": 42.8,
+          "moyenne": 35.9,
+          "forte": 21.2
+        }
+      }
+    },
+    {
+      "code": "HR",
+      "x": -0.5457,
+      "y": 0.1859,
+      "n": 1563,
+      "nom": "Croatie",
+      "profil": {
+        "trstprl": {
+          "faible": 62.7,
+          "moyenne": 26.4,
+          "forte": 10.8
+        },
+        "trstlgl": {
+          "faible": 61.9,
+          "moyenne": 28,
+          "forte": 10.2
+        },
+        "trstplc": {
+          "faible": 25.6,
+          "moyenne": 37.7,
+          "forte": 36.7
+        },
+        "trstplt": {
+          "faible": 78.7,
+          "moyenne": 18,
+          "forte": 3.3
+        },
+        "trstprt": {
+          "faible": 76.7,
+          "moyenne": 19.4,
+          "forte": 3.9
+        },
+        "trstep": {
+          "faible": 40.8,
+          "moyenne": 36.9,
+          "forte": 22.3
+        },
+        "trstun": {
+          "faible": 34.4,
+          "moyenne": 36,
+          "forte": 29.6
+        }
+      }
+    },
+    {
+      "code": "HU",
+      "x": 0.1827,
+      "y": 0.117,
+      "n": 2118,
+      "nom": "Hongrie",
+      "profil": {
+        "trstprl": {
+          "faible": 35.4,
+          "moyenne": 36.8,
+          "forte": 27.8
+        },
+        "trstlgl": {
+          "faible": 24.9,
+          "moyenne": 36,
+          "forte": 39.1
+        },
+        "trstplc": {
+          "faible": 15.6,
+          "moyenne": 32,
+          "forte": 52.4
+        },
+        "trstplt": {
+          "faible": 41.4,
+          "moyenne": 38.8,
+          "forte": 19.8
+        },
+        "trstprt": {
+          "faible": 42.9,
+          "moyenne": 37.6,
+          "forte": 19.5
+        },
+        "trstep": {
+          "faible": 28.6,
+          "moyenne": 44.1,
+          "forte": 27.2
+        },
+        "trstun": {
+          "faible": 22.4,
+          "moyenne": 42.6,
+          "forte": 34.9
+        }
+      }
+    },
+    {
+      "code": "IE",
+      "x": 0.3257,
+      "y": 0.0468,
+      "n": 2017,
+      "nom": "Irlande",
+      "profil": {
+        "trstprl": {
+          "faible": 25.4,
+          "moyenne": 41.5,
+          "forte": 33.1
+        },
+        "trstlgl": {
+          "faible": 18.8,
+          "moyenne": 36.5,
+          "forte": 44.7
+        },
+        "trstplc": {
+          "faible": 12.5,
+          "moyenne": 30.8,
+          "forte": 56.6
+        },
+        "trstplt": {
+          "faible": 36.1,
+          "moyenne": 45.3,
+          "forte": 18.5
+        },
+        "trstprt": {
+          "faible": 37,
+          "moyenne": 45.9,
+          "forte": 17.1
+        },
+        "trstep": {
+          "faible": 22.9,
+          "moyenne": 42.4,
+          "forte": 34.7
+        },
+        "trstun": {
+          "faible": 21.1,
+          "moyenne": 41.4,
+          "forte": 37.4
+        }
+      }
+    },
+    {
+      "code": "IL",
+      "x": -0.3859,
+      "y": 0.166,
+      "n": 906,
+      "nom": "Israël",
+      "profil": {
+        "trstprl": {
+          "faible": 45.2,
+          "moyenne": 35.9,
+          "forte": 18.9
+        },
+        "trstlgl": {
+          "faible": 36.3,
+          "moyenne": 32.9,
+          "forte": 30.8
+        },
+        "trstplc": {
+          "faible": 33,
+          "moyenne": 36.2,
+          "forte": 30.8
+        },
+        "trstplt": {
+          "faible": 52.7,
+          "moyenne": 36.2,
+          "forte": 11.1
+        },
+        "trstprt": {
+          "faible": 50.4,
+          "moyenne": 38.9,
+          "forte": 10.8
+        },
+        "trstep": {
+          "faible": 61.6,
+          "moyenne": 28.4,
+          "forte": 10
+        },
+        "trstun": {
+          "faible": 70.9,
+          "moyenne": 21.8,
+          "forte": 7.3
+        }
+      }
+    },
+    {
+      "code": "IS",
+      "x": 0.5309,
+      "y": 0.1897,
+      "n": 842,
+      "nom": "Islande",
+      "profil": {
+        "trstprl": {
+          "faible": 20.6,
+          "moyenne": 41.1,
+          "forte": 38.3
+        },
+        "trstlgl": {
+          "faible": 17.2,
+          "moyenne": 35,
+          "forte": 47.8
+        },
+        "trstplc": {
+          "faible": 9.6,
+          "moyenne": 23.3,
+          "forte": 67.1
+        },
+        "trstplt": {
+          "faible": 31.1,
+          "moyenne": 46.8,
+          "forte": 22.2
+        },
+        "trstprt": {
+          "faible": 31.4,
+          "moyenne": 46.8,
+          "forte": 21.9
+        },
+        "trstep": {
+          "faible": 17.3,
+          "moyenne": 39.5,
+          "forte": 43.2
+        },
+        "trstun": {
+          "faible": 14.3,
+          "moyenne": 32.2,
+          "forte": 53.4
+        }
+      }
+    },
+    {
+      "code": "IT",
+      "x": 0.0282,
+      "y": -0.2203,
+      "n": 2865,
+      "nom": "Italie",
+      "profil": {
+        "trstprl": {
+          "faible": 34.8,
+          "moyenne": 46.6,
+          "forte": 18.7
+        },
+        "trstlgl": {
+          "faible": 20.8,
+          "moyenne": 43.2,
+          "forte": 36.1
+        },
+        "trstplc": {
+          "faible": 9.6,
+          "moyenne": 32.5,
+          "forte": 57.9
+        },
+        "trstplt": {
+          "faible": 51.2,
+          "moyenne": 41.4,
+          "forte": 7.4
+        },
+        "trstprt": {
+          "faible": 52,
+          "moyenne": 40.8,
+          "forte": 7.2
+        },
+        "trstep": {
+          "faible": 30.9,
+          "moyenne": 49.3,
+          "forte": 19.8
+        },
+        "trstun": {
+          "faible": 25.9,
+          "moyenne": 47.1,
+          "forte": 27
+        }
+      }
+    },
+    {
+      "code": "LT",
+      "x": 0.068,
+      "y": 0.0388,
+      "n": 1365,
+      "nom": "Lituanie",
+      "profil": {
+        "trstprl": {
+          "faible": 45.3,
+          "moyenne": 38.6,
+          "forte": 16.1
+        },
+        "trstlgl": {
+          "faible": 23.1,
+          "moyenne": 40.9,
+          "forte": 36
+        },
+        "trstplc": {
+          "faible": 10.9,
+          "moyenne": 23.5,
+          "forte": 65.6
+        },
+        "trstplt": {
+          "faible": 51.2,
+          "moyenne": 37.4,
+          "forte": 11.4
+        },
+        "trstprt": {
+          "faible": 53.5,
+          "moyenne": 35.4,
+          "forte": 11.1
+        },
+        "trstep": {
+          "faible": 26.3,
+          "moyenne": 39.6,
+          "forte": 34
+        },
+        "trstun": {
+          "faible": 26.1,
+          "moyenne": 37.7,
+          "forte": 36.3
+        }
+      }
+    },
+    {
+      "code": "LV",
+      "x": -0.3347,
+      "y": 0.0265,
+      "n": 1252,
+      "nom": "Lettonie",
+      "profil": {
+        "trstprl": {
+          "faible": 53.8,
+          "moyenne": 35.9,
+          "forte": 10.3
+        },
+        "trstlgl": {
+          "faible": 37.2,
+          "moyenne": 40.5,
+          "forte": 22.4
+        },
+        "trstplc": {
+          "faible": 23.5,
+          "moyenne": 37.1,
+          "forte": 39.4
+        },
+        "trstplt": {
+          "faible": 63,
+          "moyenne": 31,
+          "forte": 6.1
+        },
+        "trstprt": {
+          "faible": 67.3,
+          "moyenne": 26.7,
+          "forte": 6.1
+        },
+        "trstep": {
+          "faible": 36.9,
+          "moyenne": 40,
+          "forte": 23
+        },
+        "trstun": {
+          "faible": 42.8,
+          "moyenne": 33.6,
+          "forte": 23.6
+        }
+      }
+    },
+    {
+      "code": "ME",
+      "x": -0.0712,
+      "y": -0.2085,
+      "n": 1609,
+      "nom": "Monténégro",
+      "profil": {
+        "trstprl": {
+          "faible": 40.7,
+          "moyenne": 45.3,
+          "forte": 14
+        },
+        "trstlgl": {
+          "faible": 37.9,
+          "moyenne": 47.9,
+          "forte": 14.2
+        },
+        "trstplc": {
+          "faible": 21.3,
+          "moyenne": 51.3,
+          "forte": 27.4
+        },
+        "trstplt": {
+          "faible": 49.2,
+          "moyenne": 43.3,
+          "forte": 7.5
+        },
+        "trstprt": {
+          "faible": 48,
+          "moyenne": 42.7,
+          "forte": 9.4
+        },
+        "trstep": {
+          "faible": 19.3,
+          "moyenne": 45.2,
+          "forte": 35.4
+        },
+        "trstun": {
+          "faible": 21.5,
+          "moyenne": 47.8,
+          "forte": 30.7
+        }
+      }
+    },
+    {
+      "code": "NL",
+      "x": 0.6381,
+      "y": -0.0074,
+      "n": 1695,
+      "nom": "Pays-Bas",
+      "profil": {
+        "trstprl": {
+          "faible": 19.4,
+          "moyenne": 46.2,
+          "forte": 34.4
+        },
+        "trstlgl": {
+          "faible": 8.8,
+          "moyenne": 32.9,
+          "forte": 58.3
+        },
+        "trstplc": {
+          "faible": 3.8,
+          "moyenne": 21.7,
+          "forte": 74.5
+        },
+        "trstplt": {
+          "faible": 22.6,
+          "moyenne": 54.9,
+          "forte": 22.5
+        },
+        "trstprt": {
+          "faible": 20.1,
+          "moyenne": 57.8,
+          "forte": 22.1
+        },
+        "trstep": {
+          "faible": 19.9,
+          "moyenne": 47.5,
+          "forte": 32.6
+        },
+        "trstun": {
+          "faible": 11.1,
+          "moyenne": 42.4,
+          "forte": 46.5
+        }
+      }
+    },
+    {
+      "code": "NO",
+      "x": 0.9093,
+      "y": 0.4806,
+      "n": 1337,
+      "nom": "Norvège",
+      "profil": {
+        "trstprl": {
+          "faible": 12.3,
+          "moyenne": 29.8,
+          "forte": 57.9
+        },
+        "trstlgl": {
+          "faible": 5.5,
+          "moyenne": 18.4,
+          "forte": 76.1
+        },
+        "trstplc": {
+          "faible": 5.6,
+          "moyenne": 15.5,
+          "forte": 78.8
+        },
+        "trstplt": {
+          "faible": 20,
+          "moyenne": 47.7,
+          "forte": 32.2
+        },
+        "trstprt": {
+          "faible": 17.9,
+          "moyenne": 48.9,
+          "forte": 33.2
+        },
+        "trstep": {
+          "faible": 16.3,
+          "moyenne": 44.8,
+          "forte": 38.9
+        },
+        "trstun": {
+          "faible": 7,
+          "moyenne": 26,
+          "forte": 67
+        }
+      }
+    },
+    {
+      "code": "PL",
+      "x": -0.2793,
+      "y": -0.0039,
+      "n": 1442,
+      "nom": "Pologne",
+      "profil": {
+        "trstprl": {
+          "faible": 45.4,
+          "moyenne": 36.2,
+          "forte": 18.4
+        },
+        "trstlgl": {
+          "faible": 42.5,
+          "moyenne": 40.8,
+          "forte": 16.7
+        },
+        "trstplc": {
+          "faible": 24.4,
+          "moyenne": 40.6,
+          "forte": 35
+        },
+        "trstplt": {
+          "faible": 61.7,
+          "moyenne": 30.4,
+          "forte": 7.9
+        },
+        "trstprt": {
+          "faible": 60.7,
+          "moyenne": 31.8,
+          "forte": 7.5
+        },
+        "trstep": {
+          "faible": 43.6,
+          "moyenne": 37.6,
+          "forte": 18.9
+        },
+        "trstun": {
+          "faible": 26.7,
+          "moyenne": 44.8,
+          "forte": 28.6
+        }
+      }
+    },
+    {
+      "code": "PT",
+      "x": -0.0874,
+      "y": -0.054,
+      "n": 1373,
+      "nom": "Portugal",
+      "profil": {
+        "trstprl": {
+          "faible": 36.9,
+          "moyenne": 42.3,
+          "forte": 20.8
+        },
+        "trstlgl": {
+          "faible": 38,
+          "moyenne": 41.4,
+          "forte": 20.6
+        },
+        "trstplc": {
+          "faible": 12.2,
+          "moyenne": 34.8,
+          "forte": 52.9
+        },
+        "trstplt": {
+          "faible": 62,
+          "moyenne": 31,
+          "forte": 7
+        },
+        "trstprt": {
+          "faible": 61.1,
+          "moyenne": 32.2,
+          "forte": 6.7
+        },
+        "trstep": {
+          "faible": 28.4,
+          "moyenne": 44.2,
+          "forte": 27.4
+        },
+        "trstun": {
+          "faible": 22.2,
+          "moyenne": 41.7,
+          "forte": 36.1
+        }
+      }
+    },
+    {
+      "code": "RS",
+      "x": -0.4219,
+      "y": 0.3029,
+      "n": 1563,
+      "nom": "Serbie",
+      "profil": {
+        "trstprl": {
+          "faible": 45.9,
+          "moyenne": 28.8,
+          "forte": 25.3
+        },
+        "trstlgl": {
+          "faible": 43.5,
+          "moyenne": 31.4,
+          "forte": 25.1
+        },
+        "trstplc": {
+          "faible": 29.4,
+          "moyenne": 31.9,
+          "forte": 38.8
+        },
+        "trstplt": {
+          "faible": 63.7,
+          "moyenne": 24.4,
+          "forte": 11.9
+        },
+        "trstprt": {
+          "faible": 65.1,
+          "moyenne": 24.3,
+          "forte": 10.6
+        },
+        "trstep": {
+          "faible": 62.6,
+          "moyenne": 26.3,
+          "forte": 11.1
+        },
+        "trstun": {
+          "faible": 60.9,
+          "moyenne": 26.3,
+          "forte": 12.8
+        }
+      }
+    },
+    {
+      "code": "SE",
+      "x": 0.7014,
+      "y": 0.1851,
+      "n": 1230,
+      "nom": "Suède",
+      "profil": {
+        "trstprl": {
+          "faible": 11.9,
+          "moyenne": 35.9,
+          "forte": 52.2
+        },
+        "trstlgl": {
+          "faible": 9.9,
+          "moyenne": 33.5,
+          "forte": 56.7
+        },
+        "trstplc": {
+          "faible": 6.7,
+          "moyenne": 23.1,
+          "forte": 70.2
+        },
+        "trstplt": {
+          "faible": 25.2,
+          "moyenne": 50.7,
+          "forte": 24.2
+        },
+        "trstprt": {
+          "faible": 21.1,
+          "moyenne": 53.3,
+          "forte": 25.6
+        },
+        "trstep": {
+          "faible": 20,
+          "moyenne": 46.8,
+          "forte": 33.2
+        },
+        "trstun": {
+          "faible": 10.8,
+          "moyenne": 34,
+          "forte": 55.2
+        }
+      }
+    },
+    {
+      "code": "SI",
+      "x": -0.0949,
+      "y": -0.0484,
+      "n": 1248,
+      "nom": "Slovénie",
+      "profil": {
+        "trstprl": {
+          "faible": 40.5,
+          "moyenne": 41.8,
+          "forte": 17.8
+        },
+        "trstlgl": {
+          "faible": 31.1,
+          "moyenne": 40,
+          "forte": 29
+        },
+        "trstplc": {
+          "faible": 12.6,
+          "moyenne": 33.3,
+          "forte": 54.2
+        },
+        "trstplt": {
+          "faible": 56.5,
+          "moyenne": 36,
+          "forte": 7.6
+        },
+        "trstprt": {
+          "faible": 57.9,
+          "moyenne": 34.9,
+          "forte": 7.2
+        },
+        "trstep": {
+          "faible": 35.6,
+          "moyenne": 39.4,
+          "forte": 25.1
+        },
+        "trstun": {
+          "faible": 31,
+          "moyenne": 39.8,
+          "forte": 29.2
+        }
+      }
+    },
+    {
+      "code": "SK",
+      "x": -0.0014,
+      "y": 0.1787,
+      "n": 1442,
+      "nom": "Slovaquie",
+      "profil": {
+        "trstprl": {
+          "faible": 44.1,
+          "moyenne": 34.9,
+          "forte": 21
+        },
+        "trstlgl": {
+          "faible": 29.5,
+          "moyenne": 37.9,
+          "forte": 32.7
+        },
+        "trstplc": {
+          "faible": 22.5,
+          "moyenne": 37.7,
+          "forte": 39.7
+        },
+        "trstplt": {
+          "faible": 45.6,
+          "moyenne": 38.3,
+          "forte": 16.1
+        },
+        "trstprt": {
+          "faible": 45.4,
+          "moyenne": 38.3,
+          "forte": 16.3
+        },
+        "trstep": {
+          "faible": 37.1,
+          "moyenne": 32.2,
+          "forte": 30.7
+        },
+        "trstun": {
+          "faible": 32.1,
+          "moyenne": 30.8,
+          "forte": 37.1
+        }
+      }
+    },
+    {
+      "code": "UA",
+      "x": -0.7273,
+      "y": 0.2689,
+      "n": 2661,
+      "nom": "Ukraine",
+      "profil": {
+        "trstprl": {
+          "faible": 71.4,
+          "moyenne": 21.9,
+          "forte": 6.7
+        },
+        "trstlgl": {
+          "faible": 64.6,
+          "moyenne": 27.4,
+          "forte": 8
+        },
+        "trstplc": {
+          "faible": 49.8,
+          "moyenne": 35.8,
+          "forte": 14.4
+        },
+        "trstplt": {
+          "faible": 75.8,
+          "moyenne": 20.1,
+          "forte": 4.1
+        },
+        "trstprt": {
+          "faible": 77.3,
+          "moyenne": 19.4,
+          "forte": 3.3
+        },
+        "trstep": {
+          "faible": 41,
+          "moyenne": 35.4,
+          "forte": 23.6
+        },
+        "trstun": {
+          "faible": 50.8,
+          "moyenne": 31.1,
+          "forte": 18.1
+        }
+      }
+    }
+  ],
+  "europe": {
+    "trstprl": {
+      "faible": 39.3,
+      "moyenne": 38.8,
+      "forte": 22
+    },
+    "trstlgl": {
+      "faible": 26.6,
+      "moyenne": 35.6,
+      "forte": 37.8
+    },
+    "trstplc": {
+      "faible": 15.5,
+      "moyenne": 30.6,
+      "forte": 53.8
+    },
+    "trstplt": {
+      "faible": 51.4,
+      "moyenne": 37.7,
+      "forte": 10.9
+    },
+    "trstprt": {
+      "faible": 51.8,
+      "moyenne": 38.2,
+      "forte": 10
+    },
+    "trstep": {
+      "faible": 35.2,
+      "moyenne": 41.8,
+      "forte": 22.9
+    },
+    "trstun": {
+      "faible": 28.2,
+      "moyenne": 41.1,
+      "forte": 30.7
+    }
+  }
+}
