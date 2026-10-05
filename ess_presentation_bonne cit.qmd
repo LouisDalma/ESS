@@ -1,0 +1,280 @@
+---
+title: "L'ESS et son panel CRONOS"
+subtitle: "Présentation des données et comment les télécharger"
+author: "Louis Dalmazzo"
+bibliography: references.bib
+lang: fr
+---
+
+Les ressources pédagogiques disponibles sur ce site reposent sur deux dispositifs d'enquête liés entre eux. L'**European Social Survey** (ESS) et son panel en ligne **CRONOS**.
+
+Cette section présente la fabrique de ces données : quel organisme les produits, quelles questions y sont posées, à quel public, de quelle manière. La dernière partie explique pas à pas comment télécharger les données, pré-requis nécessaire pour suivre pas à pas nos ressources.
+
+## Qu'est-ce que l'ESS ?
+
+L'*European Social Survey* (ESS) est fondé en 2001 et regroupe un ensemble d'enquêtes posé tous les deux ans[@ess_spec13, sect. 3]. Il a pour but principal de **produire des données fiables** pour mesurer le changement, ou à l'inverse la stabilité dans le temps, au sein des pays européens. Il porte, entre autres, sur les conditions de vie, l'opinion politique ou encore les valeurs des populations enquêtées [@ess_spec13, sect. 1; @ess_about].
+
+Les enquêtes sont conçues **par et pour la recherche** : ses données sont pensées pour être exploitées de manière durable et rigoureuse. Cette finalité explique l'essentiel de ses caractéristiques : sa lenteur, son coût, mais aussi sa rigueur méthodologique ainsi que la gratuité de ses données, disponibles pour toutes et tous. En 2005, le dispositif a reçu le prix Descartes de la Commission Européenne, plus haute récompense scientifique de l'Union Européenne et première équipe de sciences sociales à la recevoir [@cordis2005].
+
+Le dispositif dispose d'un suivi bibliographique annuel, réalisé par l'Université de Ljubljana. Sur la période couvrant 2003 à 2024, le recensement compte **7 546** publications académiques sur Google Scholar, un comptage en constante progression : le recensement comptait ainsi 5 429 publications jusqu'en 2020, 5 966 publications jusqu'en 2021, 6 585 publications jusqu'en 2022 et 7 060 publications jusqu'en 2023 [@ess_biblio_5429; @ess_biblio_5966; @ess_biblio_6585; @ess_biblio_7060; @ess_impact]. Ces décomptes ne portent que sur les publications en langue anglaise.
+
+### Une infrastructure européenne
+
+Depuis 2013, l'ESS a le statut juridique d'**ERIC** (*European Research Infrastructure Consortium*). Hébergé au Royaume-Uni, son siège se situe à City St George's, University of London [@ess_spec13, sect. 3; @ess_about].
+
+Son organisation est divisée en plusieurs niveaux [@ess_spec13, sect. 1, 4, 5 et 9; @ess_faq; @ess_structure] :
+
+- Une **assemblée générale**, composée des représentants des États membres, gouverne l'ESS ERIC et nomme le directeur. Le financement du terrain national est une condition d'adhésion.
+- L'**équipe scientifique centrale** (*Core Scientific Team*, CST) réunit le siège et plusieurs institutions européennes, parmi lesquelles GESIS en Allemagne, Sikt en Norvège, l'Universitat Pompeu Fabra en Espagne, l'université d'Essex au Royaume-Uni, Centerdata aux Pays-Bas. C'est elle qui conçoit le questionnaire.
+- Un **coordinateur national** (*National Coordinator*, NC) est nommé et financé par chaque pays membre. Il est le point de contact avec l'équipe centrale et reste responsable de l'ensemble des tâches nationales.
+- Une **agence d'enquête** conduit généralement la collecte, sous la supervision du coordinateur national, qui peut aussi la réaliser en interne. C'est une distinction importante : le coordinateur supervise, l'agence exécute.
+- Des **panels d'experts** interviennent sur des points spécifiques, notamment le panel échantillonnage et pondération (SWEP), qui doit valider le plan de sondage de chaque pays avant tout tirage.
+- Le **centre d'archivage** (ESS Data Archive), hébergé par Sikt en Norvège, reçoit les fichiers nationaux, les fusionne, les documente et les diffuse. Sikt est par ailleurs membre de l'équipe scientifique centrale.
+
+### Onze vagues, une trentaine de pays
+
+| Vague | Année | Pays | Répondants |
+|-------|-------|------|------------|
+| 1     | 2002  | 22   | 42 359     |
+| 2     | 2004  | 25   | 47 537     |
+| 3     | 2006  | 23   | 43 000     |
+| 4     | 2008  | 29   | 56 752     |
+| 5     | 2010  | 27   | 52 458     |
+| 6     | 2012  | 29   | 54 673     |
+| 7     | 2014  | 21   | 40 185     |
+| 8     | 2016  | 23   | 44 387     |
+| 9     | 2018  | 29   | 49 519     |
+| 10    | 2020  | 22   | 37 611     |
+| 11    | 2023  | 30   | 50 116     |
+
+## Le questionnaire
+
+Le questionnaire se divise en deux parties, ayant chacune un statut spécifique [@ess_sourceq].
+
+### Le module central
+
+Le **module central** (*core module*) est composé de questions répétées dans le temps. Il permet ainsi de faire des comparaisons de coupes dans le temps. Les questions sont réfléchies pour être pertinentes sur le temps long. Selon ses créateurs, le module central est construit de telle sorte qu'il regroupe des questions d'intérêt durable, le plus complet de toutes les enquêtes internationales comparatives [@ess_sourceq].
+
+Il couvre un ensemble de thématiques liées à la vie sociale et politique : la confiance envers autrui ou envers les institutions publiques, l'intérêt pour la politique, le bien être et le bonheur, la religion, ou encore le climat [@ess_round11].
+
+Chaque pays peut ajouter jusqu'à cinq questions spécifiques nationales. Elles sont ensuite soumises à l'approbation du comité d'éthique de l'ESS et placées à la fin du questionnaire [@ess_spec13, sect. 7.1.3].
+
+### Les modules tournants
+
+À chaque vague, **deux modules tournants** d'une trentaine de question chacuns approfondissent une thématique spécifique. Ils sont généralement sélectionnés suite à un appel à propositions. Des équipes de chercheurs soumettent un projet, tranché par un comité scientifique [@ess_sourceq].
+
+Le tableau ci-dessous détaille les deux modules tournants pour chaque vague de l'ESS :
+
+| Vague | Modules tournants |
+|------------------------------------|------------------------------------|
+| 1 (2002) | Citoyenneté, engagement et démocratie / Immigration |
+| 2 (2004) | Famille, travail et bien-être / Santé et recours aux soins · Moralité économique |
+| 3 (2006) | Bien-être personnel et social / Le calendrier de la vie |
+| 4 (2008) | Âgisme / Attitudes envers l'État-providence |
+| 5 (2010) | Travail, famille et bien-être / Confiance dans la police et la justice pénale |
+| 6 (2012) | Bien-être personnel et social / Compréhensions et évaluations de la démocratie |
+| 7 (2014) | Immigration / Inégalités sociales de santé |
+| 8 (2016) | Changement climatique et énergie / Attitudes envers l'État-providence |
+| 9 (2018) | Justice et équité / Le calendrier de la vie |
+| 10 (2020) | Contacts sociaux numériques au travail et en famille / Compréhensions et évaluations de la démocratie |
+| 11 (2023) | Le genre dans l'Europe contemporaine / Inégalités sociales de santé |
+| 12 (2025) | Bien-être personnel et social / Attitudes envers les immigrés et réfugiés |
+| 13 (2027) | (Dé)connexion sociale / Attitudes envers la protection sociale |
+
+## L'échantillonnage
+
+### Le tirage au sort
+
+Les enquêtes de l'ESS imposent un échantillonnage aléatoire, où chaque membre de la population étudiée a une probabilité connue et strictement positive d'être sélectionnée. En ce sens, elles assurent une représentativité de la population étudiée, ne souffrant d'aucun biais d'échantillonnage contrairement aux enquêtes effectuées par quotas. De la même manière, aucune substition de logement ou d'individus n'ayant pas répondu n'est autorisé parmi l'ESS : on choisit donc d'avoir un échantillon certes plus petit que prévu, mais bien plus représentatif [@ess_spec13, sect. 9.1].
+
+### La population cible
+
+L'ESS vise **toutes les personnes de 15 ans et plus, sans limite d'âge supérieure, résidant dans des logements privés**, quelles que soient leur nationalité, leur citoyenneté ou leur langue [@ess_spec13, sect. 9.1]. Des traductions sont nécessaires pour chaque langue parlée comme première langue par au moins 5 % de la population [@ess_spec13, sect. 7.2].
+
+### La taille d'échantillon effective
+
+Chaque pays doit atteindre une **taille d'échantillon effective d'au moins 1 500**, ramenée à **800 pour les pays dont la population de 15 ans et plus est inférieure à 2 millions**[^1].
+
+[^1]: @ess_spec13 [section 9.3] : « The 'effective achieved sample size' (n_eff) must be at least 1,500 (or 800 in countries with ESS populations (aged 15+) of less than 2 million), after discounting for design effects. »
+
+La notion d'échantillon **effectif** ne signifie pas nombre brut de questionnaires remplis, que l'on retrouve dans notre base de données, mais d'un nombre corrigé des effets du plan de sondage. En outre, le nombre de questionnaires réellement nécessaires peut être considérablement supérieur à la taille effective visée[^2]. Il s'agit ici d'une importance accordée à la représentativité des enquêtés.
+
+[^2]: @ess_spec13 [section 9.3] : « In some cases (e.g. unequal-probability, multi-stage sampling design) the required number of completed questionnaires may be considerably larger than the required effective sample size. »
+
+### Les bases de sondage
+
+L'ESS établit une hiérarchie de préférence entre bases de sondage : les fichiers d'individus nommés, comme un registre de population, sont fortement préférés ; à défaut, une base de logements ou d'adresses ; en dernier recours, un échantillonnage aréolaire avec recensement des logements sur le terrain [@ess_spec13, sect. 9.2]. Il est donc possible que les pays n'aient pas une méthodologie de tirage similaire : par exemple tous les pays ne disposent pas d'un registre de population.
+
+## La passation
+
+### Le face-à-face, norme historique
+
+De la vague 1 à la vague 11, **toute la collecte des données de l'ESS a été faite en face-à-face** [@ess_spec13, sect. 2]. Cette méthode est coûteuse, mais elle permet des taux de réponse plus élevés, en touchant des personnes peu à l'aise avec l'écrit.
+
+### La bascule vers l'auto-administration
+
+Toutefois, avec la pandémie de Covid 19, le face-à-face devient difficile à soutenir. Ainsi, lors de la vague 10, l'auto-administration a été autorisée dans neuf pays : l'Autriche, Chypre, l'Allemagne, Israël, la Lettonie, la Pologne, la Serbie, l'Espace, et la Suède [@ess_spec13, sect. 2].
+
+A partir de ce moment, l'ESS a amorcé une transition : la vague 12 combine environ moitié face-à-face et moitié auto-administration (web et papier), tandis que la **vague 13 sera la première vague entièrement auto-administrée**[@ess_spec13, sect. 2].
+
+::: callout-warning
+## NB : ces neuf pays sont absents du fichier intégré de la vague 10
+
+Les neuf pays ayant utilisé le mode de passation auto-administré du questionnaire sont absents des fichiers de la vague 10, ces données ayant été publiées séparément.
+:::
+
+### Ce que contient la variable `mode`
+
+La variable `mode` n'apparaît dans les fichiers qu'à partir de la vague 10. Elle distingue quatre modalités : face-à-face assisté par ordinateur (CAPI), entretien par visioconférence, questionnaire auto-administré en ligne (CAWI), questionnaire auto-administré papier (PAPI) [@ess11_codebook].
+
+Si l'on prend pour exemple la vague 11, seules les deux premières modalités sont effectivement utilisées : **96,3 % de face-à-face et 3,7 % de visioconférence**. Le recours à la vidéo varie fortement selon les pays : 48 % en Norvège, 42 % en Islande, 27 % en Finlande, 12 % en Suède, contre 4 % en France et 3 % au Royaume-Uni. Ces chiffres sont calculés sur le fichier ESS11e04_2, en croisant les variables `cntry` et `mode` (50 116 observations).
+
+::: callout-warning
+## Le mode influence les réponses
+
+Un répondant face à un enquêteur a davantage tendance à donner une réponse socialement valorisée qu'un répondant seul devant un écran, particulièrement sur les questions sensibles. Comparer deux vagues ou deux pays qui n'ont pas utilisé les mêmes modes mélange donc effet de mode et différence réelle d'attitude.
+
+Ce point va gagner en importance : avec la vague 13 entièrement auto-administrée, toute comparaison avec les vagues antérieures devra en tenir compte. La variable `mode` permet de contrôler ce facteur sur les vagues 10 et suivantes.
+:::
+
+## La traduction
+
+Comparer la France et la Pologne suppose que la question dise la même chose dans les deux langues. L'ESS s'appuie pour cela sur le protocole **TRAPD**, fondé sur une approche par comité, dont les étapes sont [@ess_spec13, sect. 7.2] :
+
+- **T**raduction : deux traductions parallèles indépendantes ;
+- **R**evue : discussion confrontant ces versions ;
+- **A**djudication : arbitrage des désaccords ;
+- **P**ré-test national auprès de répondants réels ;
+- **D**ocumentation de l'ensemble des décisions.
+
+S'y ajoutent une vérification externe par un prestataire linguistique spécialisé (cApStAn), des contrôles de qualité par GESIS, et une harmonisation entre pays partageant une même langue, par exemple entre la France, la Belgique et la Suisse pour le français [@ess_spec13, sect. 7.2.1 et 7.2.2].
+
+Toutes les étapes doivent être achevées avant le début de la collecte, et les traductions des questions du module central ne peuvent pas être modifiées sans l'accord de l'équipe de traduction et du siège afin de préserver la comparabilité temporelle [@ess_spec13, sect. 7.2.1].
+
+## CRONOS : le panel en ligne de l'ESS
+
+### Données de coupe ou panel longitudinal ?
+
+L'ESS interroge à chaque vague un **échantillon** **différent** : les répondants de 2023 ne sont pas ceux de 2020. On parle de **coupes transversales répétées**. Elles permettent de dire, par exemple, que la confiance moyenne dans le Parlement a baissé entre deux vagues ; néanmoins, elles ne permettent pas de savoir si les mêmes personnes qui ont changé d'avis ou si la population elle-même a changé (par exemple par effet de générations ou migrations entre autre).
+
+A l'inverse, un **panel** réinterroge les **mêmes personnes** à plusieurs reprises. On peut alors suivre l'évolution de chaque individu : un répondant qui faisait confiance au gouvernement lors de la première vague lui fait-il encore confiance lors de la deuxième ? Les méthodes statistiques adaptées à ce type de données pour contrôler l'hétérogénéité inobservée (économétrie de panel) font l'objet d'une page dédiée du site.
+
+**CRONOS** (*CROss-National Online Survey*) est le panel de l'ESS : les panélistes sont recrutés à la fin de l'entretien de l'ESS, puis interrogés plusieurs fois en ligne. Trois panels se sont succédé[^3] :
+
+[^3]: @cronos_ess ; pour CRONOS-1, @villar2018cronos ; pour CRONOS-2, @bottoni2023cronos2.
+
+|   | CRONOS-1 | CRONOS-2 | CRONOS-3 |
+|:----------------|:----------------------|:----------------|:----------------|
+| Période | Déc. 2016 – févr. 2018 | Nov. 2021 – mars 2023 | Depuis sept. 2024 |
+| Pays | 3 (Estonie, Royaume-Uni, Slovénie) | 12, dont la France | 11, dont la France |
+| Recrutement | Fin de l'entretien ESS, vague 8 | Fin de l'entretien ESS, vague 10 | Fin de l'entretien ESS, vagues 10 et 11 |
+| Vagues | Enquête d'accueil + 6 | Enquête d'accueil + 6 | 8 prévues |
+| Mode | En ligne (tablette fournie aux personnes sans internet) | En ligne uniquement | En ligne et papier |
+
+: Les trois panels CRONOS
+
+Ce site utilise **CRONOS-2** : c'est le seul panel achevé qui inclut la France.
+
+### CRONOS-2 en détail
+
+**Qui a été interrogé ?** À la fin de l'entretien de la vague 10 de l'ESS, les répondants de douze pays (Autriche, Belgique, Finlande, France, Hongrie, Islande, Italie, Portugal, Royaume-Uni, Slovénie, Suède, Tchéquie) ont été invités à rejoindre le panel. Seules les personnes de **18 ans et plus** ayant **accès à internet** étaient éligibles : les 15-17 ans ont été exclus pour des raisons de consentement parental, et les personnes sans internet n'ont pas été invitées. Il fallait fournir une adresse électronique ou un numéro de téléphone mobile[^4].
+
+[^4]: @cronos_ess : CRONOS-2 a été « fielded in 12 countries - Austria, Belgium, Czechia, Finland, France, Hungary, Iceland, Italy, Portugal, Slovenia, Sweden and the United Kingdom - from November 2021 until March 2023 » ; population cible : « adults (18+), who have access to internet (those without internet access were not invited to join the panel), living in private households ». Sur les 15-17 ans et les coordonnées demandées : @bottoni2023cronos2.
+
+**Comment ?** Chaque vague durait une vingtaine de minutes, en ligne, sur l'appareil de son choix (ordinateur, tablette, téléphone). Les invitations et relances étaient envoyées par courriel ou par SMS. Chaque panéliste recevait une incitation inconditionnelle d'environ **5 €** par vague (le montant variait dans quelques pays)[^5].
+
+[^5]: @cronos_ess : « All CRONOS-2 panellists were offered unconditional incentives for a value of £5/€5 per wave » ; durée, appareil et relances : @bottoni2023cronos2. En France, le CDSP a pris en charge les courriers d'invitation, les relances par courriel et SMS, les appels téléphoniques et l'assistance aux panélistes [@cdsp_cronos].
+
+**Sur quoi ?** Les vagues 1, 2, 4 et 5 sont **communes** aux douze pays ; les vagues 3 et 6 sont **nationales** : chaque pays y a posé ses propres questions.
+
+| Vague | Dates en France | Thèmes |
+|:--------------|:--------------|:-----------------------------------------|
+| 0 (accueil) | Décembre 2021 | Courte enquête de bienvenue (État-providence, bien-être, citoyenneté) |
+| 1 | Février-mars 2022 | Politiques climatiques, vaccination contre le Covid-19, déterminants de la confiance dans les institutions, perception des enquêtes |
+| 2 | Avril-mai 2022 | Europe sociale et redistribution, début et fin de vie, bien-être financier, politiques mémorielles |
+| 3 (nationale) | Juin-juillet 2022 | Questions propres à chaque pays |
+| 4 | Septembre 2022 | Technocratie et populisme, diversité des familles, santé mentale et pandémie, développement des sociétés |
+| 5 | Octobre-novembre 2022 | Confiance dans les disciplines scientifiques, ostracisme, revenus et redistribution des richesses, information publique pendant la pandémie |
+| 6 (nationale) | Novembre-décembre 2022 | Questions propres à chaque pays |
+
+: Les vagues de CRONOS-2[^6]
+
+[^6]: Dates et thèmes : @bottoni2023cronos2 ; intitulés des jeux de données : @ess_citation. En France, la vague 3 a commencé une semaine plus tard que prévu pour ne pas chevaucher les élections législatives.
+
+Certains modules ont été posés plusieurs fois (vagues 1-2 et 5-6) : confiance dans les institutions, vaccination, perception des enquêtes, bien-être financier. C'est ce qui donne au panel sa **dimension longitudinale** : on peut suivre la réponse d'une même personne à la même question à plusieurs mois d'intervalle[^7].
+
+[^7]: @cronos_ess : « For the first time, a longitudinal component was added to the ESS via CRONOS-2 (modules on drivers of institutional trust, COVID-19 vaccination, perception of surveys, and financial wellbeing). »
+
+### CRONOS-2 en France
+
+En France, les vagues nationales (3 et 6) ont porté sur la participation électorale aux scrutins de 2022, le climat, les inégalités et la confiance dans les institutions [@cdsp_cronos]. Nous ne travaillerons dans ce kit que sur les données françaises pour le panel.
+
+Sur 1 693 répondants français de l'ESS éligibles, **1 023** ont rejoint le panel, soit 60,4 %. Environ 70 % d'entre eux ont ensuite répondu à chaque vague, et cette participation ne s'est pas érodée au fil du temps :
+
+|                     | Vague 1 | Vague 2 | Vague 3 | Vague 4 | Vague 5 | Vague 6 |
+|---------------------|:-------:|:-------:|:-------:|:-------:|:-------:|:-------:|
+| Répondants          |   652   |   720   |   742   |   724   |   707   |   723   |
+| En % des panélistes |  63,7   |  70,4   |  72,5   |  70,8   |  69,1   |  70,7   |
+
+: Participation des panélistes français à CRONOS-2[^8]
+
+[^8]: @bottoni2023cronos2, tableaux 5 et 6 (entretiens complets et partiels). Le taux de recrutement varie fortement d'un pays à l'autre, de 27 % en Hongrie à 87 % en Islande.
+
+::: callout-warning
+## Ce que représente (et ne représente pas) CRONOS-2
+
+Les panélistes ont franchi **deux étapes de sélection** : répondre à l'ESS, puis accepter de rejoindre le panel. Les personnes sans internet et les 15-17 ans en sont exclues par construction. Un panéliste de CRONOS-2 n'est donc pas un « Français moyen » tiré au hasard.
+
+La pondération fournie (`c2weight`) corrige une partie de ces écarts : elle part de la pondération de l'ESS (vague 10) et l'ajuste à la non-réponse de chaque vague du panel. Elle ne peut pas, en revanche, faire réapparaître la population hors ligne[^9].
+:::
+
+[^9]: @bottoni2023cronos2 : « The weight can therefore be used on its own for any analysis of CRONOS-2 data, as it incorporates the post-stratified ESS10 design weight and adjustments for nonresponse at both ESS10 and the respective CRONOS-2 wave. » Sur la représentativité de CRONOS-1, voir @maslovskaya_lugtig2022 ; sur l'évaluation des panels en ligne probabilistes, @bottoni_fitzgerald2021.
+
+## Accéder aux données
+
+Cette section est un mode d'emploi : elle accompagne pas à pas le téléchargement des données, de la création du compte jusqu'à la citation.
+
+Les données anonymisées sont accessibles gratuitement pour tout usage non commercial, sans droit d'accès privilégié pour quiconque, sous licence [Creative Commons BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/) [@ess_spec13, sect. 8.9; @ess_disclaimer]. Seule la création d'un compte sur le [portail](https://ess.sikt.no/en/ "Portail des données de l'ESS") est requise.
+
+[![Portail des données de l'ESS. Cliquer sur "Explore ESS data" pour explorer et télécharger les vagues](images/Capture%20d'écran%202026-09-07%20160147.png)](https://ess.sikt.no/en/series/321b06ad-1b98-4b7d-93ad-ca8a24e8788a)
+
+Le portail propose plusieurs formats. Le **CSV** est universel mais ne conserve que les codes numériques, sans libellés. Le format **SPSS** (`.sav`), lisible sous R avec le package `haven`, conserve libellés de variables et de modalités. Un format **STATA** est également disponible.
+
+Trois documents accompagnent chaque vague : le **questionnaire source**, qui donne la formulation exacte des questions ; le **codebook**, qui liste toutes les variables avec leurs modalités et leurs codes de non-réponse ; et les **rapports de documentation** par pays, qui décrivent le plan de sondage et le déroulement du terrain.
+
+::: callout-note
+## Quelles vagues télécharger ?
+
+Nous utiliserons principalement la dernière vague disponible à date de l'écriture de ces kits, c'est-à-dire la vague 11. Nous vous invitons à vous créer un compte et à télécharger en priorité cette [vague](https://ess.sikt.no/en/datafile/242aaa39-3bbb-40f5-98bf-bfb1ce53d8ef) si vous souhaitez reproduire nos analyses.
+
+[![Vague 11 de l'ESS](images/Capture%20d'écran%202026-09-07%20161259.png)](https://ess.sikt.no/en/datafile/242aaa39-3bbb-40f5-98bf-bfb1ce53d8ef)
+
+Toutefois, la section de traitements statistiques avancés mobilisera [l'intégralité des onze vagues disponibles](https://ess.sikt.no/en/series/321b06ad-1b98-4b7d-93ad-ca8a24e8788a). Selon votre progression, vous pourrez passer à ce module plus lourd.
+:::
+
+### Citer les données
+
+L'ESS impose une formule de citation. Pour la vague 11 :
+
+> European Social Survey European Research Infrastructure (ESS ERIC) (2025). *ESS round 11 - 2023. Social inequalities in health, Gender in contemporary Europe.* Sikt – Norwegian Agency for Shared Services in Education and Research. <https://doi.org/10.21338/ess11-2023>
+
+Le fichier de données possède un DOI distinct, propre à son édition [@ess_citation]. Les fichiers étant corrigés et réédités au fil du temps, préciser l'édition utilisée fait partie de la reproductibilité.
+
+## Ce qu'il faut savoir avant d'analyser
+
+Trois points conditionnent la validité de tout résultat. Ils sont traités en pratique dans les pages consacrées à R.
+
+**Les non-réponses sont codées, pas vides.** Un refus, un « ne sait pas » ou une question non posée sont représentés par des valeurs numériques, qui varient d'une variable à l'autre. Laissées dans un calcul, elles produisent des résultats absurdes sans aucun message d'erreur.
+
+**Les données doivent être pondérées.** Les probabilités de sélection et les taux de réponse diffèrent selon les profils. L'ESS fournit des variables de pondération, produites à partir des fichiers de plan de sondage déposés par chaque pays [@ess_spec13, sect. 9.6]. Un résultat non pondéré décrit l'échantillon obtenu, pas la population.
+
+**La comparabilité ne va jamais de soi.** Entre deux vagues, une variable peut avoir changé de formulation, de modalités ou de mode de passation. Entre deux pays, la traduction et le contexte peuvent déplacer le sens d'un item. Ces vérifications se font dans la documentation, avant l'analyse.
+
+## Pour aller plus loin
+
+<!-- À COMPLÉTER : liens vers le portail ESS, la page méthodologie, le site du CDSP, ESS EduNet, et la série Topline Findings. -->
+
+## Références
+
+::: {#refs}
+:::

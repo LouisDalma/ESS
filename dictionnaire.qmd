@@ -1,0 +1,30 @@
+---
+title: "Dictionnaire des codes"
+subtitle: "Toutes les variables de l'ESS et de CRONOS-2, leurs questions, leurs codes et leurs réponses pays par pays"
+lang: fr
+editor: source
+toc: false
+---
+
+Avant d'analyser une variable, il faut savoir exactement ce qu'elle mesure : quelle question a été posée, à qui, avec quelles modalités de réponse, et comment les non-réponses ont été codées. Ce dictionnaire rassemble ces informations pour les **11 vagues de l'ESS** et les **7 fichiers de CRONOS-2**, et donne pour chaque question le **tri à plat pondéré** dans chaque pays.
+
+::: {.column-page}
+```{ojs}
+//| echo: false
+import { dictionnaireCodes } from "./dictionnaire_codes.js"
+dictionnaireCodes({ d3, invalidation })
+```
+:::
+
+::: {.callout-note collapse="true"}
+## Comment ces chiffres sont-ils calculés ?
+
+Les libellés, les questions et les codes viennent des codebooks officiels publiés avec chaque fichier. Les questions sont reproduites dans leur langue d'origine, l'anglais ; la formulation exacte posée aux répondants français figure dans le questionnaire national, téléchargeable sur le portail de l'ESS.
+
+Les pourcentages sont **pondérés** et calculés **parmi les réponses valides** : les refus, les « ne sait pas » et les questions non posées sont exclus du calcul, et indiqués à part, en pourcentage de l'ensemble des répondants.
+
+- **ESS** : chaque pays est pondéré par `pspwght`, l'ensemble des pays par `anweight`, comme le recommande l'ESS. Pour les vagues 2 et 3, où `anweight` n'existe pas, il est reconstitué en multipliant `pspwght` par `pweight`.
+- **CRONOS-2** : la pondération `c2weight` est utilisée. Elle donne le même poids à chaque pays dans la ligne « Ensemble des pays », quelle que soit sa population. L'enquête d'accueil n'est pas pondérée.
+
+L'onglet « Code R » de chaque variable donne le code qui permet de refaire le calcul soi-même.
+:::

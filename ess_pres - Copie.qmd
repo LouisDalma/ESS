@@ -65,7 +65,9 @@ Le questionnaire se divise en deux parties, ayant chacune un statut spécifique[
 
 ### Le module central
 
-Le **module central** (*core module*) est composé de questions répétées dans le temps. Il permet ainsi de faire des comparaisons de coupes dans le temps. Les questions sont réfléchies pour être pertinentes sur le temps long. L'ESS décrit cette partie comme
+Le **module central** (*core module*) est composé de questions répétées dans le temps. Il permet ainsi de faire des comparaisons de coupes dans le temps. Les questions sont réfléchies pour être pertinentes sur le temps long. Selon ses créateurs, le module central est construit de telle sorte qu'il regroupe des questions d'intérêt durable, le plus complet de toutes les enquêtes internationales comparatives.
+
+Il couvre un ensemble de thématiques liées à la vie sociale et politique : la confiance envers autrui ou envers les institutions publiques, l'intérêt pour la politique, le bien être et le bonheur, la religion, ou encore le climat [@ess_round11].
 
 chaque vague. C'est lui qui fonde la valeur de série temporelle de l'ESS : on ne peut affirmer qu'une attitude a évolué entre 2002 et 2023 que si la question n'a pas bougé. L'ESS décrit ce module comme contenant les items d'intérêt durable pour les sciences sociales, ainsi que l'ensemble de variables socio-structurelles le plus complet de toutes les enquêtes comparatives internationales[^9].
 
@@ -94,7 +96,7 @@ Chaque module comporte **30 questions**. Pour un module répété, au moins 20 d
 [^14]: ESS ERIC, *ESS Round 13 Survey Specification*, section 7.1 : « Each rotating module will include 30 questions (or equivalent if some questions are asked to sub-samples). For repeat modules, at least 20 of these questions need to be repeated from (one of) the previous ESS round(s) when the modules were fielded. » Cette règle est énoncée pour la vague 13 ; l'ordre de grandeur vaut pour les vagues récentes.
 
 | Vague | Modules tournants |
-|----|----|
+|------------------------------------|------------------------------------|
 | 1 (2002) | Citoyenneté, engagement et démocratie / Immigration |
 | 2 (2004) | Famille, travail et bien-être / Santé et recours aux soins · Moralité économique |
 | 3 (2006) | Bien-être personnel et social / Le calendrier de la vie |

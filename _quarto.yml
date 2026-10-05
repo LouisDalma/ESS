@@ -1,6 +1,7 @@
 project:
   type: website
-
+  resources:
+    - data/dico/*.json
 website:
   title: "Guide des méthodes quantitatives avec l'ESS"
   navbar:
@@ -9,7 +10,9 @@ website:
         text: Accueil
       - about.qmd
       - text: "Les données"
-        href: ess_pres - Copie.qmd
+        href: ess_presentation_bonne cit.qmd
+      - text: "Dictionnaire des codes"
+        href: dictionnaire.qmd
       - text: "Apprendre R"
         menu:
           - text: "Présentation de R et RStudio"
@@ -33,6 +36,7 @@ website:
 
 format:
   html:
+    csl: chicago-shortened.csl
     theme:
       - cosmo
       - brand
