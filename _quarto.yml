@@ -8,9 +8,10 @@ website:
     left:
       - href: index.qmd
         text: Accueil
-      - about.qmd
-      - text: "Les données"
+      - text: "Présentation des données"
         href: ess_presentation_bonne cit.qmd
+      - text: "Télécharger les données"
+        href: acces_donnees.qmd
       - text: "Dictionnaire des codes"
         href: dictionnaire.qmd
       - text: "Apprendre R"
@@ -27,10 +28,12 @@ website:
             href: traitement_simple_r.qmd
           - text: "Le traitement avancé des données"
             href: traitement_avance_r.qmd
-      - text: "Espace enseignants"
-        href: espace_enseignant.qmd
-      - text: "Espace journalistes"
-        href: espace_journaliste.qmd
+      - text: "Espaces dédiés"
+        menu:
+          - text: "Espace enseignants"
+            href:  espace_enseignant.qmd
+          - text: "Espace journalistes"
+            href: espace_journaliste.qmd
       - text: "Guide des bonnes pratiques"
         href: bonnes_pratiques_r.qmd       
 

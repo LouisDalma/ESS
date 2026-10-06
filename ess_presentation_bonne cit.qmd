@@ -164,7 +164,7 @@ A l'inverse, un **panel** réinterroge les **mêmes personnes** à plusieurs rep
 [^3]: @cronos_ess ; pour CRONOS-1, @villar2018cronos ; pour CRONOS-2, @bottoni2023cronos2.
 
 |   | CRONOS-1 | CRONOS-2 | CRONOS-3 |
-|:----------------|:----------------------|:----------------|:----------------|
+|:----------------|:--------------------|:----------------|:----------------|
 | Période | Déc. 2016 – févr. 2018 | Nov. 2021 – mars 2023 | Depuis sept. 2024 |
 | Pays | 3 (Estonie, Royaume-Uni, Slovénie) | 12, dont la France | 11, dont la France |
 | Recrutement | Fin de l'entretien ESS, vague 8 | Fin de l'entretien ESS, vague 10 | Fin de l'entretien ESS, vagues 10 et 11 |
@@ -188,7 +188,7 @@ Ce site utilise **CRONOS-2** : c'est le seul panel achevé qui inclut la France.
 **Sur quoi ?** Les vagues 1, 2, 4 et 5 sont **communes** aux douze pays ; les vagues 3 et 6 sont **nationales** : chaque pays y a posé ses propres questions.
 
 | Vague | Dates en France | Thèmes |
-|:--------------|:--------------|:-----------------------------------------|
+|:----------------|:----------------|:--------------------------------------|
 | 0 (accueil) | Décembre 2021 | Courte enquête de bienvenue (État-providence, bien-être, citoyenneté) |
 | 1 | Février-mars 2022 | Politiques climatiques, vaccination contre le Covid-19, déterminants de la confiance dans les institutions, perception des enquêtes |
 | 2 | Avril-mai 2022 | Europe sociale et redistribution, début et fin de vie, bien-être financier, politiques mémorielles |
@@ -229,46 +229,6 @@ La pondération fournie (`c2weight`) corrige une partie de ces écarts : elle pa
 :::
 
 [^9]: @bottoni2023cronos2 : « The weight can therefore be used on its own for any analysis of CRONOS-2 data, as it incorporates the post-stratified ESS10 design weight and adjustments for nonresponse at both ESS10 and the respective CRONOS-2 wave. » Sur la représentativité de CRONOS-1, voir @maslovskaya_lugtig2022 ; sur l'évaluation des panels en ligne probabilistes, @bottoni_fitzgerald2021.
-
-## Accéder aux données
-
-Cette section est un mode d'emploi : elle accompagne pas à pas le téléchargement des données, de la création du compte jusqu'à la citation.
-
-Les données anonymisées sont accessibles gratuitement pour tout usage non commercial, sans droit d'accès privilégié pour quiconque, sous licence [Creative Commons BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/) [@ess_spec13, sect. 8.9; @ess_disclaimer]. Seule la création d'un compte sur le [portail](https://ess.sikt.no/en/ "Portail des données de l'ESS") est requise.
-
-[![Portail des données de l'ESS. Cliquer sur "Explore ESS data" pour explorer et télécharger les vagues](images/Capture%20d'écran%202026-09-07%20160147.png)](https://ess.sikt.no/en/series/321b06ad-1b98-4b7d-93ad-ca8a24e8788a)
-
-Le portail propose plusieurs formats. Le **CSV** est universel mais ne conserve que les codes numériques, sans libellés. Le format **SPSS** (`.sav`), lisible sous R avec le package `haven`, conserve libellés de variables et de modalités. Un format **STATA** est également disponible.
-
-Trois documents accompagnent chaque vague : le **questionnaire source**, qui donne la formulation exacte des questions ; le **codebook**, qui liste toutes les variables avec leurs modalités et leurs codes de non-réponse ; et les **rapports de documentation** par pays, qui décrivent le plan de sondage et le déroulement du terrain.
-
-::: callout-note
-## Quelles vagues télécharger ?
-
-Nous utiliserons principalement la dernière vague disponible à date de l'écriture de ces kits, c'est-à-dire la vague 11. Nous vous invitons à vous créer un compte et à télécharger en priorité cette [vague](https://ess.sikt.no/en/datafile/242aaa39-3bbb-40f5-98bf-bfb1ce53d8ef) si vous souhaitez reproduire nos analyses.
-
-[![Vague 11 de l'ESS](images/Capture%20d'écran%202026-09-07%20161259.png)](https://ess.sikt.no/en/datafile/242aaa39-3bbb-40f5-98bf-bfb1ce53d8ef)
-
-Toutefois, la section de traitements statistiques avancés mobilisera [l'intégralité des onze vagues disponibles](https://ess.sikt.no/en/series/321b06ad-1b98-4b7d-93ad-ca8a24e8788a). Selon votre progression, vous pourrez passer à ce module plus lourd.
-:::
-
-### Citer les données
-
-L'ESS impose une formule de citation. Pour la vague 11 :
-
-> European Social Survey European Research Infrastructure (ESS ERIC) (2025). *ESS round 11 - 2023. Social inequalities in health, Gender in contemporary Europe.* Sikt – Norwegian Agency for Shared Services in Education and Research. <https://doi.org/10.21338/ess11-2023>
-
-Le fichier de données possède un DOI distinct, propre à son édition [@ess_citation]. Les fichiers étant corrigés et réédités au fil du temps, préciser l'édition utilisée fait partie de la reproductibilité.
-
-## Ce qu'il faut savoir avant d'analyser
-
-Trois points conditionnent la validité de tout résultat. Ils sont traités en pratique dans les pages consacrées à R.
-
-**Les non-réponses sont codées, pas vides.** Un refus, un « ne sait pas » ou une question non posée sont représentés par des valeurs numériques, qui varient d'une variable à l'autre. Laissées dans un calcul, elles produisent des résultats absurdes sans aucun message d'erreur.
-
-**Les données doivent être pondérées.** Les probabilités de sélection et les taux de réponse diffèrent selon les profils. L'ESS fournit des variables de pondération, produites à partir des fichiers de plan de sondage déposés par chaque pays [@ess_spec13, sect. 9.6]. Un résultat non pondéré décrit l'échantillon obtenu, pas la population.
-
-**La comparabilité ne va jamais de soi.** Entre deux vagues, une variable peut avoir changé de formulation, de modalités ou de mode de passation. Entre deux pays, la traduction et le contexte peuvent déplacer le sens d'un item. Ces vérifications se font dans la documentation, avant l'analyse.
 
 ## Pour aller plus loin
 

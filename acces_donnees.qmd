@@ -1,0 +1,381 @@
+---
+title: "Accéder aux données de l'ESS et de CRONOS et les télécharger"
+author: "Louis Dalmazzo"
+lang: fr
+---
+
+Cette section a pour but de vous accompagner dans le téléchargement des données. La procédure est particulièrement simple et instantanée, contrairement à la grande majorité de données qui demande souvent une autorisation manuelle après une demande spécifique formulée par l'utilisateur ou l'utilisatrice.
+
+## Étape 1 : créer un compte
+
+Rendez-vous sur le [portail de données de l'ESS](https://ess.sikt.no/en/ "Portail des données de l'ESS"). On clique sur l'onglet **Log in** dans le coin supérieur droit du site. Une interface pour se connecter s'affiche... en Norvégien. On préfèrera l'anglais en cliquant sur English dans le coin supérieur droit de l'interface.
+
+![Le portail de connexion de l'ESS](images/Capture%20d'écran%202026-10-06%20092055-01.png)
+
+Trois moyens de connexion sont possibles. Le premier ne nous concerne pas, à moins que vous soyez étudiante ou étudiant dans une université norvégienne. Feide est le système de connexion des établissement d'enseignement supérieur norvégien. On privilégiera soit la connexion par Google, ou la connexion classique via un nom d'utilisateur et mot de passe.
+
+Deux options s'offrent à nous pour créer un compte : soit on clique directement sur **Log in with Google** pour créer son compte via son adresse Google si on en a une, soit on clique sur le petit texte souligné en bas des options de connexion **Create one here**. Pour le premier choix, il suffit de renseigner ses identifiants google, dans le second on renseigne son adresse mail.
+
+La connexion via Google est quasiment instantanée. On détaille ici la procédure via mail générique. Une fois l'email renseigné, on envoie un code de confirmation, qu'on renseigne sur la page suivante avec son prénom et nom, suivi d'un mot de passe.
+
+![](images/Capture%20d'écran%202026-10-06%20095610.png)
+
+Une fois le compte crée, on retombe sur l'interface du portail de données de l'ESS. Celles et ceux s'étant connecté via Google retomberont également sur cette interface reconnaissable à sa couleur rouge. On renseigne une nouvelle fois son prénom, son nom, son adresse mail, ainsi que son pays et son statut.
+
+::: {layout-ncol="2"}
+![](images/Capture%20d'écran%202026-10-06%20100123.png)
+
+![](images/Capture%20d'écran%202026-10-06%20101443.png)
+:::
+
+On renseigne ensuite si besoin son affiliation académique, avant de lire et d'accepter les conditions d'utilisation. Une fois terminé, le site nous indique que nous sommes prêt à télécharger nos données.
+
+## Étape 2 : sélectionner le jeu de données souhaité
+
+On revient directement sur la page principale en cliquant sur **ESS Data Portal** dans la partie supérieure de l'écran. Dès lors, on clique sur la tuile qui nous intéresse.
+
+Pour les données de l'ESS, on cliquera sur **"Explore ESS data"**. Pour les données de CRONOS, on cliquera en dessous sur "**Explore CRONOS data**".
+
+![La page principale du portail de données](images/Capture%20d'écran%202026-10-06%20102357.png)
+
+On prend exemple ici en téléchargeant la vague 11 de l'ESS, dernière disponible à date de création de ce site. On clique donc sur "**Explore ESS Data**". Ici, on peut soit télécharger par vague, par pays, ou par thématique. Une autre possibilité est d'utiliser le **Datafile builder**, qu'on détaillera plus tard.
+
+![L'exploration des données de l'ESS](images/Capture%20d'écran%202026-10-06%20103400-01.png)
+
+Dans notre cas, on souhaite télécharger la 11è vague. On se positionne donc sur "Browse by round", et on sélectionne la tuile ESS11 "Social inequalities in health, Gender contemporary Europe".
+
+Un dépliant s'ouvre, avec plusieurs fichiers sont proposés[^1] :
+
+[^1]: @ess_faq : « an integrated file including data from all countries participating in that round, interviewer's questionnaire data, test variables data, contact forms data, media claims data ». Sur les variables de plan de sondage : « From ESS9 on, sampling variables (e.g. on clustering and stratification) are included in the main dataset. » Sur les données multiniveaux : @ess_data.
+
+| Fichier | Contenu | Pour qui ? |
+|:-----------------------|:-----------------------|:-----------------------|
+| **Fichier intégré** (*integrated file*) | Toutes les réponses de tous les pays de la vague, avec les pondérations | **C'est celui qu'on utilisera** dans la grande majorité des cas |
+| Données des fiches contact | Les tentatives de contact, les refus, les observations sur le quartier | Étude de la non-réponse |
+| Questionnaire enquêteur | Les observations de l'enquêteur sur le déroulement de l'entretien | Étude de la qualité des réponses |
+| Fichiers thématiques complémentaires | Variables détaillées de certains modules (par exemple la consommation d'alcool en vague 11) | Analyses spécialisées |
+| Données multiniveaux (*Multilevel data*) | Indicateurs nationaux et régionaux (statistiques économiques, démographiques…) à apparier aux répondants, pour les vagues 4 à 11 | Analyses des effets de contexte |
+
+: Les fichiers disponibles pour chaque vague
+
+Depuis la vague 9, les variables de plan de sondage (strates, unités primaires) figurent directement dans le fichier intégré. Pour les vagues plus anciennes, elles sont diffusées dans des fichiers séparés (*Sample Design Data Files*).
+
+Ici on sélectionne donc **ESS11 - integrated file, edition 4.2** dans le dépliant.
+
+## Étape 3 : choisir le format
+
+S'ouvre alors le détail du jeu de données. L'onglet ouvert par défaut est **Documentation**. Il nous renseigne sur le DOI (Digital Object Identifier) de l'enquête, le champ géographique ainsi que le détail des variables par thématiques. L'onglet **Variable viewer** permet de visualiser les variables, tandis que **Analysis** nous permet de faire une analyse bi-variée sommaire.
+
+![La page de téléchargement des données de la vague 11 de l'ESS](images/Capture%20d'écran%202026-10-06%20104916.png)
+
+En l'occurence, on souhaite simplement télécharger nos données. Le portail propose trois formats dans le coin supérieur gauche de la page [^2] :
+
+[^2]: @ess_variable_viewer : « download data in CSV, SPSS and Stata formats ».
+
+| Format | Extension | Ce qu'il conserve | Lecture dans R |
+|:-----------------|:-----------------|:-----------------|:-----------------|
+| SPSS | `.sav` | Les codes, **les libellés des variables et des modalités** | `haven::read_sav()` |
+| Stata | `.dta` | Les codes, les libellés des variables et des modalités | `haven::read_dta()` |
+| CSV | `.csv` | **Seulement les codes numériques**, sans aucun libellé | `readr::read_csv()` |
+
+: Les formats de téléchargement
+
+**On recommande fortement le format SPSS (`.sav`), qu'on utilisera pour ce kit**. Un fichier `.sav` embarque les libellés des variables et des modalités, ce qui nous sera d'une grande utilité. Pour d'autres jeux de données, seuls les fichiers CSV sont proposés. On utilisera dans ce cas ce format.
+
+On obtient une archive compressée en `.zip`. On peut la décompresser directement depuis l'explorateur de fichier, qu'on soit sur Windows ou MacOS. On obtient dès lors le jeu de données, sous format .SAV, ainsi que le dictionnaire des codes en format .html qu'on pourra ouvrir depuis son navigateur et qui nous renseignera sur les variables disponibles.
+
+## Le cas du Datafile Builder
+
+Si on a déjà une idée des variables qu'on souhaite utiliser, on peut passer par l'outil de sélection de l'ESS qui est beaucoup plus rapide que le téléchargement des jeux de données complet : le **Datafile Builder**. Il nous permet de choisir les pays et les vagues sur lesquels on souhaite travailler ainsi que les variables spécifiques.
+
+Dans cet exemple ci -dessous, on sélectionne uniquement les vagues 6 à 11 pour la France, pour la seule variable du boycott au cours des douze derniers mois.
+
+```{=html}
+<style>
+.carrousel-captures {
+  position: relative;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  margin: 1.5rem 0 2.5rem 0;
+}
+.carrousel-captures .carousel-control-prev,
+.carrousel-captures .carousel-control-next {
+  width: 3.5rem;
+  opacity: 1;
+}
+.carrousel-captures .carousel-control-prev-icon,
+.carrousel-captures .carousel-control-next-icon {
+  background-color: rgba(30, 30, 30, 0.75);
+  border-radius: 50%;
+  width: 2.6rem;
+  height: 2.6rem;
+  background-size: 50%;
+  transition: background-color 0.2s;
+}
+.carrousel-captures .carousel-control-prev:hover .carousel-control-prev-icon,
+.carrousel-captures .carousel-control-next:hover .carousel-control-next-icon {
+  background-color: rgba(0, 0, 0, 0.95);
+}
+.carrousel-captures .carousel-indicators {
+  margin-bottom: 0.4rem;
+}
+.carrousel-captures .carousel-indicators [data-bs-target] {
+  background-color: #333;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: none;
+}
+.carrousel-captures .carousel-item img {
+  margin: 0;
+}
+</style>
+```
+
+::::::: {#carrousel-inscription .carousel .slide .carrousel-captures data-bs-interval="false"}
+```{=html}
+<div class="carousel-indicators">
+  <button type="button" data-bs-target="#carrousel-inscription" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Capture 1"></button>
+  <button type="button" data-bs-target="#carrousel-inscription" data-bs-slide-to="1" aria-label="Capture 2"></button>
+  <button type="button" data-bs-target="#carrousel-inscription" data-bs-slide-to="2" aria-label="Capture 3"></button>
+</div>
+```
+
+:::::: carousel-inner
+::: {.carousel-item .active}
+![La sélection des vagues et des pays du Datafile Builder](images/Capture%20d'écran%202026-10-06%20111040-01.png){.d-block .w-100}
+:::
+
+::: carousel-item
+![La sélection des variables du Datafile Builder](images/Capture%20d'écran%202026-10-06%20111300.png){.d-block .w-100}
+:::
+
+::: carousel-item
+![Le récapitulatif du Datafile Builder](images/Capture%20d'écran%202026-10-06%20111320.png){.d-block .w-100}
+:::
+::::::
+
+```{=html}
+<button class="carousel-control-prev" type="button" data-bs-target="#carrousel-inscription" data-bs-slide="prev">
+  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+  <span class="visually-hidden">Précédent</span>
+</button>
+<button class="carousel-control-next" type="button" data-bs-target="#carrousel-inscription" data-bs-slide="next">
+  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+  <span class="visually-hidden">Suivant</span>
+</button>
+```
+:::::::
+
+::: callout-tip
+## Où ranger les jeux de données ?
+
+On détaillera l'organisation de son travail dans la partie [Premiers pas sous RStudio](premiers_pas_r.qmd). Pour une gestion de son projet optimal, on placera ses jeux de données dans un dossier que l'on créera à la racine de son projet RStudio de travail intitulé `01_Data`.
+:::
+
+## Télécharger les données de CRONOS-2
+
+Les données de CRONOS sont diffusées sur le même portail, avec le même compte, dans les mêmes formats (SPSS, Stata, CSV)[^3]. Pour les télécharger, on cliquera sur "**Explore CRONOS data**" sur le portail de données, puis sur "**View CRONOS-2**", qu'on utilisera pour ce kit.
+
+[^3]: @bottoni2023cronos2 : « freely available to download from ESS Data Portal for non-commercial use in three different formats: SPSS, STATA, and CSV file ».
+
+:::::: {#carrousel-etape3 .carousel .slide .carrousel-captures data-bs-interval="false"}
+```{=html}
+<div class="carousel-indicators">
+  <button type="button" data-bs-target="#carrousel-etape3" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Capture 1"></button>
+  <button type="button" data-bs-target="#carrousel-etape3" data-bs-slide-to="1" aria-label="Capture 2"></button>
+</div>
+```
+
+::::: carousel-inner
+::: {.carousel-item .active}
+![La page de présentation des données CRONOS](images/Capture%20d'écran%202026-10-06%20115026.png){.d-block .w-100}
+:::
+
+::: carousel-item
+![Les différentes vagues de CRONOS2](images/Capture%20d'écran%202026-10-06%20115001.png){.d-block .w-100}
+:::
+:::::
+
+```{=html}
+<button class="carousel-control-prev" type="button" data-bs-target="#carrousel-etape3" data-bs-slide="prev">
+  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+  <span class="visually-hidden">Précédent</span>
+</button>
+<button class="carousel-control-next" type="button" data-bs-target="#carrousel-etape3" data-bs-slide="next">
+  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+  <span class="visually-hidden">Suivant</span>
+</button>
+```
+::::::
+
+Elles se présentent sous forme de fichiers séparés :
+
+- un fichier par vague commune (enquête d'accueil, vagues 1, 2, 4 et 5), qui contient les douze pays ;
+- un fichier par pays pour les vagues nationales (3 et 6) : les données françaises sont dans les fichiers « FR » ;
+- un fichier sur le recrutement des panélistes sur l'enquête d'accueil.
+
+Pour travailler correctement de manière longitudinale, **on téléchargera les données pour l'intégralité des vagues disponibles**. Pour la vague 3 et 6, seules les données françaises nous intéressent.
+
+On suit donc la même procédure que pour l'ESS : on clique sur la tuile correspondante, on sélectionne le jeu de données, puis on télécharge les données en `.spss`. On montre l'exemple ici avec la vague 6 sur données françaises :
+
+:::::: {#carrousel-etape4 .carousel .slide .carrousel-captures data-bs-interval="false"}
+```{=html}
+<div class="carousel-indicators">
+  <button type="button" data-bs-target="#carrousel-etape4" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Capture 1"></button>
+  <button type="button" data-bs-target="#carrousel-etape4" data-bs-slide-to="1" aria-label="Capture 2"></button>
+</div>
+```
+
+::::: carousel-inner
+::: {.carousel-item .active}
+![La vague 6 du panel CRONOS2](images/Capture%20d'écran%202026-10-06%20115917.png){.d-block .w-100}
+:::
+
+::: carousel-item
+![La page téléchargement du panel français de la vague 6 de CRONOS2](images/Capture%20d'écran%202026-10-06%20115940.png){.d-block .w-100}
+:::
+:::::
+
+```{=html}
+<button class="carousel-control-prev" type="button" data-bs-target="#carrousel-etape4" data-bs-slide="prev">
+  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+  <span class="visually-hidden">Précédent</span>
+</button>
+<button class="carousel-control-next" type="button" data-bs-target="#carrousel-etape4" data-bs-slide="next">
+  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+  <span class="visually-hidden">Suivant</span>
+</button>
+```
+::::::
+
+## Télécharger la documentation
+
+En plus du jeu de données et du codebook, on recommande vivement de consulter la documentation des données téléchargées.
+
+```{=html}
+<style>
+.carrousel-captures {
+  position: relative;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  margin: 1.5rem 0 2.5rem 0;
+}
+.carrousel-captures .carousel-control-prev,
+.carrousel-captures .carousel-control-next {
+  width: 3.5rem;
+  opacity: 1;
+}
+.carrousel-captures .carousel-control-prev-icon,
+.carrousel-captures .carousel-control-next-icon {
+  background-color: rgba(30, 30, 30, 0.75);
+  border-radius: 50%;
+  width: 2.6rem;
+  height: 2.6rem;
+  background-size: 50%;
+  transition: background-color 0.2s;
+}
+.carrousel-captures .carousel-control-prev:hover .carousel-control-prev-icon,
+.carrousel-captures .carousel-control-next:hover .carousel-control-next-icon {
+  background-color: rgba(0, 0, 0, 0.95);
+}
+.carrousel-captures .carousel-indicators {
+  margin-bottom: 0.4rem;
+}
+.carrousel-captures .carousel-indicators [data-bs-target] {
+  background-color: #333;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: none;
+}
+.carrousel-captures .carousel-item img {
+  margin: 0;
+}
+</style>
+```
+
+:::::: {#carrousel-etape2 .carousel .slide .carrousel-captures data-bs-interval="false"}
+```{=html}
+<div class="carousel-indicators">
+  <button type="button" data-bs-target="#carrousel-etape2" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Capture 1"></button>
+  <button type="button" data-bs-target="#carrousel-etape2" data-bs-slide-to="1" aria-label="Capture 2"></button>
+</div>
+```
+
+::::: carousel-inner
+::: {.carousel-item .active}
+![Les données disponibles de la vague 11 de l'ESS](images/Capture%20d'écran%202026-10-06%20113211.png){.d-block .w-100}
+:::
+
+::: carousel-item
+![La documentation de la vague 11 de l'ESS](images/Capture%20d'écran%202026-10-06%20113315.png){.d-block .w-100}
+:::
+:::::
+
+```{=html}
+<button class="carousel-control-prev" type="button" data-bs-target="#carrousel-etape2" data-bs-slide="prev">
+  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+  <span class="visually-hidden">Précédent</span>
+</button>
+<button class="carousel-control-next" type="button" data-bs-target="#carrousel-etape2" data-bs-slide="next">
+  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+  <span class="visually-hidden">Suivant</span>
+</button>
+```
+::::::
+
+En effet, le codebook inclus dans le jeu de données ne nous dit rien sur la production des données en elles même. La documentation de la vague permet notamment de :
+
+- **connaître les conditions de l'enquête dans chaque pays** : dates de terrain, taux de réponse, mode de passation, et éventuels écarts au protocole (une question non posée, un filtre mal appliqué…) ;
+- **savoir quelle pondération utiliser** et ce qui a changé d'une édition du fichier à l'autre.
+- **comprendre les variables propres à chaque pays**, comme le vote, le parti dont on se sent proche ou le diplôme, dont les modalités diffèrent d'un pays à l'autre et sont détaillées en annexe ;
+
+Par ailleurs, le guide d'utilisation de CRONOS-2 [@bottoni2023cronos2] est indispensable dans la mesure où les données mises à dispositions sont ici logitudinales. Le guide décrit le contenu de chaque fichier, le calendrier par pays et la construction des pondérations, qu'on doit avoir en tête avant de commencer ses traitements.
+
+Avant de commenter un chiffre, en particulier pour comparer des pays, il vaut donc mieux vérifier dans la documentation que la question a bien été posée de la même façon partout.
+
+## Comprendre le nom du fichier : les éditions
+
+Le fichier utilisé sur ce site s'appelle `ESS11e04_2`. Ce nom se lit ainsi :
+
+- `ESS11` : la vague 11 ;
+- `e04_2` : l'**édition 4.2** du fichier.
+
+Les données d'une vague ne sont pas publiées une fois pour toutes. Une première version sort en général en octobre de l'année suivant le terrain, une seconde au mois de mai suivant, et des corrections s'ajoutent ensuite[^4]. Pour la vague 11, par exemple[^5] :
+
+[^4]: @ess_faq : les données sont « usually released for the first time in October of the year after fieldwork… A second release usually happens in May of the following year. » La première publication de la vague 12 est annoncée pour janvier 2027 [@ess_r12_release].
+
+[^5]: @ess_dataportal, notes de version de la vague 11.
+
+- l'**édition 4.0** (novembre 2025) porte le fichier à 30 pays, avec l'ajout de l'Estonie et de l'Ukraine ;
+- l'**édition 4.1** (janvier 2026) apporte des corrections ;
+- l'**édition 4.2** (juillet 2026) neutralise une variable mal renseignée pour les répondants ukrainiens.
+
+Deux personnes qui « utilisent la vague 11 » n'ont donc pas forcément le même fichier. **Notez toujours l'édition que vous utilisez**, et citez-la (voir plus bas). Consultez aussi les **alertes sur les données** (*data alerts*) publiées sur la page de chaque vague : elles signalent les erreurs découvertes après publication et les variables concernées.
+
+::: callout-note
+## Les premières éditions ne sont pas toujours complètes
+
+Les premières éditions d'une vague ne contiennent pas toujours tous les pays, ni toutes les pondérations : la première publication de la vague 11 ne comportait que les pondérations de plan de sondage[^6]. Pour une analyse définitive, attendez une édition complète, ou vérifiez que les variables dont vous avez besoin sont présentes.
+:::
+
+[^6]: @ess_r11_release : « Data is published with design weights only. »
+
+## En cas de problème
+
+Pour toute question sur l'accès aux données ou sur un fichier, le support du portail est joignable à l'adresse [essdatasupport\@sikt.no](mailto:essdatasupport@sikt.no){.email}.
+
+## Résumé : les données à télécharger pour suivre ce guide
+
+::: callout-important
+## Ce qu'on utilisera
+
+Pour l'essentiel du parcours (import et recodages, visualisation traitement simple), seule **la vague 11 de l'ESS sera utilisée**.
+
+Pour la partie traitement avancées des données, on utilisera **l'ensemble des vagues disponibles de l'ESS qu'on téléchargera depuis le Data Builder.**
+
+Enfin, pour l'analyse de données longitudinales, on utilisera **l'ensemble des données du panel CRONOS-2, sur données françaises pour la vague 3 et 6**.
+:::

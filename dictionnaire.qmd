@@ -6,9 +6,9 @@ editor: source
 toc: false
 ---
 
-Avant d'analyser une variable, il faut savoir exactement ce qu'elle mesure : quelle question a été posée, à qui, avec quelles modalités de réponse, et comment les non-réponses ont été codées. Ce dictionnaire rassemble ces informations pour les **11 vagues de l'ESS** et les **7 fichiers de CRONOS-2**, et donne pour chaque question le **tri à plat pondéré** dans chaque pays.
+Avant d'analyser une variable, il faut savoir exactement ce qu'elle mesure : quelle question a été posée, à qui, avec quelles modalités de réponse, et comment les non-réponses ont été codées. On propose ici une **interface inédite**, permettant de chercher des informations sur l'intégralité des variables au sein des **11 vagues de l'ESS** et des **7 vagues du panel CRONOS-2**.
 
-::: {.column-page}
+::: column-page
 ```{ojs}
 //| echo: false
 import { dictionnaireCodes } from "./dictionnaire_codes.js"

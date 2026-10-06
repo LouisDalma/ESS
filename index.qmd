@@ -20,6 +20,10 @@ L'**European Social Survey** est un dispositif d'enquête biennal, c'est-à-dire
 
 En France, la coordination de l'ESS est assurée par le Centre de données socio-politiques (CDSP), une unité d'appui à la recherche associée à Sciences Po et au CNRS [@cdsp_ess], où ce site a été conçu.
 
+::: callout-note
+Dans la mesure où l'ESS mobilise des données européennes, **la maîtrise de l'anglais est nécessaire** pour travailler confortablement.
+:::
+
 ::: column-page
 ```{ojs}
 //| echo: false
