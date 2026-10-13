@@ -25,7 +25,7 @@ website:
           - text: "La visualisation des données"
             href: visualisation_donnees.qmd
           - text: "Le traitement simple des données"
-            href: traitement_simple_r.qmd
+            href: traitement_simple_r_v2.qmd
           - text: "Le traitement avancé des données"
             href: traitement_avance_r.qmd
       - text: "Espaces dédiés"

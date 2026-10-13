@@ -1,4 +1,788 @@
 ---
 title: "Le traitement simple des données"
+subtitle: "Pondérer, faire des tris à plat et des tris croisés, interpréter un test du khi-deux"
 author: "Louis Dalmazzo"
+bibliography: references.bib
+lang: fr
 ---
+
+Les données sont importées et recodées : on peut enfin produire des résultats. Cette partie couvre les traitements de base de toute enquête quantitative : **pondérer** les données, décrire une variable avec un **tri à plat**, croiser deux variables avec un **tri croisé**, et vérifier qu'un écart observé ne doit rien au hasard avec un **test du khi-deux**.
+
+Pour cela, on suit un fil rouge, une question classique de la sociologie politique : **qui s'intéresse à la politique en France ?** Depuis les travaux de Daniel Gaxie sur le « cens caché » [@gaxie1978], on sait que l'intérêt pour la politique est très inégalement réparti selon le niveau de diplôme. On va voir si les données de la vague 11 de l'ESS confirment ce résultat, et surtout comment le démontrer proprement.
+
+::: callout-note
+## Ce dont on a besoin
+
+- le fichier `ESS11e04_2.sav`, rangé dans le dossier `01_Data/` (voir [Accéder aux données](acces_donnees.qmd)) ;
+- les packages déjà utilisés (`tidyverse`, `haven`, `labelled`) et deux nouveaux : `survey` et `gtsummary`.
+:::
+
+# Préparer les données
+
+## Deux nouveaux packages
+
+`survey`, développé par le statisticien Thomas Lumley, est la référence sous R pour analyser des données d'enquête par sondage [@lumley2004]. Il sait tenir compte de la façon dont l'échantillon a été tiré, ce que les fonctions de base ignorent.
+
+`gtsummary` produit des tableaux statistiques prêts à publier [@sjoberg2021]. Sa fonction `tbl_svysummary()` s'appuie sur `survey` pour faire les calculs, et se charge de la mise en forme.
+
+```{r}
+#| eval: false
+# À n'exécuter qu'une seule fois (ou pour mettre à jour une version ancienne)
+install.packages("survey")
+install.packages("gtsummary")
+```
+
+```{r}
+#| warning: false
+#| message: false
+library(tidyverse)
+library(haven)
+library(labelled)
+library(survey)
+library(gtsummary)
+```
+
+## Repartir du fichier de l'ESS
+
+Dans la partie précédente, on avait gardé neuf variables. Il nous en faut de nouvelles : l'intérêt pour la politique (`polintr`), le bonheur déclaré (`happy`), et surtout trois variables techniques qui décrivent **la manière dont l'échantillon a été tiré** (`psu`, `stratum` et `anweight`), dont on verra plus bas le rôle. On repart donc du fichier `.sav`, et on refait en une seule fois les recodages déjà présentés.
+
+```{r}
+ESS11 <- read_sav("01_Data/ESS11e04_2.sav")
+
+ESS11_FR <- ESS11 |>
+  filter(cntry == "FR") |>
+  select(idno, psu, stratum, dweight, pspwght, anweight,
+         gndr, agea, edlvdfr, polintr, happy) |>
+  mutate(
+    # Le genre
+    genre = factor(gndr, levels = 1:2, labels = c("Homme", "Femme")),
+    # L'âge
+    age = as.numeric(agea),
+    # Le diplôme, en trois niveaux (voir la partie précédente)
+    edlvdfr_r = ifelse(edlvdfr == 5555, NA, edlvdfr),
+    diplome = case_when(
+      edlvdfr_r <= 6                   ~ "Inférieur au Bac",
+      edlvdfr_r >= 7 & edlvdfr_r <= 16 ~ "Bac à Bac +2",
+      edlvdfr_r >= 17                  ~ "Bac +3 et au delà"
+    ),
+    diplome = factor(diplome,
+                     levels = c("Inférieur au Bac", "Bac à Bac +2", "Bac +3 et au delà")),
+    # L'intérêt pour la politique, en quatre modalités traduites
+    interet_pol = factor(polintr, levels = 4:1,
+                         labels = c("Pas du tout intéressé", "Peu intéressé",
+                                    "Plutôt intéressé", "Très intéressé")),
+    # La même variable, en deux modalités
+    interet_bin = case_when(
+      polintr >= 3 ~ "Peu ou pas intéressé",
+      polintr <= 2 ~ "Intéressé"
+    ),
+    interet_bin = factor(interet_bin, levels = c("Peu ou pas intéressé", "Intéressé")),
+    # Le bonheur déclaré, de 0 à 10, en deux groupes
+    heureux = case_when(
+      happy <= 7 ~ "Moins heureux (0 à 7)",
+      happy >= 8 ~ "Heureux (8 à 10)"
+    ),
+    heureux = factor(heureux, levels = c("Moins heureux (0 à 7)", "Heureux (8 à 10)"))
+  ) |>
+  select(idno, psu, stratum, dweight, pspwght, anweight,
+         genre, age, diplome, interet_pol, interet_bin, heureux)
+
+dim(ESS11_FR)
+```
+
+::: callout-note
+## Explications du code
+
+On retrouve la structure vue dans la partie précédente : `filter()` garde les répondants français, `select()` les variables utiles, et `mutate()` crée les variables recodées.
+
+`factor(gndr, levels = 1:2, labels = c("Homme", "Femme"))` : plutôt que `to_factor()`, qui reprendrait les libellés anglais du fichier (*Male*, *Female*, et une modalité *No answer* vide), on indique soi-même les codes à garder et leur nom en français. On fait de même pour l'intérêt pour la politique. Dans le fichier, il est codé de 1 (*Very interested*) à 4 (*Not at all interested*), c'est-à-dire dans l'ordre décroissant. En écrivant `levels = 4:1`, on remet les modalités dans l'ordre **croissant**, de « Pas du tout intéressé » à « Très intéressé » : c'est cet ordre que suivront tous les tableaux. On applique la même règle aux autres variables, en indiquant toujours les modalités de la plus faible à la plus forte.
+
+`interet_bin` regroupe les quatre réponses en deux : « Pas du tout » et « Peu intéressé » d'un côté, « Plutôt » et « Très intéressé » de l'autre. Cette version simplifiée nous servira à comprendre le test du khi-deux.
+
+`heureux` coupe l'échelle de bonheur (de 0, « extrêmement malheureux », à 10, « extrêmement heureux ») en deux groupes, à partir de 8.
+
+Le dernier `select()` ne garde que les variables d'analyse : le tableau ne contient plus aucune variable au format `haven_labelled`, ce qui évite des messages d'avertissement par la suite.
+:::
+
+::: callout-tip
+## Et le fichier `.rds` de la partie précédente ?
+
+On aurait pu repartir de `ESS11_FR_recode.rds`, mais il ne contient ni `psu`, ni `stratum`, ni `anweight`, ni `polintr`. Pour s'en servir, il suffit d'ajouter ces variables dans le `select()` de la partie précédente avant de sauvegarder. C'est une leçon générale : **on garde toujours les variables de pondération et de plan de sondage**, même quand on ne pense pas en avoir besoin.
+:::
+
+# Pourquoi pondérer ?
+
+## Un échantillon n'est jamais une population en miniature
+
+L'ESS veut décrire l'ensemble des personnes de 15 ans et plus vivant en France. Elle n'en interroge que 1 771. Même tirées au hasard, ces 1 771 personnes ne ressemblent jamais parfaitement à la population : certains groupes acceptent plus volontiers de répondre que d'autres.
+
+On peut le voir directement. La variable `pspwght` donne à chaque répondant un **poids** : un répondant de poids 2 « compte double », un répondant de poids 0,5 compte pour moitié. Ces poids valent 1 en moyenne. Regardons le poids moyen selon le diplôme :
+
+```{r}
+ESS11_FR |>
+  group_by(diplome) |>
+  summarise(effectif = n(),
+            poids_moyen = mean(pspwght))
+```
+
+Les personnes sans le bac pèsent en moyenne 1,47 : elles sont **sous-représentées** dans l'échantillon, et chacune doit compter pour presque une personne et demie. À l'inverse, les diplômés du supérieur (Bac +3 et au-delà) pèsent 0,84 : ils sont **sur-représentés**, et comptent chacun pour un peu moins d'une personne. C'est un résultat classique des enquêtes : plus on est diplômé, plus on accepte de répondre à un questionnaire.
+
+Les conséquences sont immédiates. Comparons la part de chaque niveau de diplôme dans l'échantillon brut et après pondération :
+
+```{r}
+# Sans pondération : chaque répondant compte pour 1
+ESS11_FR |>
+  filter(!is.na(diplome)) |>
+  count(diplome) |>
+  mutate(pourcentage = 100 * n / sum(n))
+
+# Avec pondération : chaque répondant compte pour son poids
+ESS11_FR |>
+  filter(!is.na(diplome)) |>
+  count(diplome, wt = anweight) |>
+  mutate(pourcentage = 100 * n / sum(n))
+```
+
+Sans pondération, 18,0 % des répondants n'ont pas le bac ; après pondération, cette part monte à 26,6 %. Les diplômés du supérieur passent de 26,3 % à 22,0 %. Un résultat non pondéré décrirait donc une France plus diplômée qu'elle ne l'est. Et si les diplômés s'intéressent davantage à la politique, ce qu'on va vérifier, il surestimerait aussi l'intérêt des Français pour la politique.
+
+::: callout-note
+## Explications du code
+
+`count(diplome)` compte le nombre de lignes pour chaque modalité de `diplome`, dans une colonne appelée `n`.
+
+`count(diplome, wt = anweight)` fait la même chose, mais au lieu d'ajouter 1 pour chaque répondant, il ajoute son poids (`wt` pour *weight*). La colonne `n` contient alors une somme de poids, et non plus un nombre de personnes.
+
+`mutate(pourcentage = 100 * n / sum(n))` divise chaque effectif par le total, pour obtenir des pourcentages.
+
+`filter(!is.na(diplome))` écarte les huit répondants dont le diplôme est inconnu : le point d'exclamation `!` signifie « non », et `!is.na()` se lit donc « n'est pas manquant ».
+:::
+
+::: callout-important
+Tout pourcentage, toute moyenne, tout tableau destiné à être lu, cité ou publié doit être pondéré. Un résultat non pondéré décrit **l'échantillon obtenu** ; un résultat pondéré estime **la population**. C'est presque toujours le second qui nous intéresse.
+:::
+
+## D'où viennent les poids ?
+
+Les poids de l'ESS corrigent deux sources d'écart [@ess_weighting_guide].
+
+**Les probabilités de sélection inégales.** Selon les pays, l'ESS tire au sort des adresses, des logements ou directement des individus. Quand on tire d'abord un logement, puis une personne dans ce logement, une personne qui vit seule a plus de chances d'être interrogée qu'une personne vivant avec quatre autres adultes. Le **poids de sondage** (`dweight`) corrige ces inégalités. En France, l'échantillon est tiré dans un fichier d'individus de l'Insee : les probabilités de sélection sont presque identiques pour tout le monde, et `dweight` varie à peine, de 0,96 à 1,05.
+
+```{r}
+summary(ESS11_FR$dweight)
+```
+
+**La non-réponse.** Toutes les personnes tirées au sort ne répondent pas, et celles qui répondent ne sont pas un sous-groupe pris au hasard. Pour corriger, on compare l'échantillon à des données extérieures fiables, issues du recensement ou d'autres grandes enquêtes, sur quelques caractéristiques connues : pour l'ESS, **le sexe, l'âge, le niveau de diplôme et la région** [@ess_weighting_guide]. On ajuste alors les poids jusqu'à ce que l'échantillon pondéré ait la même composition que la population sur ces caractéristiques. On appelle cela le **calage sur marges**, ou post-stratification. Le résultat est le poids post-stratifié `pspwght`. En France, c'est lui qui fait l'essentiel du travail : il varie de 0,50 à 3,32.
+
+```{r}
+summary(ESS11_FR$pspwght)
+```
+
+## Les poids de l'ESS : lequel choisir ?
+
+| Variable | Rôle |
+|:-----------------------|:-----------------------------------------------|
+| `dweight` | Poids de sondage : corrige les probabilités de sélection inégales |
+| `pspwght` | Poids post-stratifié : corrige en plus la non-réponse |
+| `pweight` | Poids de population : redonne à chaque pays son poids démographique |
+| `anweight` | Poids d'analyse : `pspwght` × `pweight` |
+
+: Les variables de pondération de l'ESS
+
+`pweight` ne sert qu'à comparer ou regrouper des pays. L'ESS interroge à peu près le même nombre de personnes dans chaque pays, quelle que soit sa population : sans `pweight`, un répondant islandais pèserait autant dans une moyenne européenne qu'un répondant allemand.
+
+**L'ESS recommande d'utiliser `anweight` par défaut, pour toutes les analyses, y compris sur un seul pays** [@ess_weighting_guide]. C'est ce qu'on fera. Pour une analyse limitée à la France, `pweight` prend la même valeur pour tous les répondants (3,18) : `anweight` et `pspwght` sont donc proportionnels, et donnent exactement les mêmes pourcentages. En revanche, la somme des `anweight` (5 640 en France) n'a aucune signification concrète. On retiendra que **les pourcentages pondérés ont un sens, les effectifs pondérés pas forcément**.
+
+# Le plan de sondage
+
+## Le poids ne suffit pas
+
+Le poids permet de calculer la bonne **estimation**, par exemple le bon pourcentage. Il ne dit rien de sa **précision**, c'est-à-dire de la marge d'erreur autour de ce pourcentage. Or cette précision dépend de la manière dont l'échantillon a été tiré, ce qu'on appelle le **plan de sondage**. Deux procédés, très courants, la modifient.
+
+**Le tirage en grappes.** Pour limiter les déplacements des enquêteurs, on ne tire pas 1 771 personnes dispersées sur tout le territoire. On tire d'abord des zones géographiques, les **unités primaires** (*primary sampling units*, d'où le nom de la variable `psu`), puis plusieurs personnes dans chaque zone. Or des voisins se ressemblent : même marché du travail, même offre scolaire, souvent des opinions proches. Interroger cinq voisins apporte moins d'information qu'interroger cinq personnes dispersées dans toute la France. Le tirage en grappes **réduit la précision**.
+
+**La stratification.** Avant de tirer, on découpe le territoire en **strates** (variable `stratum`), par exemple par région et taille de commune, et on tire séparément dans chacune. On garantit ainsi que toutes les régions sont représentées dans les bonnes proportions, sans laisser faire le hasard. La stratification **augmente la précision**.
+
+En France, pour la vague 11, les 1 771 répondants proviennent de 351 unités primaires, réparties dans 47 strates :
+
+```{r}
+n_distinct(ESS11_FR$psu)
+n_distinct(ESS11_FR$stratum)
+```
+
+## Déclarer le plan de sondage
+
+La fonction `svydesign()` du package `survey` rassemble toutes ces informations dans un seul objet, le **plan de sondage**. Toutes les analyses se font ensuite à partir de lui, et non plus directement à partir du tableau de données.
+
+```{r}
+plan_sondage <- svydesign(
+  ids     = ~psu,
+  strata  = ~stratum,
+  weights = ~anweight,
+  data    = ESS11_FR,
+  nest    = TRUE
+)
+
+plan_sondage
+```
+
+::: callout-note
+## Explications de la ligne
+
+`plan_sondage` est le nom qu'on donne à l'objet. Il contient les données et la description du tirage.
+
+`ids = ~psu` désigne les grappes, c'est-à-dire les unités primaires. Le tilde `~` signale à R qu'on lui donne le **nom d'une variable** du tableau, et non un objet existant.
+
+`strata = ~stratum` désigne les strates.
+
+`weights = ~anweight` désigne la pondération.
+
+`data = ESS11_FR` est le tableau de données.
+
+`nest = TRUE` précise que les numéros de grappes sont propres à chaque strate : la grappe n° 12 de la strate A n'a rien à voir avec une éventuelle grappe n° 12 de la strate B. C'est une précaution sans risque, recommandée par défaut.
+
+R répond *Stratified 1 - level Cluster Sampling design* : un plan stratifié, en grappes, à un niveau. On retrouve nos 351 grappes.
+:::
+
+::: callout-warning
+## On déclare le plan sur l'ensemble du pays
+
+Le plan de sondage décrit le tirage d'un pays entier. On peut filtrer la France **avant** de le déclarer, comme ici, parce que chaque pays de l'ESS a son propre plan. En revanche, pour étudier un sous-groupe (les femmes, les moins de 30 ans…), on ne filtre pas le tableau : on déclare le plan sur toute la France, puis on utilise `subset(plan_sondage, genre == "Femme")`. Filtrer avant ferait disparaître une partie des grappes, et fausserait la marge d'erreur.
+:::
+
+## Ce que coûte le plan de sondage : l'effet de plan
+
+Pour mesurer l'effet du plan, on compare deux marges d'erreur : celle qu'on aurait obtenue avec un tirage au hasard simple, et celle qu'on obtient réellement. Prenons la part de personnes intéressées par la politique (« très » ou « plutôt »).
+
+```{r}
+svymean(~ I(interet_bin == "Intéressé"), plan_sondage,
+        na.rm = TRUE, deff = "replace")
+```
+
+R renvoie deux lignes : `FALSE` (les personnes peu ou pas intéressées) et `TRUE` (les personnes intéressées). Sur la ligne `TRUE`, la part estimée (`mean`) est de 37,9 %, avec une erreur-type (`SE`, *standard error*) de 0,0132, soit 1,32 point de pourcentage.
+
+::: callout-note
+## Explications de la ligne
+
+`I(interet_bin == "Intéressé")` crée, le temps du calcul, une variable qui vaut `TRUE` pour les personnes intéressées et `FALSE` pour les autres. La fonction `I()` demande à R de calculer l'expression telle quelle à l'intérieur de la formule.
+
+`svymean()` calcule la moyenne pondérée de cette variable, c'est-à-dire la proportion de `TRUE`.
+
+`na.rm = TRUE` écarte la personne qui n'a pas répondu.
+
+`deff = "replace"` demande l'effet de plan, expliqué ci-dessous.
+:::
+
+::: callout-note
+## L'erreur-type et la marge d'erreur, pas à pas
+
+L'**erreur-type** mesure de combien une estimation varierait d'un échantillon à l'autre si l'on refaisait l'enquête de nombreuses fois. Dans un tirage au hasard simple, elle se calcule ainsi :
+
+$$
+SE = \sqrt{\frac{p \times (1 - p)}{n}}
+$$
+
+- $p$ est la proportion estimée, ici 0,379 ;
+- $1 - p$ est la proportion complémentaire, ici 0,621 ;
+- $n$ est le nombre de répondants à la question, ici 1 770 ;
+- la racine carrée $\sqrt{\phantom{x}}$ ramène le résultat à l'échelle d'une proportion.
+
+Avec nos chiffres : $\sqrt{0{,}379 \times 0{,}621 / 1\,770} = \sqrt{0{,}000133} \approx 0{,}0115$, soit 1,15 point.
+
+La **marge d'erreur** à 95 % vaut environ deux fois l'erreur-type (plus précisément 1,96 fois). Avec un tirage au hasard simple, elle serait donc de $1{,}96 \times 1{,}15 \approx 2{,}3$ points. Avec le plan réel de l'ESS, l'erreur-type vaut 1,32 point, et la marge d'erreur $1{,}96 \times 1{,}32 \approx 2{,}6$ points.
+:::
+
+Le rapport entre les deux variances (le carré des erreurs-types) s'appelle l'**effet de plan** (*design effect*, colonne `DEff`) : ici $(1{,}32 / 1{,}15)^2 \approx 1{,}31$. Il cumule l'effet des grappes et celui de la pondération. Concrètement, pour cette question, nos 1 770 répondants apportent autant d'information qu'environ $1\,770 / 1{,}31 \approx 1\,350$ personnes tirées au hasard simple. C'est exactement l'idée de la **taille d'échantillon effective** présentée dans la [présentation des données](ess_presentation.qmd).
+
+::: callout-important
+## À retenir
+
+- Les **poids** déterminent l'**estimation** (le pourcentage, la moyenne).
+- Les **grappes et les strates** déterminent sa **précision** (la marge d'erreur, et donc les tests statistiques).
+- Ignorer le plan de sondage ne change pas les pourcentages, mais donne des marges d'erreur trop optimistes, et des tests qui concluent trop facilement.
+:::
+
+# Les tris à plat
+
+Un **tri à plat** décrit une variable à la fois : combien de répondants dans chaque modalité, et quelle part du total ils représentent. On l'a déjà fait avec `freq()` dans la partie précédente, mais sans pondération. On passe maintenant à `tbl_svysummary()`.
+
+## Un premier tableau
+
+On commence par régler `gtsummary` en français : libellés traduits, virgule décimale et espace pour séparer les milliers. Cette ligne s'exécute une fois, en début de script.
+
+```{r}
+#| message: false
+theme_gtsummary_language(language = "fr", decimal.mark = ",", big.mark = " ")
+```
+
+```{r}
+plan_sondage |>
+  tbl_svysummary(include = c(interet_pol, diplome, genre, age))
+```
+
+::: callout-note
+## Explications de la ligne
+
+`plan_sondage |>` : on part du plan de sondage, et non du tableau `ESS11_FR`. C'est ce qui garantit que les calculs sont pondérés.
+
+`tbl_svysummary()` produit le tableau. Le préfixe `svy` signale qu'elle travaille sur un plan de sondage.
+
+`include = c(...)` liste les variables à décrire.
+:::
+
+Le tableau est déjà lisible, mais il appelle trois remarques.
+
+- **Les effectifs sont pondérés.** Le nombre affiché devant chaque pourcentage est une somme de poids `anweight`, et non un nombre de répondants : c'est pourquoi l'en-tête annonce environ 5 640 personnes, et non 1 771. On l'a vu, cette somme n'a pas de sens concret.
+- **L'âge est résumé par sa médiane et ses quartiles** (premier et troisième), entre parenthèses, et non par des pourcentages : `tbl_svysummary()` reconnaît seule les variables numériques.
+- **Les valeurs manquantes** apparaissent sur une ligne à part (une personne n'a pas indiqué son intérêt pour la politique, huit leur diplôme, trois leur âge).
+
+## Personnaliser le tableau
+
+On souhaite afficher, pour chaque modalité, le **pourcentage pondéré** et, entre parenthèses, le **nombre réel de répondants**. Ce dernier ne sert pas à interpréter, mais il permet de repérer les modalités qui reposent sur très peu de personnes.
+
+```{r}
+plan_sondage |>
+  tbl_svysummary(
+    include   = c(interet_pol, diplome, genre, age),
+    label     = list(interet_pol ~ "Intérêt pour la politique",
+                     diplome     ~ "Diplôme",
+                     genre       ~ "Genre",
+                     age         ~ "Âge"),
+    statistic = list(all_categorical() ~ "{p} % ({n_unweighted})",
+                     all_continuous()  ~ "{mean} ({sd})"),
+    digits    = list(all_categorical() ~ c(1, 0),
+                     all_continuous()  ~ 1),
+    missing   = "no"
+  ) |>
+  bold_labels()
+```
+
+::: callout-note
+## Explications des arguments
+
+`label` renomme les variables. Chaque élément s'écrit `variable ~ "Nouveau nom"`, et on les rassemble dans une `list()`.
+
+`statistic` choisit ce qu'on affiche. Entre accolades, on place le nom des statistiques voulues : `{p}` le pourcentage pondéré, `{n_unweighted}` le nombre de répondants, `{mean}` la moyenne pondérée, `{sd}` l'écart-type pondéré. Tout ce qui est hors des accolades (le symbole %, les parenthèses) est recopié tel quel. `all_categorical()` désigne toutes les variables catégorielles, `all_continuous()` toutes les variables numériques.
+
+`digits` fixe le nombre de décimales, dans l'ordre des statistiques : `c(1, 0)` donne une décimale au pourcentage et aucune au nombre de répondants.
+
+`missing = "no"` masque les lignes de valeurs manquantes. **Les pourcentages sont alors calculés parmi les réponses valides**, comme la colonne `val%` de `freq()`.
+
+`bold_labels()` met le nom des variables en gras.
+:::
+
+## Pondéré ou non : la comparaison
+
+Pour mesurer ce que change la pondération, on peut placer côte à côte le tableau non pondéré, obtenu avec `tbl_summary()` sur le tableau de données, et le tableau pondéré, obtenu avec `tbl_svysummary()` sur le plan de sondage. La fonction `tbl_merge()` les fusionne.
+
+```{r}
+tableau_brut <- ESS11_FR |>
+  tbl_summary(include   = c(interet_pol, diplome, genre, age),
+              statistic = list(all_categorical() ~ "{p} %",
+                               all_continuous()  ~ "{mean}"),
+              digits    = list(all_categorical() ~ 1, all_continuous() ~ 1),
+              missing   = "no")
+
+tableau_pondere <- plan_sondage |>
+  tbl_svysummary(include   = c(interet_pol, diplome, genre, age),
+                 statistic = list(all_categorical() ~ "{p} %",
+                                  all_continuous()  ~ "{mean}"),
+                 digits    = list(all_categorical() ~ 1, all_continuous() ~ 1),
+                 missing   = "no")
+
+tbl_merge(list(tableau_brut, tableau_pondere),
+          tab_spanner = c("**Échantillon (non pondéré)**",
+                          "**Population estimée (pondéré)**"))
+```
+
+La pondération modifie sensiblement le portrait :
+
+| | Non pondéré | Pondéré |
+|:--------------------------------|:-------:|:-------:|
+| Pas du tout intéressé par la politique | 20,1 % | 21,6 % |
+| Très intéressé | 15,6 % | 14,2 % |
+| Diplôme inférieur au Bac | 18,0 % | 26,6 % |
+| Diplôme Bac +3 et au-delà | 26,3 % | 22,0 % |
+| Femmes | 50,6 % | 52,0 % |
+| Âge moyen | 50,2 ans | 48,2 ans |
+
+: Ce que change la pondération (ESS, vague 11, France)
+
+L'échantillon brut est trop diplômé, et un peu trop âgé et masculin. Comme les diplômés s'intéressent davantage à la politique, l'échantillon brut **surestime** légèrement l'intérêt des Français pour la politique. Les écarts restent modestes ici, de l'ordre de un à deux points sur l'intérêt pour la politique, mais ils peuvent être bien plus importants sur des sous-groupes ou d'autres variables.
+
+## La marge d'erreur
+
+Un pourcentage issu d'une enquête est une **estimation** : avec un autre échantillon, tiré de la même façon, on aurait obtenu un chiffre un peu différent. L'**intervalle de confiance** donne la fourchette des valeurs plausibles. La fonction `add_ci()` l'ajoute au tableau, en tenant compte du plan de sondage.
+
+```{r}
+plan_sondage |>
+  tbl_svysummary(include   = interet_pol,
+                 label     = list(interet_pol ~ "Intérêt pour la politique"),
+                 statistic = list(all_categorical() ~ "{p} %"),
+                 digits    = list(all_categorical() ~ 1),
+                 missing   = "no") |>
+  add_ci()
+```
+
+On estime que 14,2 % des personnes de 15 ans et plus vivant en France sont très intéressées par la politique, avec un intervalle de confiance à 95 % allant d'environ 12,6 % à 15,9 %.
+
+::: callout-warning
+## Comment lire un intervalle de confiance
+
+La formulation exacte est un peu contre-intuitive. Si l'on refaisait l'enquête un très grand nombre de fois, en tirant à chaque fois un nouvel échantillon de la même manière, 95 % des intervalles ainsi calculés contiendraient la vraie valeur dans la population. En pratique, on retient qu'**on ne peut pas distinguer 14,2 % de 13 % ou de 15 %** avec cette enquête : présenter le chiffre avec une décimale donne une impression de précision qu'il n'a pas.
+
+L'intervalle ne couvre que l'erreur due au **tirage au sort**. Il ne protège ni contre une question mal comprise, ni contre des réponses socialement valorisées, ni contre une non-réponse que le calage n'aurait pas corrigée.
+:::
+
+# Les tris croisés
+
+## Croiser deux variables
+
+Un **tri croisé** décrit une variable **selon les modalités d'une autre**. C'est ici qu'on répond à notre question : l'intérêt pour la politique varie-t-il selon le diplôme ? On ajoute l'argument `by`.
+
+```{r}
+#| message: false
+plan_sondage |>
+  tbl_svysummary(
+    by        = interet_pol,
+    include   = diplome,
+    label     = list(diplome ~ "Diplôme"),
+    statistic = list(all_categorical() ~ "{p} % ({n_unweighted})"),
+    digits    = list(all_categorical() ~ c(1, 0)),
+    percent   = "row",
+    missing   = "no"
+  ) |>
+  modify_spanning_header(all_stat_cols() ~ "**Intérêt pour la politique**") |>
+  bold_labels()
+```
+
+::: callout-note
+## Explications des nouveaux éléments
+
+`by = interet_pol` : chaque modalité de l'intérêt pour la politique, la variable qu'on cherche à expliquer, devient une colonne. Le diplôme, indiqué dans `include`, s'affiche en ligne. Les répondants dont le diplôme ou l'intérêt pour la politique est inconnu sont écartés du tableau.
+
+`percent = "row"` calcule les pourcentages **en ligne** : chaque ligne totalise 100 %. On revient juste après sur ce choix.
+
+`modify_spanning_header()` ajoute un titre au-dessus des colonnes. `all_stat_cols()` désigne toutes les colonnes de résultats.
+:::
+
+Le résultat est sans ambiguïté. Parmi les personnes qui n'ont pas le bac, 9,1 % se disent très intéressées par la politique ; parmi les diplômés du supérieur, 24,9 %, soit près de trois fois plus. À l'autre bout de l'échelle, 29,8 % des non-bacheliers ne s'y intéressent pas du tout, contre 9,0 % des diplômés du supérieur. La relation est **graduelle** : les titulaires d'un diplôme du bac à Bac +2 se situent entre les deux, dans chaque colonne.
+
+## Dans quel sens calculer les pourcentages ?
+
+On place les variables sociodémographiques **en ligne** et la variable qu'on étudie **en colonne**. Avec `percent = "row"`, chaque ligne totalise 100 % : elle donne la répartition des réponses au sein d'un niveau de diplôme, comme un portrait de ce groupe. On compare donc des groupes de diplôme entre eux, à taille égale. La règle générale est simple : **on calcule les pourcentages à l'intérieur des groupes de la variable dont on pense qu'elle explique l'autre**. On suppose que le diplôme influence l'intérêt pour la politique, et non l'inverse : on calcule donc les pourcentages au sein de chaque diplôme.
+
+Attention : par défaut, `tbl_svysummary()` calcule des pourcentages **en colonne** (`percent = "column"`). Si l'on oublie l'argument, le tableau répond à une autre question : parmi les personnes très intéressées par la politique, quelle part a tel diplôme ? On y lirait que 43,6 % des personnes très intéressées ont un diplôme du bac à Bac +2, contre 39,1 % pour les diplômés du supérieur. Ce chiffre ne dit pas que les premiers sont plus intéressés : il reflète surtout le fait qu'ils sont beaucoup plus nombreux dans la population (51 % contre 22 %). Calculés dans ce sens, les pourcentages mélangent la taille des groupes et leur comportement.
+
+::: callout-tip
+## Le réflexe de lecture
+
+Dans un tableau où chaque ligne totalise 100 %, on **lit en colonne** : on compare une même réponse d'une ligne à l'autre. « Très intéressé » : 9,1 %, 11,9 %, 24,9 %. L'écart entre deux lignes s'exprime en **points de pourcentage** : il y a ici près de 16 points d'écart entre les non-bacheliers et les diplômés du supérieur.
+:::
+
+# Le test du khi-deux
+
+## La question posée
+
+L'écart entre les diplômes est net dans notre échantillon. Mais l'échantillon n'est pas la population : même si le diplôme n'avait **aucun lien** avec l'intérêt pour la politique, le hasard du tirage produirait de petites différences entre les colonnes. La question devient : **l'écart observé est-il trop grand pour être dû au seul hasard ?**
+
+Le **test du khi-deux** (noté $\chi^2$, la lettre grecque *chi*) répond à cette question. Il part d'une hypothèse, appelée **hypothèse nulle** : les deux variables sont **indépendantes**, c'est-à-dire que le diplôme ne change rien à l'intérêt pour la politique. Puis il mesure à quel point les données s'éloignent de ce qu'on observerait si c'était vrai.
+
+## Le principe, à la main
+
+Pour comprendre le calcul, on le fait sur la version simplifiée de l'intérêt pour la politique (`interet_bin`) et sur les données non pondérées. On verra ensuite comment tenir compte du plan de sondage.
+
+```{r}
+tableau <- table(ESS11_FR$diplome, ESS11_FR$interet_bin)
+addmargins(tableau)
+```
+
+C'est le tableau des **effectifs observés**, qu'on note $O$. `addmargins()` ajoute les totaux en ligne et en colonne (*Sum*).
+
+**Étape 1 : ce qu'on attendrait sous l'hypothèse d'indépendance.** Dans l'ensemble, 717 répondants sur 1 762 se disent intéressés, soit 40,7 %. Si le diplôme ne jouait aucun rôle, on retrouverait cette même proportion dans chaque groupe de diplôme. Parmi les 317 non-bacheliers, on attendrait donc $317 \times 717 / 1\,762 \approx 129{,}0$ personnes intéressées. On en observe 87.
+
+De manière générale, l'**effectif attendu** (ou **théorique**) d'une case se calcule ainsi :
+
+$$
+E_{ij} = \frac{n_{i\cdot} \times n_{\cdot j}}{N}
+$$
+
+- $E_{ij}$ est l'effectif attendu dans la case située à la ligne $i$ et à la colonne $j$ ;
+- $n_{i\cdot}$ est le total de la ligne $i$ (le point remplace l'indice sur lequel on a fait la somme) ;
+- $n_{\cdot j}$ est le total de la colonne $j$ ;
+- $N$ est l'effectif total, ici 1 762.
+
+R calcule tous les effectifs attendus d'un coup :
+
+```{r}
+test <- chisq.test(tableau)
+test$expected
+```
+
+**Étape 2 : mesurer l'écart dans chaque case.** On compare l'observé et l'attendu, case par case, avec la quantité :
+
+$$
+\frac{(O_{ij} - E_{ij})^2}{E_{ij}}
+$$
+
+- $O_{ij} - E_{ij}$ est l'écart entre ce qu'on observe et ce qu'on attendrait ;
+- on l'élève **au carré** pour que les écarts positifs et négatifs ne s'annulent pas, et pour pénaliser davantage les grands écarts ;
+- on **divise par l'effectif attendu** pour rapporter l'écart à la taille de la case : un écart de 10 personnes est considérable quand on en attendait 20, négligeable quand on en attendait 2 000.
+
+Prenons les diplômés du supérieur intéressés par la politique. On en attend $464 \times 717 / 1\,762 \approx 188{,}8$ ; on en observe 258. L'écart vaut 69,2 ; au carré, 4 788 ; divisé par 188,8, il donne **25,4**.
+
+| | Peu ou pas intéressé | Intéressé |
+|:--------------------------|:-------:|:-------:|
+| Inférieur au Bac | 9,4 | 13,7 |
+| Bac à Bac +2 | 1,3 | 1,9 |
+| Bac +3 et au-delà | 17,4 | 25,4 |
+
+: Contribution de chaque case au khi-deux
+
+**Étape 3 : additionner.** La statistique du khi-deux est la somme de ces contributions sur toutes les cases :
+
+$$
+\chi^2 = \sum_{i} \sum_{j} \frac{(O_{ij} - E_{ij})^2}{E_{ij}}
+$$
+
+Le symbole $\sum$ (la lettre grecque *sigma* majuscule) signifie « somme » : on additionne sur toutes les lignes $i$ et toutes les colonnes $j$. Ici, $13{,}7 + 1{,}9 + 25{,}4 + 9{,}4 + 1{,}3 + 17{,}4 \approx 68{,}9$. Plus le $\chi^2$ est grand, plus les données s'éloignent de l'indépendance. Le tableau des contributions montre aussi **où** se trouve l'écart : surtout chez les diplômés du supérieur et chez les non-bacheliers, très peu dans le groupe intermédiaire.
+
+**Étape 4 : décider.** Un $\chi^2$ de 68,9, est-ce beaucoup ? Tout dépend de la taille du tableau, mesurée par ses **degrés de liberté** :
+
+$$
+ddl = (r - 1) \times (c - 1)
+$$
+
+où $r$ est le nombre de lignes et $c$ le nombre de colonnes. Ici, $(3 - 1) \times (2 - 1) = 2$. Pour un tableau à 2 degrés de liberté, on sait qu'en cas d'indépendance le $\chi^2$ dépasse 5,99 dans seulement 5 % des échantillons. Notre valeur, 68,9, est très loin au-delà.
+
+```{r}
+test
+```
+
+R donne directement la **p-valeur** (*p-value*) : la probabilité d'observer un écart au moins aussi grand que le nôtre **si les deux variables étaient indépendantes**. Elle vaut ici environ $10^{-15}$, c'est-à-dire 0,000000000000001. Un tel écart est pratiquement impossible à obtenir par le seul hasard : on **rejette l'hypothèse d'indépendance**. Par convention, on rejette l'hypothèse nulle quand la p-valeur est inférieure à 0,05 (5 %), et on dit que la relation est **statistiquement significative** au seuil de 5 %.
+
+::: callout-note
+## Une condition à vérifier
+
+Le test du khi-deux n'est fiable que si les effectifs attendus ne sont pas trop petits. La règle usuelle est qu'ils soient tous supérieurs à 5. C'est largement le cas ici (le plus petit vaut 129). Si ce n'est pas le cas, R affiche un avertissement : il faut alors regrouper des modalités.
+:::
+
+## Pourquoi ne pas faire ce calcul sur des données pondérées ?
+
+On pourrait être tenté d'appliquer `chisq.test()` au tableau pondéré. Faisons l'essai avec deux pondérations qui, on l'a vu, donnent exactement les mêmes pourcentages : `pspwght` et `anweight`.
+
+```{r}
+plan_pspwght <- svydesign(ids = ~psu, strata = ~stratum, weights = ~pspwght,
+                          data = ESS11_FR, nest = TRUE)
+
+chisq.test(svytable(~ diplome + interet_bin, plan_pspwght))
+chisq.test(svytable(~ diplome + interet_bin, plan_sondage))
+```
+
+Avec `pspwght`, le $\chi^2$ vaut 77,5 ; avec `anweight`, 246,9, soit 3,18 fois plus, alors que les pourcentages sont strictement identiques. Le khi-deux classique traite chaque unité de poids comme une personne interrogée : multiplier les poids par 3,18 revient, pour lui, à avoir interrogé 3,18 fois plus de monde. Le résultat dépend donc d'une convention d'échelle arbitraire, ce qui n'a aucun sens.
+
+Le second problème est moins visible : le khi-deux classique suppose que les répondants ont été tirés **indépendamment** les uns des autres. Ce n'est pas le cas dans un tirage en grappes, où les voisins se ressemblent.
+
+La solution est la **correction de Rao et Scott** [@rao_scott1984]. L'idée générale : on calcule le $\chi^2$ à partir des proportions pondérées, puis on le **divise par une estimation de l'effet de plan**, pour le ramener à ce qu'il vaudrait avec un échantillon aléatoire simple de taille équivalente. La version utilisée par défaut (dite « du second ordre ») corrige aussi les degrés de liberté, et prend la forme d'une statistique $F$. C'est ce que fait `svychisq()` :
+
+```{r}
+svychisq(~ diplome + interet_bin, plan_sondage)
+svychisq(~ diplome + interet_bin, plan_pspwght)
+```
+
+Le résultat est identique avec les deux pondérations ($F = 31{,}7$), et la p-valeur reste minuscule ($4 \times 10^{-13}$). La conclusion ne change pas : la relation entre diplôme et intérêt pour la politique est très largement significative. Mais cette fois, elle est démontrée correctement.
+
+## Avec `gtsummary` : `add_p()`
+
+En pratique, on n'a pas besoin d'appeler `svychisq()` soi-même : la fonction `add_p()` ajoute au tableau une colonne de p-valeurs. Pour un plan de sondage et des variables catégorielles, elle utilise par défaut le test du khi-deux avec la correction de Rao et Scott du second ordre, c'est-à-dire exactement `svychisq()`.
+
+```{r}
+#| message: false
+plan_sondage |>
+  tbl_svysummary(
+    by        = interet_pol,
+    include   = diplome,
+    label     = list(diplome ~ "Diplôme"),
+    statistic = list(all_categorical() ~ "{p} %"),
+    digits    = list(all_categorical() ~ 1),
+    percent   = "row",
+    missing   = "no"
+  ) |>
+  add_p() |>
+  modify_spanning_header(all_stat_cols() ~ "**Intérêt pour la politique**") |>
+  bold_labels()
+```
+
+La colonne de droite affiche « <0,001 » : la p-valeur est inférieure à un pour mille. Une note de bas de tableau rappelle le test utilisé.
+
+::: callout-warning
+## Ce que la p-valeur ne dit pas
+
+La p-valeur est l'un des indicateurs les plus mal interprétés de la statistique. Trois erreurs sont fréquentes.
+
+**Ce n'est pas la probabilité que l'hypothèse nulle soit vraie.** C'est la probabilité d'observer de tels écarts *si* elle était vraie. Une p-valeur de 0,03 ne signifie pas « 3 % de chances que le diplôme n'ait aucun lien avec l'intérêt pour la politique ».
+
+**Significatif ne veut pas dire important.** Avec un très grand échantillon, un écart minuscule peut être significatif. Avec un petit échantillon, un écart important peut ne pas l'être. C'est la taille de l'écart, en points de pourcentage, qui dit si la relation compte.
+
+**Le seuil de 5 % est une convention.** Une p-valeur de 0,049 et une p-valeur de 0,051 apportent presque la même information. On rapporte la valeur, plutôt que de la réduire à « significatif » ou « non significatif ».
+:::
+
+## Un résultat non significatif
+
+Tous les écarts ne sont pas significatifs. Les femmes se disent-elles plus heureuses que les hommes ?
+
+```{r}
+#| message: false
+plan_sondage |>
+  tbl_svysummary(by        = heureux,
+                 include   = genre,
+                 label     = list(genre ~ "Genre"),
+                 statistic = list(all_categorical() ~ "{p} %"),
+                 digits    = list(all_categorical() ~ 1),
+                 percent   = "row",
+                 missing   = "no") |>
+  add_p()
+```
+
+55,1 % des femmes se situent entre 8 et 10 sur l'échelle de bonheur, contre 52,9 % des hommes. Mais la p-valeur vaut 0,4 : un écart de cette taille se produirait facilement par le seul hasard du tirage, même si hommes et femmes étaient en réalité aussi heureux les uns que les autres. On ne peut donc pas conclure à une différence.
+
+Attention : **ne pas pouvoir conclure à une différence ne prouve pas qu'il n'y en a pas**. Le test dit seulement que, avec cet échantillon, l'écart éventuel est trop petit pour être distingué du bruit. On écrira « on n'observe pas de différence significative entre hommes et femmes », et non « hommes et femmes sont aussi heureux ».
+
+## Ce que le khi-deux ne dit pas
+
+**L'intensité de la relation.** Le khi-deux dit si une relation existe, pas si elle est forte. Pour cela, on lit les écarts en points de pourcentage. On peut aussi calculer un indicateur standardisé, le **V de Cramér**, qui varie de 0 (aucune relation) à 1 (relation parfaite) :
+
+$$
+V = \sqrt{\frac{\chi^2}{N \times (k - 1)}}
+$$
+
+où $k$ est le plus petit des deux nombres de lignes et de colonnes. Sur notre tableau à deux colonnes : $V = \sqrt{68{,}9 / (1\,762 \times 1)} \approx 0{,}20$. Il n'existe pas de seuil universel à partir duquel un V serait « fort » : on s'en sert surtout pour comparer des relations entre elles. Ici, le diplôme pèse nettement sur l'intérêt pour la politique, mais il est loin de le déterminer : 9 % des diplômés du supérieur ne s'y intéressent pas du tout.
+
+**La causalité.** Un tri croisé montre une **association**, pas une **cause**. Une troisième variable peut produire, masquer ou exagérer la relation. Prenons l'âge : il est lié au diplôme (les plus âgés sont moins souvent diplômés, et les plus jeunes n'ont pas fini leurs études) comme à l'intérêt pour la politique, qui augmente avec l'âge. La relation entre diplôme et intérêt pourrait-elle n'être qu'un effet de l'âge ? Un premier contrôle consiste à refaire le tri croisé à l'intérieur d'une tranche d'âge, avec `subset()` :
+
+```{r}
+#| message: false
+plan_sondage |>
+  subset(age >= 65) |>
+  tbl_svysummary(by        = interet_bin,
+                 include   = diplome,
+                 label     = list(diplome ~ "Diplôme (65 ans et plus)"),
+                 statistic = list(all_categorical() ~ "{p} % ({n_unweighted})"),
+                 digits    = list(all_categorical() ~ c(1, 0)),
+                 percent   = "row",
+                 missing   = "no")
+```
+
+Chez les 65 ans et plus, 28 % des non-bacheliers se disent intéressés par la politique, contre 79 % des diplômés du supérieur. La relation se retrouve dans chacune des cinq tranches d'âge : l'âge ne l'explique pas. Ces sous-groupes reposent toutefois sur peu de répondants, et l'on ne peut pas contrôler toutes les variables de cette manière. Raisonner « toutes choses égales par ailleurs » demande d'autres outils, comme la régression, présentés dans la partie [traitement avancé des données](traitement_avance_r.qmd).
+
+# Exporter ses tableaux
+
+Un tableau `gtsummary` peut être exporté vers Word grâce au package `flextable`. On range d'abord le tableau dans un objet :
+
+```{r}
+#| eval: false
+tableau_final <- plan_sondage |>
+  tbl_svysummary(by        = interet_pol,
+                 include   = diplome,
+                 label     = list(diplome ~ "Diplôme"),
+                 statistic = list(all_categorical() ~ "{p} %"),
+                 digits    = list(all_categorical() ~ 1),
+                 percent   = "row",
+                 missing   = "no") |>
+  add_p()
+
+# install.packages("flextable")  # une seule fois
+tableau_final |>
+  as_flex_table() |>
+  flextable::save_as_docx(path = "03_Resultats/interet_diplome.docx")
+```
+
+`as_flex_table()` convertit le tableau, et `save_as_docx()` l'enregistre au format Word. Le dossier indiqué dans `path` doit exister : on l'adaptera à l'organisation de son projet. L'écriture `flextable::save_as_docx()` permet d'utiliser une fonction d'un package sans le charger avec `library()`.
+
+Dans un tableau publié, on indique toujours en note la source (ESS, vague 11, édition 4.2), le champ (personnes de 15 ans et plus vivant en France), la pondération utilisée et le test réalisé.
+
+# À vous de jouer
+
+::: callout-tip
+## Exercice 1 : l'intérêt pour la politique selon le genre
+
+Les hommes et les femmes déclarent-ils le même intérêt pour la politique ? Construisez le tri croisé pondéré avec `genre` en ligne et `interet_bin` en colonne, ajoutez la p-valeur, et rédigez deux phrases d'interprétation.
+:::
+
+::: {.callout-note collapse="true"}
+## Solution de l'exercice 1
+
+```{r}
+#| message: false
+plan_sondage |>
+  tbl_svysummary(by        = interet_bin,
+                 include   = genre,
+                 label     = list(genre ~ "Genre"),
+                 statistic = list(all_categorical() ~ "{p} %"),
+                 digits    = list(all_categorical() ~ 1),
+                 percent   = "row",
+                 missing   = "no") |>
+  add_p()
+```
+
+42,7 % des hommes se disent très ou plutôt intéressés par la politique, contre 33,5 % des femmes, soit un écart de 9 points. La p-valeur est inférieure à 0,001 : l'écart est statistiquement significatif. Il reste à l'interpréter : différence d'intérêt réel, ou différence dans la manière de déclarer son intérêt ? Le tri croisé ne permet pas de trancher.
+:::
+
+::: callout-tip
+## Exercice 2 : le bonheur selon le diplôme
+
+Les diplômés du supérieur se disent-ils plus heureux que les autres ? Croisez `diplome` (en ligne) et `heureux` (en colonne), et discutez la p-valeur obtenue.
+:::
+
+::: {.callout-note collapse="true"}
+## Solution de l'exercice 2
+
+```{r}
+#| message: false
+plan_sondage |>
+  tbl_svysummary(by        = heureux,
+                 include   = diplome,
+                 label     = list(diplome ~ "Diplôme"),
+                 statistic = list(all_categorical() ~ "{p} %"),
+                 digits    = list(all_categorical() ~ 1),
+                 percent   = "row",
+                 missing   = "no") |>
+  add_p()
+```
+
+60,2 % des diplômés du supérieur se situent entre 8 et 10 sur l'échelle de bonheur, contre 53,1 % des non-bacheliers et 51,9 % des titulaires d'un diplôme du bac à Bac +2. La p-valeur vaut environ 0,04 : l'écart est significatif au seuil conventionnel de 5 %, mais pas au seuil de 1 %. C'est un résultat fragile, à présenter avec prudence : l'écart est modeste, et la relation n'est pas graduelle, puisque les deux groupes les moins diplômés sont au même niveau.
+:::
+
+# Récapitulatif
+
+| Écriture | Rôle |
+|:--------------------------------------|:--------------------------------------|
+| `count(x, wt = poids)` | compter en pondérant |
+| `svydesign(ids, strata, weights, data, nest = TRUE)` | déclarer le plan de sondage |
+| `subset(plan, condition)` | travailler sur un sous-groupe sans fausser le plan |
+| `theme_gtsummary_language("fr")` | régler `gtsummary` en français |
+| `tbl_svysummary(include = ...)` | tri à plat pondéré |
+| `tbl_svysummary(by = ..., include = ...)` | tri croisé pondéré : `by` en colonne, `include` en ligne |
+| `percent = "row"` | pourcentages en ligne (chaque ligne totalise 100 %) |
+| `statistic`, `digits`, `label`, `missing` | personnaliser le tableau |
+| `add_ci()` | ajouter les intervalles de confiance |
+| `add_p()` | ajouter la p-valeur (khi-deux de Rao et Scott) |
+| `tbl_merge()` | placer deux tableaux côte à côte |
+| `chisq.test()` | khi-deux classique, sur données **non pondérées** uniquement |
+| `svychisq()` | khi-deux corrigé, sur un plan de sondage |
+| `as_flex_table()` | exporter vers Word |
+
+::: callout-important
+## L'essentiel
+
+1. On **pondère** toujours : un résultat non pondéré décrit l'échantillon, pas la population.
+2. On déclare le **plan de sondage** (grappes, strates, poids) : il ne change pas les pourcentages, mais il conditionne les marges d'erreur et les tests.
+3. Dans un tri croisé, on place les variables sociodémographiques **en ligne** et la variable étudiée **en colonne**, on calcule les pourcentages en ligne (`percent = "row"`), et on compare d'une ligne à l'autre.
+4. Le **khi-deux** dit si un écart peut être dû au hasard, pas s'il est important, ni s'il est causal. Sur des données d'enquête pondérées, on utilise sa version corrigée (`svychisq()` ou `add_p()`), jamais `chisq.test()`.
+:::
+
+Pour aller plus loin, le *guide-R* de Joseph Larmarange consacre plusieurs chapitres à l'analyse de données pondérées avec `survey` et `gtsummary` [@larmarange_guider].
+
+# Références
+
+::: {#refs}
+:::

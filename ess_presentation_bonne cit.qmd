@@ -66,7 +66,7 @@ Chaque pays peut ajouter jusqu'à cinq questions spécifiques nationales. Elles 
 Le tableau ci-dessous détaille les deux modules tournants pour chaque vague de l'ESS :
 
 | Vague | Modules tournants |
-|------------------------------------|------------------------------------|
+|----|----|
 | 1 (2002) | Citoyenneté, engagement et démocratie / Immigration |
 | 2 (2004) | Famille, travail et bien-être / Santé et recours aux soins · Moralité économique |
 | 3 (2006) | Bien-être personnel et social / Le calendrier de la vie |
@@ -164,7 +164,7 @@ A l'inverse, un **panel** réinterroge les **mêmes personnes** à plusieurs rep
 [^3]: @cronos_ess ; pour CRONOS-1, @villar2018cronos ; pour CRONOS-2, @bottoni2023cronos2.
 
 |   | CRONOS-1 | CRONOS-2 | CRONOS-3 |
-|:----------------|:--------------------|:----------------|:----------------|
+|:---|:---|:---|:---|
 | Période | Déc. 2016 – févr. 2018 | Nov. 2021 – mars 2023 | Depuis sept. 2024 |
 | Pays | 3 (Estonie, Royaume-Uni, Slovénie) | 12, dont la France | 11, dont la France |
 | Recrutement | Fin de l'entretien ESS, vague 8 | Fin de l'entretien ESS, vague 10 | Fin de l'entretien ESS, vagues 10 et 11 |
@@ -188,7 +188,7 @@ Ce site utilise **CRONOS-2** : c'est le seul panel achevé qui inclut la France.
 **Sur quoi ?** Les vagues 1, 2, 4 et 5 sont **communes** aux douze pays ; les vagues 3 et 6 sont **nationales** : chaque pays y a posé ses propres questions.
 
 | Vague | Dates en France | Thèmes |
-|:----------------|:----------------|:--------------------------------------|
+|:---|:---|:---|
 | 0 (accueil) | Décembre 2021 | Courte enquête de bienvenue (État-providence, bien-être, citoyenneté) |
 | 1 | Février-mars 2022 | Politiques climatiques, vaccination contre le Covid-19, déterminants de la confiance dans les institutions, perception des enquêtes |
 | 2 | Avril-mai 2022 | Europe sociale et redistribution, début et fin de vie, bien-être financier, politiques mémorielles |
