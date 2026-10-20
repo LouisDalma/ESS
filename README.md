@@ -11,14 +11,14 @@ Ce dépot rassemble une collection de ressources pédagogiques afin de s'initier
 | Page | Fichier | Contenu |
 |:-----------------|:--------------------------|:--------------------------|
 | Accueil | `index.qmd` | Présentation du site, carte interactive de la confiance institutionnelle |
-| Présentation des données | `ess_presentation.qmd` | L'ESS et CRONOS-2 : organisation, questionnaire, échantillonnage, passation |
+| Présentation des données | `ess_presentation_bonne cit.qmd` | L'ESS et CRONOS-2 : organisation, questionnaire, échantillonnage, passation |
 | Télécharger les données | `acces_donnees.qmd` | Créer un compte et télécharger les fichiers sur le portail de l'ESS |
 | Dictionnaire des codes | `dictionnaire.qmd` | Moteur de recherche interactif sur toutes les variables de l'ESS (vagues 1 à 11) et de CRONOS-2, avec tris à plat pondérés par pays |
 | Présentation de R et RStudio | `r_presentation.qmd` | Installation et environnement de travail |
 | Premiers pas sous RStudio | `premiers_pas_r.qmd` | Objets, vecteurs, fonctions, valeurs manquantes |
 | L'import et le recodage des données | `import_recodages_r.qmd` | Données labellisées, sélection, recodages |
 | La visualisation des données | `visualisation_donnees.qmd` | Graphiques avec `ggplot2` |
-| Le traitement simple des données | `traitement_simple_r.qmd` | Pondération, plan de sondage, tris à plat, tris croisés, test du khi-deux |
+| Le traitement simple des données | `traitement_simple_r_v2.qmd` | Pondération, plan de sondage, tris à plat, tris croisés, test du khi-deux |
 | Le traitement avancé des données | `traitement_avance_r.qmd` | Analyses factorielles, classifications, régressions |
 | Espaces dédiés | `espace_enseignant.qmd`, `espace_journaliste.qmd` | Ressources pour les enseignants et les journalistes |
 | Guide des bonnes pratiques | `bonnes_pratiques_r.qmd` | Organisation du travail et reproductibilité |
