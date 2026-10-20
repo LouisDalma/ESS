@@ -4,7 +4,7 @@ Ce dépot rassemble une collection de ressources pédagogiques afin de s'initier
 
 - **Site en ligne** : /
 - **Auteur** : Louis Dalmazzo (CDSP)
-- **Version** : voir les [releases](../../releases) du dépôt
+- **Version** : /
 
 ## Contenu
 
@@ -51,7 +51,7 @@ Ce dépot rassemble une collection de ressources pédagogiques afin de s'initier
 Pour reproduire le site, placer les fichiers suivants, au format SPSS (`.sav`), dans le dossier `01_Data/` :
 
 | Fichier | Utilisé par | DOI |
-|:----------------------|:--------------------------------|:----------------|
+|:---------------------|:-------------------------------|:-----------------|
 | `ESS11e04_2.sav` (ESS vague 11, fichier intégré, édition 4.2) | pages *Apprendre R*, `acm_accueil.R` | [10.21338/ess11e04_2](https://doi.org/10.21338/ess11e04_2) |
 
 Le dossier `data/` contient uniquement des **résultats agrégés** (pourcentages pondérés, coordonnées factorielles), sans aucune donnée individuelle. Il est versionné pour que le site puisse être construit sans les microdonnées. Pour régénérer ces fichiers :
@@ -94,7 +94,7 @@ Le site est produit dans le dossier `_site/`. Les pages interactives (carte, dic
 
 **Ce site** : /
 
-**Les données** : European Social Survey European Research Infrastructure (ESS ERIC) (2026). *ESS11 - integrated file, edition 4.2* [Data set]. Sikt - Norwegian Agency for Shared Services in Education and Research. <https://doi.org/10.21338/ess11e04_2>
+**Les données** : European Social Survey European Research Infrastructure (ESS ERIC) (2026). *ESS11 - integrated file, edition 4.2* \[Data set\]. Sikt - Norwegian Agency for Shared Services in Education and Research. <https://doi.org/10.21338/ess11e04_2>
 
 ## Licence
 
